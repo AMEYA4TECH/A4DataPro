@@ -14,8 +14,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import com.a4tech.core.dao.ProductLoggerDAO;
 import com.a4tech.product.USBProducts.criteria.parser.CatalogParser;
 import com.a4tech.product.USBProducts.criteria.parser.PersonlizationParser;
 import com.a4tech.product.USBProducts.criteria.parser.PriceGridParser;
@@ -76,8 +78,10 @@ public class UsbProductsExcelMapping {
 	
 	private static final Logger _LOGGER = Logger.getLogger(UsbProductsExcelMapping.class);
 	PostServiceImpl postServiceImpl = new PostServiceImpl();
+	String companyId=null;
+	
 	@SuppressWarnings("finally")
-	public int readExcel(String accessToken,Workbook workbook){
+	public int readExcel(String accessToken,Workbook workbook,String companyId){
 		
 		List<String> numOfProducts = new ArrayList<String>();
 		FileInputStream inputStream = null;
@@ -211,7 +215,7 @@ public class UsbProductsExcelMapping {
 							 	//productConfigObj.setOptions(option);
 							 	productExcelObj.setProductConfigurations(productConfigObj);
 							 	//productList.add(productExcelObj);
-							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj);
+							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,companyId);
 							 	if(num ==1){
 							 		numOfProducts.add("1");
 							 	}
@@ -1013,7 +1017,7 @@ public class UsbProductsExcelMapping {
 		 	/*productExcelObj.setProductRelationSkus(productsku);
 		 	productExcelObj.setProductNumbers(pnumberList);*/
 		 	//productList.add(productExcelObj);
-		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj);
+		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,companyId);
 		 	if(num ==1){
 		 		numOfProducts.add("1");
 		 	}

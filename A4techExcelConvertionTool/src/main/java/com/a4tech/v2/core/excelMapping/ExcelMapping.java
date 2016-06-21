@@ -69,7 +69,7 @@ public class ExcelMapping {
 	private static final Logger _LOGGER = Logger.getLogger(ExcelMapping.class);
 	PostServiceImpl postServiceImpl = new PostServiceImpl();
 	@SuppressWarnings("finally")
-	public int readExcel(String accessToken,Workbook workbook){
+	public int readExcel(String accessToken,Workbook workbook,String companyId){
 		ImprintColor imprintColorsObj = new ImprintColor();
 		 //List<ImprintColorValue> imprintColors = new ArrayList<ImprintColorValue>();
 		List<String> numOfProducts = new ArrayList<String>();

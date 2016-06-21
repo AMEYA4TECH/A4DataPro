@@ -68,7 +68,7 @@ public class ExcelMapping {
 	private static final Logger _LOGGER = Logger.getLogger(ExcelMapping.class);
 	PostServiceImpl postServiceImpl = new PostServiceImpl();
 	@SuppressWarnings("finally")
-	public int readExcel(String accessToken,Workbook workbook){
+	public int readExcel(String accessToken,Workbook workbook,String companyId){
 		ImprintColor imprintColors = new ImprintColor();
 		List<String> numOfProducts = new ArrayList<String>();
 		FileInputStream inputStream = null;
@@ -226,7 +226,7 @@ public class ExcelMapping {
 							 	productExcelObj.setProductRelationSkus(productsku);
 							 	productExcelObj.setProductNumbers(pnumberList);
 							 	//productList.add(productExcelObj);
-							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj);
+							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,companyId);
 							 	if(num ==1){
 							 		numOfProducts.add("1");
 							 	}
@@ -1101,7 +1101,7 @@ public class ExcelMapping {
 		 	productExcelObj.setProductRelationSkus(productsku);
 		 	productExcelObj.setProductNumbers(pnumberList);
 		 	//productList.add(productExcelObj);
-		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj);
+		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,companyId);
 		 	if(num ==1){
 		 		numOfProducts.add("1");
 		 	}

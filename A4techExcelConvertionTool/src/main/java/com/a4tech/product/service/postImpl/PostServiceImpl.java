@@ -2,6 +2,9 @@ package com.a4tech.product.service.postImpl;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
@@ -9,8 +12,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.a4tech.core.dao.Error;
+import com.a4tech.core.dao.ProductLoggerDAO;
 import com.a4tech.core.model.ExternalAPIResponse;
 import com.a4tech.product.model.Product;
 import com.a4tech.product.service.LoginService;
@@ -18,12 +24,14 @@ import com.a4tech.product.service.PostService;
 import com.a4tech.service.loginImpl.LoginServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl {
 		  
 	    private Logger              _LOGGER              = Logger.getLogger(getClass());
 	    private Product product1;
 		 
-	  
+	    @Autowired
+	    private ProductLoggerDAO  logDAO;
+	    
 		public Product getProduct1() {
 			return product1;
 		}
@@ -41,9 +49,11 @@ public class PostServiceImpl implements PostService{
 		LoginServiceImpl loginServiceImp = new LoginServiceImpl();
 		LoginService loginService;
 		
-		public int postProduct(String authTokens, Product product) {
+		public int postProduct(String authTokens, Product product,String companyId) {
 			
-			
+			com.a4tech.core.dao.Product productLogObj=new com.a4tech.core.dao.Product();
+			Error errorObj =new Error();
+			List<Error> errorList=new ArrayList<Error>();
 			try {
 				if(product1 != null){
 					//_LOGGER.info("after setter method"+product1);
@@ -62,13 +72,28 @@ public class PostServiceImpl implements PostService{
 	            ObjectMapper mapper1 = new ObjectMapper();
 	           _LOGGER.info("Product Data : " + mapper1.writeValueAsString(product));
 	            HttpEntity<Product> requestEntity = new HttpEntity<Product>(product, headers);
+	            productLogObj.setCompanyId(companyId);
+	            productLogObj.setProductNumber(product.getExternalProductId());
+	            
+	            productLogObj.setProductStatus(true);
+	            productLogObj.setErrors(errorList);
+	            
 	            ResponseEntity<ExternalAPIResponse> response = restTemplate.exchange(postApiURL, HttpMethod.POST, requestEntity, ExternalAPIResponse.class);
 	            _LOGGER.info("Result : " + response);
+	            
+	            logDAO.save(productLogObj,errorList );
 	            return 1;
-	        } catch (Exception hce) {
-	            _LOGGER.error("Exception while posting product to Radar API", hce);
+	        }catch (HttpClientErrorException hce) {
+	            _LOGGER.error("Exception while posting product to ASI", hce);
+	            productLogObj.setProductStatus(false);
+	            hce.getMessage();
 	            return 0;
-	        } 
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            _LOGGER.error("Exception while posting product to ASI", e);
+	            productLogObj.setProductStatus(false);
+	              return 0;
+	        }
 	    }
 		public LoginService getLoginService() {
 			return loginService;

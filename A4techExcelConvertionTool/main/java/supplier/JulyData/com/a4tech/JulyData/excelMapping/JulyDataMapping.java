@@ -72,7 +72,7 @@ public class JulyDataMapping {
       private static final Logger _LOGGER = Logger.getLogger(JulyDataMapping.class);
       PostServiceImpl postServiceImpl = new PostServiceImpl();
       @SuppressWarnings("finally")
-      public int readExcel(String accessToken,Workbook workbook){
+      public int readExcel(String accessToken,Workbook workbook,String companyId){
             
             List<String> numOfProducts = new ArrayList<String>();
       
@@ -146,7 +146,7 @@ public class JulyDataMapping {
                                                       
                                                        
                                                        //productList.add(productExcelObj);
-                                                     int num = postServiceImpl.postProduct(accessToken, productExcelObj);
+                                                     int num = postServiceImpl.postProduct(accessToken, productExcelObj,companyId);
                                                      if(num ==1){
                                                            numOfProducts.add("1");
                                                      }
@@ -260,7 +260,7 @@ public class JulyDataMapping {
                  /*productExcelObj.setProductRelationSkus(productsku);
                  productExcelObj.setProductNumbers(pnumberList);*/
                  //productList.add(productExcelObj);
-                 int num = postServiceImpl.postProduct(accessToken, productExcelObj);
+                 int num = postServiceImpl.postProduct(accessToken, productExcelObj,companyId);
                  if(num ==1){
                        numOfProducts.add("1");
                  }

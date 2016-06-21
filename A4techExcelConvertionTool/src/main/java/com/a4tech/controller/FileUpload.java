@@ -69,7 +69,7 @@ public class FileUpload {
 			 return "Home"; 
 		 }
 		 if(accessToken == null){
-         	accessToken = loginService.doLogin("55201",  fileBean.getUserName(),
+         	accessToken = loginService.doLogin(fileBean.getAsiNumber(),  fileBean.getUserName(),
          													fileBean.getPassword());
          	if(accessToken.equalsIgnoreCase("unAuthorized")){
          		accessToken = null;
@@ -90,17 +90,17 @@ public class FileUpload {
 	                
 	                switch (asiNumber) {
 					case "55201"://product v2
-				        numOfProducts = productService.excelProducts(accessToken,workbook);
+				        numOfProducts = productService.excelProducts(accessToken,workbook,"55201");
 		                model.addAttribute("fileName", numOfProducts);
 		                return "success";
 						//break;
 					case "55202"://supplier USB data
 						
-							numOfProducts = usbExcelMapping.readExcel(accessToken, workbook);
+							numOfProducts = usbExcelMapping.readExcel(accessToken, workbook,"55202");
 							model.addAttribute("fileName", numOfProducts);
 							return "success";
 					case "55203":	//supplier JulyData	
-						numOfProducts = Julymapping.readExcel(accessToken, workbook);
+						numOfProducts = Julymapping.readExcel(accessToken, workbook,"55203");
 						model.addAttribute("fileName", numOfProducts);
 						return "success";
 							
