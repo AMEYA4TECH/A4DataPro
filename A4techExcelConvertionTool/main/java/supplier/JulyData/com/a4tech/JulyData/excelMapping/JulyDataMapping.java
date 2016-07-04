@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.a4tech.dataStore.ProductDataStore;
 import com.a4tech.product.model.PriceGrid;
@@ -23,7 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JulyDataMapping {
       
       private static final Logger _LOGGER = Logger.getLogger(JulyDataMapping.class);
-      PostServiceImpl postServiceImpl = new PostServiceImpl();
+      @Autowired
+      PostServiceImpl postServiceImpl ;//= new PostServiceImpl();
       @SuppressWarnings("finally")
       public int readExcel(String accessToken,Workbook workbook,Integer asiNumber){
             
@@ -360,5 +362,12 @@ public class JulyDataMapping {
             }
       
       }
+	public PostServiceImpl getPostServiceImpl() {
+		return postServiceImpl;
+	}
+	public void setPostServiceImpl(PostServiceImpl postServiceImpl) {
+		this.postServiceImpl = postServiceImpl;
+	}
 
+      
 }

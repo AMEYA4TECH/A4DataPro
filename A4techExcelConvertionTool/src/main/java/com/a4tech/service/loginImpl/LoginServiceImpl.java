@@ -32,16 +32,14 @@ public class LoginServiceImpl implements LoginService {
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SZ";
     
 	AccessBean accessBean = null;
-	private RestTemplate restTemplate ;
 	@Autowired
-	ObjectMapper mapper;
+	private RestTemplate restTemplate ;
+	
 	private String loginApiURL ;
 
 	@Override
 	public String doLogin(String asiNumber,String userName,String password) {
-		//ObjectMapper mapper = new ObjectMapper();
-        //mapper.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-       
+		
         AccessBean accessBean = null;
         try {
         	HttpHeaders header = new HttpHeaders();

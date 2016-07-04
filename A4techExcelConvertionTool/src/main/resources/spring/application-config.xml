@@ -24,16 +24,41 @@
         <property name="prefix" value="/WEB-INF/views/" />
         <property name="suffix" value=".jsp" />
     </bean>
-    <import resource="sageMapping.xml"/>
     <context:property-placeholder location="classpath:application.properties,classpath:database.properties"/>
-    
-    <bean id="fileValidator" class="com.a4tech.core.validator.FileValidator"/>
-    <bean id="productService" class="com.a4tech.product.service.imple.ProductServiceImpl"/>
-    <bean id="postServiceImplV2" name="postServiceImplV2" class="com.a4tech.v2.service.postImpl.PostServiceImpl">
-	<property name="postApiURL" value="${product.post.v2.URL}"></property>   
+    <bean id="fileValidator" name="fileValidator" class="com.a4tech.core.validator.FileValidator"/>
+    <bean id="objectMapper" name="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+       <!--  <property name="maxUploadSize" value="100000"/> -->
     </bean>
-    <bean id="product" class="com.a4tech.product.model.Product"/>
-      <bean id="restTemplate" name="restTemplate" class="org.springframework.web.client.RestTemplate">
+    <bean id="dataSource" name="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+  		<property name="driverClassName" value="${mysql.db.driverClassName}" />
+  		<property name="url" value="${mysql.db.url}" />
+  		<property name="username" value="${mysql.db.username}" />
+  		<property name="password" value="${mysql.db.password}" />
+   </bean>   
+   
+   <bean id="hibernate3AnnotatedSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+      <property name="dataSource" ref="dataSource"></property>
+      <property name="annotatedClasses">
+				<list>
+					<value>com.a4tech.product.dao.entity.ProductEntity</value>
+					<value>com.a4tech.product.dao.entity.ErrorEntity</value>
+				</list>
+			</property>
+      <property name="hibernateProperties">
+      <props>
+         <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+         <prop key="hibernate.current_session_context_class">thread</prop>
+         <prop key="hibernate.show_sql">true</prop>
+         <prop key="hbm2ddl.auto">update</prop>
+      </props>
+      </property>
+   
+   </bean>
+   
+   
+   <bean id="restTemplate" name="restTemplate" class="org.springframework.web.client.RestTemplate">
 			<property name="messageConverters">
 				<list>
 					<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -64,26 +89,24 @@
 				</list>
 			</property>
 		</bean> 
- 
-         <bean id="postService"  class="com.a4tech.product.service.postImpl.PostServiceImpl">
-			<property name="restTemplate" ref="restTemplate"></property>
-			<property name="productDao" ref="productDao"></property>
+   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+  	<property name="basename" value="error"/>
+  </bean>
+  <import resource="sageMapping.xml"/>
+    <import resource="usbMapping.xml"/>
+  <bean id="loginServiceImpl"  class="com.a4tech.service.loginImpl.LoginServiceImpl" autowire="byName">
+		 	<property name="loginApiURL" value="${login.endpoint.URL}"/>
+  </bean>
+    <bean id="productService" class="com.a4tech.product.service.imple.ProductServiceImpl"/>
+    <bean id="postServiceImplV2" name="postServiceImplV2" class="com.a4tech.v2.service.postImpl.PostServiceImpl">
+	<property name="postApiURL" value="${product.post.v2.URL}"></property>   
+    </bean>
+    <bean id="product" class="com.a4tech.product.model.Product"/>
+       
+         <bean id="postService" name="postService" class="com.a4tech.product.service.postImpl.PostServiceImpl" autowire="byName">
 			<property name="postApiURL" value="${product.post.v3.URL}"></property>
 		</bean>
 		
-		
-		
-		
-		
-		<bean id="objectMapper" name="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
-		<bean id="loginServiceImpl"  class="com.a4tech.service.loginImpl.LoginServiceImpl" autowire="byName">
-		 	<property name="restTemplate" ref="restTemplate"/>
-		 	<property name="loginApiURL" value="${login.endpoint.URL}"/>
-		</bean>
-     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <!-- one of the properties available; the maximum file size in bytes -->
-       <!--  <property name="maxUploadSize" value="100000"/> -->
-    </bean>
     <bean id="excelMappingV2" name="excelMappingV2" class="com.a4tech.v2.core.excelMapping.ExcelMapping" autowire="byName">
      <property name="productDaoObj"  ref="productDao"/>
     </bean>
@@ -94,53 +117,9 @@
       <property name="loginService"  ref="loginServiceImpl"/>
       <property name="sageExcelMapping" ref="sageMappingId"/> 
    </bean>
-   <bean id="usbExcelMapping" class="com.a4tech.usbProducts.excelMapping.UsbProductsExcelMapping">
-    <property name="colorparser"  ref="colorparser"/>
-   <property name="imprintMethodParser"  ref="imprintMethodParser"/>
-    <property name="artworkProcessor"  ref="artworkProcessor"/>
-   <property name="materialParser"  ref="materialParser"/>
-   <property name="imprintColorParser"  ref="imprintColorParser"/>
-   <property name="warrantyParser"  ref="warrantyParser"/>
-   <property name="imprintColors"  ref="imprintColors"/>
-   <property name="shipinestmt"  ref="shipinestmt"/>
-   <property name="postServiceImpl" ref="postService"></property>
-   <property name="productDaoObj"  ref="productDao"/>
-   </bean>
-   <bean id="julymapping" class="com.a4tech.JulyData.excelMapping.JulyDataMapping"/>
-   <bean id="colorparser" class="com.a4tech.product.USBProducts.criteria.parser.ProductColorParser"/>
-   <bean id="imprintMethodParser" class="com.a4tech.product.USBProducts.criteria.parser.ProductImprintMethodParser"/>
-   <bean id="artworkProcessor" class="com.a4tech.product.USBProducts.criteria.parser.ProductArtworkProcessor"/>
-   <bean id="materialParser" class="com.a4tech.product.USBProducts.criteria.parser.ProductMaterialParser"/>
-   <bean id="imprintColorParser" class="com.a4tech.product.USBProducts.criteria.parser.ProductImprintColorParser"/>
-   <bean id="warrantyParser" class="com.a4tech.product.USBProducts.criteria.parser.ProductWarrantyParser"/>
-   <bean id="imprintColors" class="com.a4tech.product.model.ImprintColor"/>
-   <bean id="shipinestmt" class="com.a4tech.product.USBProducts.criteria.parser.ShippingEstimationParser"/>
    
-   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-  		<property name="driverClassName" value="${mysql.db.driverClassName}" />
-  		<property name="url" value="${mysql.db.url}" />
-  		<property name="username" value="${mysql.db.username}" />
-  		<property name="password" value="${mysql.db.password}" />
-   </bean>   
+   <bean id="julymapping" class="com.a4tech.JulyData.excelMapping.JulyDataMapping" autowire="byName"/>
    
-   <bean id="hibernate3AnnotatedSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-      <property name="dataSource" ref="dataSource"></property>
-      <property name="annotatedClasses">
-				<list>
-					<value>com.a4tech.product.dao.entity.ProductEntity</value>
-					<value>com.a4tech.product.dao.entity.ErrorEntity</value>
-				</list>
-			</property>
-      <property name="hibernateProperties">
-      <props>
-         <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-         <prop key="hibernate.current_session_context_class">thread</prop>
-         <prop key="hibernate.show_sql">true</prop>
-         <prop key="hbm2ddl.auto">update</prop>
-      </props>
-      </property>
-   
-   </bean>
    <bean id="productDao" name="productDao" class="com.a4tech.product.dao.service.ProductDao">
    <property name="sessionFactory" ref="hibernate3AnnotatedSessionFactory"></property>
    <property name="errorFileLocPath" value="${error.logfile.location}"></property>
@@ -149,7 +128,5 @@
    <property name="postServiceImpl"  ref="postService"/>
    <property name="productDaoObj"  ref="productDao"/>
    </bean>
-   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-  	<property name="basename" value="error"/>
-  </bean>
+   
 </beans>

@@ -23,7 +23,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class PostServiceImpl implements PostService {
 
 	private Logger _LOGGER = Logger.getLogger(getClass());
+	@Autowired
     private ProductDao productDao;
+	@Autowired
 	private RestTemplate restTemplate;
 	private String postApiURL ;
 	@Autowired
