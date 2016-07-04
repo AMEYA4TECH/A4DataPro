@@ -92,16 +92,17 @@
    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
   	<property name="basename" value="error"/>
   </bean>
+  <import resource="CoreExcelMapping.xml"/>
   <import resource="sageMapping.xml"/>
     <import resource="usbMapping.xml"/>
-  <bean id="loginServiceImpl"  class="com.a4tech.service.loginImpl.LoginServiceImpl" autowire="byName">
+  <bean id="loginServiceImpl"  name="loginServiceImpl" class="com.a4tech.service.loginImpl.LoginServiceImpl" autowire="byName">
 		 	<property name="loginApiURL" value="${login.endpoint.URL}"/>
   </bean>
     <bean id="productService" class="com.a4tech.product.service.imple.ProductServiceImpl"/>
     <bean id="postServiceImplV2" name="postServiceImplV2" class="com.a4tech.v2.service.postImpl.PostServiceImpl">
 	<property name="postApiURL" value="${product.post.v2.URL}"></property>   
     </bean>
-    <bean id="product" class="com.a4tech.product.model.Product"/>
+    <bean id="product" name="product" class="com.a4tech.product.model.Product"/>
        
          <bean id="postService" name="postService" class="com.a4tech.product.service.postImpl.PostServiceImpl" autowire="byName">
 			<property name="postApiURL" value="${product.post.v3.URL}"></property>
@@ -124,9 +125,9 @@
    <property name="sessionFactory" ref="hibernate3AnnotatedSessionFactory"></property>
    <property name="errorFileLocPath" value="${error.logfile.location}"></property>
    </bean>
-   <bean id="ExcelMapping" name="ExcelMapping" class="com.a4tech.core.excelMapping.ExcelMapping">
+   <!-- <bean id="ExcelMapping" name="ExcelMapping" class="com.a4tech.core.excelMapping.ExcelMapping">
    <property name="postServiceImpl"  ref="postService"/>
-   <property name="productDaoObj"  ref="productDao"/>
-   </bean>
+   <property name="productDaoObj"  ref="productDao"/> 
+   </bean>-->
    
 </beans>

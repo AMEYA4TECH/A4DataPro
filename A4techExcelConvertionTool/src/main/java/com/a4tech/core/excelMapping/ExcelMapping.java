@@ -68,19 +68,50 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ExcelMapping {
 	
 	private static final Logger _LOGGER = Logger.getLogger(ExcelMapping.class);
-	PostServiceImpl postServiceImpl = new PostServiceImpl();
+	PostServiceImpl postServiceImpl ;
 	ProductDao productDaoObj;
+	ObjectMapper mapper;
+	Product productExcelObj ;
+	LoginServiceImpl loginService ;
+	ImprintColor imprintColors ;
+	ProductConfigurations productConfigObj;
+	PriceGridParser priceGridParser ;
+	ProductNumberParser pnumberParser;
+	ProductNumber		pnumObj;
+	Option optionobj;
+	ProductOptionParser optionparserobj;
+	ProductColorParser colorparser;
+	ProductOriginParser originParser;
+	ProductRushTimeParser rushTimeParser;
+	ProductSameDayParser sameDayParser;
+	ProductSampleParser sampleParser ;
+	PersonlizationParser personalizationParser;
+	CatalogParser catlogparser;
+	ShippingEstimationParser shipinestmt;
+	ProductSizeParser sizeParser;
+	ProductPackagingParser packagingParser;
+	ProductTradeNameParser tradeNameParser;
+	ProductImprintMethodParser imprintMethodParser;
+	ProductArtworkProcessor artworkProcessor;
+	ProductShapeParser shapeParser;
+	ProductionTimeParser productionTimeParser;
+	ProductThemeParser themeParser;
+	ProductMaterialParser materialParser;
+	ProductImprintColorParser imprintColorParser;
+	ProductSkuParser skuparserobj;
+	
+	
 	@SuppressWarnings("finally")
 	public int readExcel(String accessToken,Workbook workbook,int asiNumber){
-		ImprintColor imprintColors = new ImprintColor();
+		
 		List<String> numOfProducts = new ArrayList<String>();
 		FileInputStream inputStream = null;
-		LoginServiceImpl loginService = new LoginServiceImpl();
+		
 		//Workbook workbook = null;
 		List<String>  productXids = new ArrayList<String>();
-		  Product productExcelObj = new Product();   
-		  ProductConfigurations productConfigObj=new ProductConfigurations();
-		  ProductSkuParser skuparserobj=new ProductSkuParser();
+		  
+		  
+		  
 		  boolean isProduct = false;
 		  String externalProductId = null;
 		  String currencyType = null;
@@ -88,7 +119,7 @@ public class ExcelMapping {
 		  String priceType    = null;
 		  String basePriceName = null;
 		  String priceIncludes = null;
-		  PriceGridParser priceGridParser = new PriceGridParser();
+		  
 		  String upChargeName = null;
 		  String upChargeQur = null;
 		  String upchargeType = null;
@@ -97,7 +128,7 @@ public class ExcelMapping {
 		  List<PriceGrid> priceGrids = new ArrayList<PriceGrid>();
 		  
 		  
-		  ProductNumberParser pnumberParser=new ProductNumberParser();
+		  
 		try{
 	    Sheet sheet = workbook.getSheetAt(0);
 		Iterator<Row> iterator = sheet.iterator();
@@ -123,12 +154,11 @@ public class ExcelMapping {
 		String productNumberCriteria1=null;
 		String productNumberCriteria2=null;
 		String productNumber=null;
-		ProductNumber		pnumObj=new ProductNumber();
+		
 		List<ProductNumber> pnumberList=new ArrayList<ProductNumber>();
 		
 		List<Option> option=new ArrayList<Option>();
-		Option optionobj= new Option();
-		ProductOptionParser optionparserobj=new ProductOptionParser();
+		
 		String optiontype =null;
 		String optionname =null;
 		String optionvalues =null;
@@ -164,24 +194,7 @@ public class ExcelMapping {
 			List<ProductionTime> productionTimeList = new ArrayList<ProductionTime>();
 			List<Material> materialList=new ArrayList<Material>();
 			
-			ProductColorParser colorparser=new ProductColorParser();
-			ProductOriginParser originParser=new ProductOriginParser();
-			ProductRushTimeParser rushTimeParser=new ProductRushTimeParser();
-			ProductSameDayParser sameDayParser=new ProductSameDayParser();
-			ProductSampleParser sampleParser =new ProductSampleParser();
-			PersonlizationParser personalizationParser=new PersonlizationParser();
-			CatalogParser catlogparser=new CatalogParser();
-			ShippingEstimationParser shipinestmt = new ShippingEstimationParser();
-			ProductSizeParser sizeParser=new ProductSizeParser();
-			ProductPackagingParser packagingParser=new ProductPackagingParser();
-			ProductTradeNameParser tradeNameParser=new ProductTradeNameParser();
-			ProductImprintMethodParser imprintMethodParser=new ProductImprintMethodParser();
-			ProductArtworkProcessor artworkProcessor=new ProductArtworkProcessor();
-			ProductShapeParser shapeParser=new ProductShapeParser();
-			ProductionTimeParser productionTimeParser =new ProductionTimeParser();
-			ProductThemeParser themeParser=new ProductThemeParser();
-			ProductMaterialParser materialParser=new ProductMaterialParser();
-			ProductImprintColorParser imprintColorParser =new ProductImprintColorParser();
+			
 			 List<Image> imgList = new ArrayList<Image>();
 			 List<Catalog> catalogList = new ArrayList<Catalog>();
 		        
@@ -1095,9 +1108,9 @@ public class ExcelMapping {
 		}
 		workbook.close();
 		//inputStream.close();
-		ObjectMapper mapper = new ObjectMapper();
+		
 		//System.out.println("Final product JSON, written to file");
-		 ObjectMapper mapper1 = new ObjectMapper();
+		
 		   // Add repeatable sets here
 		 	productExcelObj.setPriceGrids(priceGrids);
 		 	productExcelObj.setProductConfigurations(productConfigObj);
@@ -1109,7 +1122,7 @@ public class ExcelMapping {
 		 		numOfProducts.add("1");
 		 	}
 		 	_LOGGER.info("list size>>>>>>"+numOfProducts.size());
-			System.out.println(mapper1.writeValueAsString(productExcelObj));
+			System.out.println(mapper.writeValueAsString(productExcelObj));
 		 	
 		 	
 		}catch(Exception e){
@@ -1142,6 +1155,181 @@ public class ExcelMapping {
 	}
 	public void setProductDaoObj(ProductDao productDaoObj) {
 		this.productDaoObj = productDaoObj;
+	}
+	public ObjectMapper getMapper() {
+		return mapper;
+	}
+	public void setMapper(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
+	public Product getProductExcelObj() {
+		return productExcelObj;
+	}
+	public void setProductExcelObj(Product productExcelObj) {
+		this.productExcelObj = productExcelObj;
+	}
+	public LoginServiceImpl getLoginService() {
+		return loginService;
+	}
+	public void setLoginService(LoginServiceImpl loginService) {
+		this.loginService = loginService;
+	}
+	public ImprintColor getImprintColors() {
+		return imprintColors;
+	}
+	public void setImprintColors(ImprintColor imprintColors) {
+		this.imprintColors = imprintColors;
+	}
+	public ProductConfigurations getProductConfigObj() {
+		return productConfigObj;
+	}
+	public void setProductConfigObj(ProductConfigurations productConfigObj) {
+		this.productConfigObj = productConfigObj;
+	}
+	public PriceGridParser getPriceGridParser() {
+		return priceGridParser;
+	}
+	public void setPriceGridParser(PriceGridParser priceGridParser) {
+		this.priceGridParser = priceGridParser;
+	}
+	public ProductNumberParser getPnumberParser() {
+		return pnumberParser;
+	}
+	public void setPnumberParser(ProductNumberParser pnumberParser) {
+		this.pnumberParser = pnumberParser;
+	}
+	public ProductNumber getPnumObj() {
+		return pnumObj;
+	}
+	public void setPnumObj(ProductNumber pnumObj) {
+		this.pnumObj = pnumObj;
+	}
+	public Option getOptionobj() {
+		return optionobj;
+	}
+	public void setOptionobj(Option optionobj) {
+		this.optionobj = optionobj;
+	}
+	public ProductOptionParser getOptionparserobj() {
+		return optionparserobj;
+	}
+	public void setOptionparserobj(ProductOptionParser optionparserobj) {
+		this.optionparserobj = optionparserobj;
+	}
+	public ProductColorParser getColorparser() {
+		return colorparser;
+	}
+	public void setColorparser(ProductColorParser colorparser) {
+		this.colorparser = colorparser;
+	}
+	public ProductOriginParser getOriginParser() {
+		return originParser;
+	}
+	public void setOriginParser(ProductOriginParser originParser) {
+		this.originParser = originParser;
+	}
+	public ProductRushTimeParser getRushTimeParser() {
+		return rushTimeParser;
+	}
+	public void setRushTimeParser(ProductRushTimeParser rushTimeParser) {
+		this.rushTimeParser = rushTimeParser;
+	}
+	public ProductSameDayParser getSameDayParser() {
+		return sameDayParser;
+	}
+	public void setSameDayParser(ProductSameDayParser sameDayParser) {
+		this.sameDayParser = sameDayParser;
+	}
+	public ProductSampleParser getSampleParser() {
+		return sampleParser;
+	}
+	public void setSampleParser(ProductSampleParser sampleParser) {
+		this.sampleParser = sampleParser;
+	}
+	public PersonlizationParser getPersonalizationParser() {
+		return personalizationParser;
+	}
+	public void setPersonalizationParser(PersonlizationParser personalizationParser) {
+		this.personalizationParser = personalizationParser;
+	}
+	public CatalogParser getCatlogparser() {
+		return catlogparser;
+	}
+	public void setCatlogparser(CatalogParser catlogparser) {
+		this.catlogparser = catlogparser;
+	}
+	public ShippingEstimationParser getShipinestmt() {
+		return shipinestmt;
+	}
+	public void setShipinestmt(ShippingEstimationParser shipinestmt) {
+		this.shipinestmt = shipinestmt;
+	}
+	public ProductSizeParser getSizeParser() {
+		return sizeParser;
+	}
+	public void setSizeParser(ProductSizeParser sizeParser) {
+		this.sizeParser = sizeParser;
+	}
+	public ProductPackagingParser getPackagingParser() {
+		return packagingParser;
+	}
+	public void setPackagingParser(ProductPackagingParser packagingParser) {
+		this.packagingParser = packagingParser;
+	}
+	public ProductTradeNameParser getTradeNameParser() {
+		return tradeNameParser;
+	}
+	public void setTradeNameParser(ProductTradeNameParser tradeNameParser) {
+		this.tradeNameParser = tradeNameParser;
+	}
+	public ProductImprintMethodParser getImprintMethodParser() {
+		return imprintMethodParser;
+	}
+	public void setImprintMethodParser(
+			ProductImprintMethodParser imprintMethodParser) {
+		this.imprintMethodParser = imprintMethodParser;
+	}
+	public ProductArtworkProcessor getArtworkProcessor() {
+		return artworkProcessor;
+	}
+	public void setArtworkProcessor(ProductArtworkProcessor artworkProcessor) {
+		this.artworkProcessor = artworkProcessor;
+	}
+	public ProductShapeParser getShapeParser() {
+		return shapeParser;
+	}
+	public void setShapeParser(ProductShapeParser shapeParser) {
+		this.shapeParser = shapeParser;
+	}
+	public ProductionTimeParser getProductionTimeParser() {
+		return productionTimeParser;
+	}
+	public void setProductionTimeParser(ProductionTimeParser productionTimeParser) {
+		this.productionTimeParser = productionTimeParser;
+	}
+	public ProductThemeParser getThemeParser() {
+		return themeParser;
+	}
+	public void setThemeParser(ProductThemeParser themeParser) {
+		this.themeParser = themeParser;
+	}
+	public ProductMaterialParser getMaterialParser() {
+		return materialParser;
+	}
+	public void setMaterialParser(ProductMaterialParser materialParser) {
+		this.materialParser = materialParser;
+	}
+	public ProductImprintColorParser getImprintColorParser() {
+		return imprintColorParser;
+	}
+	public void setImprintColorParser(ProductImprintColorParser imprintColorParser) {
+		this.imprintColorParser = imprintColorParser;
+	}
+	public ProductSkuParser getSkuparserobj() {
+		return skuparserobj;
+	}
+	public void setSkuparserobj(ProductSkuParser skuparserobj) {
+		this.skuparserobj = skuparserobj;
 	}
 
 	

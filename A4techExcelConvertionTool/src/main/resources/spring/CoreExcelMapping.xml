@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:web-services="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+		
+     <bean id="sageMappingId" class="com.a4tech.core.excelMapping.ExcelMapping" autowire="byName">
+     	<property name="postServiceImpl"  ref="postService"/>
+   <property name="productDaoObj"  ref="productDao"/>
+   <property name="productExcelObj"  ref="product"/>
+   <property name="loginService"  ref="loginServiceImpl"/>
+   <property name="mapper"  ref="objectMapper"/>
+   
+   <property name="imprintColors"  ref="imprintColorsObj"/>
+   <property name="productConfigObj"  ref="ProductConfigurationsObj"/>
+   <property name="priceGridParser"  ref="PriceGridParserObj"/>
+   <property name="pnumberParser"  ref="pnumberParserObj"/>
+   <property name="pnumObj"  ref="pnumCoreObj"/>
+   <property name="optionobj"  ref="optionCoreobj"/>
+   <property name="optionparserobj"  ref="optionparserCoreObj"/>
+   <property name="colorparser"  ref="colorparserObj"/>
+   <property name="originParser"  ref="originParserObj"/>
+   <property name="rushTimeParser"  ref="rushTimeParserObj"/>
+   <property name="sameDayParser"  ref="sameDayParserObj"/>
+   <property name="sampleParser"  ref="sampleParserObj"/>
+   <property name="personalizationParser"  ref="personalizationParserObj"/>
+   <property name="catlogparser"  ref="catlogparserObj"/>
+   <property name="shipinestmt"  ref="shipinestmtObj"/>
+   <property name="sizeParser"  ref="sizeParserObj"/>
+   <property name="packagingParser"  ref="packagingParserObj"/>
+   <property name="tradeNameParser"  ref="tradeNameParserObj"/>
+   <property name="imprintMethodParser"  ref="imprintMethodParserObj"/>
+   <property name="artworkProcessor"  ref="artworkProcessorObj"/>
+   <property name="shapeParser"  ref="shapeParserObj"/>
+   <property name="productionTimeParser"  ref="productionTimeParserObj"/>
+   <property name="themeParser"  ref="themeParserObj"/>
+   <property name="materialParser"  ref="materialParserObj"/>
+   <property name="imprintColorParser"  ref="imprintColorParserObj"/>
+   <property name="skuparserobj"  ref="skuparserCoreObj"/>
+     </bean>
+         
+         
+         <!-- Model classes -->
+     <bean id="imprintColorsObj" name="imprintColorsObj" class="com.a4tech.product.model.ImprintColor"/>
+     <bean id="ProductConfigurationsObj" name="ProductConfigurationsObj" class="com.a4tech.product.model.ProductConfigurations"/>
+     <bean id="pnumCoreObj" name="pnumCoreObj" class="com.a4tech.product.model.ProductNumber"/>
+     <bean id="optionCoreobj" name="optionCoreobj" class="com.a4tech.product.model.Option"/>
+    
+     <!-- Parser's -->
+     <bean id="optionparserCoreObj" name="optionparserCoreObj" class="com.a4tech.product.criteria.parser.ProductOptionParser"/>
+     <bean id="pnumberParserObj" name="pnumberParserObj" class="com.a4tech.product.criteria.parser.ProductNumberParser"/>
+     <bean id="colorparserObj" name="colorparserObj" class="com.a4tech.product.criteria.parser.ProductColorParser"/>
+     <bean id="originParserObj" name="originParserObj" class="com.a4tech.product.criteria.parser.ProductOriginParser"/>
+     <bean id="rushTimeParserObj" name="rushTimeParserObj" class="com.a4tech.product.criteria.parser.ProductRushTimeParser"/>
+     <bean id="sameDayParserObj" name="sameDayParserObj" class="com.a4tech.product.criteria.parser.ProductSameDayParser"/>
+     <bean id="sampleParserObj" name="sampleParserObj" class="com.a4tech.product.criteria.parser.ProductSampleParser"/>
+     <bean id="personalizationParserObj" name="personalizationParserObj" class="com.a4tech.product.criteria.parser.PersonlizationParser"/>
+     <bean id="catlogparserObj" name="catlogparserObj" class="com.a4tech.product.criteria.parser.CatalogParser"/>
+     <bean id="shipinestmtObj" name="shipinestmtObj" class="com.a4tech.product.criteria.parser.ShippingEstimationParser"/>
+     <bean id="sizeParserObj" name="sizeParserObj" class="com.a4tech.product.criteria.parser.ProductSizeParser"/>
+     <bean id="packagingParserObj" name="packagingParserObj" class="com.a4tech.product.criteria.parser.ProductPackagingParser"/>
+     <bean id="tradeNameParserObj" name="tradeNameParserObj" class="com.a4tech.product.criteria.parser.ProductTradeNameParser"/>
+     
+     <bean id="imprintMethodParserObj" name="imprintMethodParserObj" class="com.a4tech.product.criteria.parser.ProductImprintMethodParser"/>
+     <bean id="artworkProcessorObj" name="artworkProcessorObj" class="com.a4tech.product.criteria.parser.ProductArtworkProcessor"/>
+     <bean id="shapeParserObj" name="shapeParserObj" class="com.a4tech.product.criteria.parser.ProductShapeParser"/>
+     <bean id="productionTimeParserObj" name="productionTimeParserObj" class="com.a4tech.product.criteria.parser.ProductionTimeParser"/>
+     <bean id="themeParserObj" name="themeParserObj" class="com.a4tech.product.criteria.parser.ProductThemeParser"/>
+     <bean id="materialParserObj" name="materialParserObj" class="com.a4tech.product.criteria.parser.ProductMaterialParser"/>
+     <bean id="imprintColorParserObj" name="imprintColorParserObj" class="com.a4tech.product.criteria.parser.ProductImprintColorParser"/>
+     <bean id="skuparserCoreObj" name="skuparserCoreObj" class="com.a4tech.product.criteria.parser.ProductSkuParser"/>
+     
+     
+</beans>
