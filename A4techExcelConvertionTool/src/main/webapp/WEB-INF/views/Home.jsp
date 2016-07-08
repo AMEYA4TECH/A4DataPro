@@ -60,7 +60,7 @@
          		<tr>
          		<td></td>
               <td>
- 					<form:button value="submit" class="btn btn-primary btn-lg pull-right" style="margin: 1px 37px; float: left !important;">Submit</form:button>             
+ 					<form:button value="submit" id="sendEmail" class="btn btn-primary btn-lg pull-right" style="margin: 1px 37px; float: left !important;">Submit</form:button>             
               </td>
          		</tr>
          		
@@ -96,8 +96,8 @@ $(document).ready(function () {
 	}, 5000);
 	});
 	});
-document.getElementById("uploadBtn").onchange = function () {
-document.getElementById("uploadFile").value = this.value;
+document.getElementById("sendEmail").onchange = function () {
+document.getElementById("sendEmail.do").value = this.value;
 };
 </script>
 

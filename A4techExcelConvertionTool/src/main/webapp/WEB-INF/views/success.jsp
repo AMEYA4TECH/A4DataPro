@@ -41,7 +41,19 @@
 	<a href="DownloadServlet"><u>Download a File</u></a></h4>
         
         </div>
-    
+    	<br>
+    	<form method="post" action="sendEmail.do">
+    	<table>
+    	<tr>
+		<td> <input type="submit" value="Send E-mail" /></td>
+		<td><input type="text" readonly="readonly" style="border: none; background: none;" value="${successmsg}" ></td>    	
+    	</tr>
+    	
+    	</table>
+                       
+        </form>
+         
+    	 
       </div>
     </div>
   </div>

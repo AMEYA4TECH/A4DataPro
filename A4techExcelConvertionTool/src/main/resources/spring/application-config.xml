@@ -92,6 +92,23 @@
    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
   	<property name="basename" value="error"/>
   </bean>
+  <bean id="emailController" name="emailController" class="com.a4tech.controller.EmailController" autowire="byName"/>
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">    
+  <property name="host" value="smtpout.secureserver.net" />  
+    <property name="username" value="amey.more@a4technology.com" />  
+    <property name="password" value="Amey01" />  
+    <property name="javaMailProperties">  
+       <props>  
+              <prop key="mail.smtp.auth">true</prop>  
+              <prop key="mail.smtp.socketFactory.port">465</prop>  
+              <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>  
+              <prop key="mail.smtp.port">465</prop>  
+              <prop key="mail.smtp.starttls.enable">true</prop>
+       		 <prop key="mail.smtp.ssl.trust">smtpout.secureserver.net</prop>
+        </props>  
+    </property>  
+</bean>  
+ 
   <import resource="CoreExcelMapping.xml"/>
   <import resource="sageMapping.xml"/>
   <bean id="loginServiceImpl"  name="loginServiceImpl" class="com.a4tech.service.loginImpl.LoginServiceImpl" autowire="byName">
@@ -143,7 +160,18 @@
    <bean id="productDao" name="productDao" class="com.a4tech.product.dao.service.ProductDao">
    <property name="sessionFactory" ref="hibernate3AnnotatedSessionFactory"></property>
    <property name="errorFileLocPath" value="${error.logfile.location}"></property>
+    <property name="mailSender" ref="mailSender" />  
+   
    </bean>
+   
+   <bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
    <!-- <bean id="ExcelMapping" name="ExcelMapping" class="com.a4tech.core.excelMapping.ExcelMapping">
    <property name="postServiceImpl"  ref="postService"/>
    <property name="productDaoObj"  ref="productDao"/> 
