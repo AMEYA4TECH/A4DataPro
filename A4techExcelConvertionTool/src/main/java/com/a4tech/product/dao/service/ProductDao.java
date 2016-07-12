@@ -161,41 +161,7 @@ public class ProductDao {
 			tx = session.beginTransaction();
 			session.saveOrUpdate(productEntity);
 			tx.commit();
-			/*
-			 * //Criteria crit = session.createCriteria(ProductEntity.class);
-			 * HashMap<String, ArrayList<String>> hashmap = new HashMap<String,
-			 * ArrayList<String>>(); Criteria prdCrit =
-			 * session.createCriteria(ProductEntity.class);
-			 * prdCrit.add(Restrictions.eq("companyId",asiNumber)); //List
-			 * results = prdCrit.list(); List<ProductEntity> list =
-			 * prdCrit.list(); for(ProductEntity arr : list){
-			 * 
-			 * System.out.println();
-			 * 
-			 * ArrayList<String> arraylist = new ArrayList<String>();
-			 * //hashmap.put(productEntity2.getProductNumber(), value) for
-			 * (ErrorEntity productEntity2 : arr.getErrors()) {
-			 * arraylist.add(productEntity2.getError());
-			 * System.out.println(productEntity2.getError()); }
-			 * hashmap.put(arr.getProductNo(), arraylist); } String
-			 * errorComp=Integer.toString(asiNumber); File fout = new
-			 * File("D:\\A4 ESPUpdate\\ErrorFiles\\"+errorComp+".txt");
-			 * FileOutputStream fos = new FileOutputStream(fout);
-			 * 
-			 * BufferedWriter bw = new BufferedWriter(new
-			 * OutputStreamWriter(fos));
-			 * 
-			 * for (int i = 0; i < 10; i++) { bw.write("something");
-			 * bw.newLine(); }
-			 * 
-			 * for (Map.Entry<String,ArrayList<String>> entry :
-			 * hashmap.entrySet()) { String key = entry.getKey();
-			 * ArrayList<String> listt = entry.getValue(); String data=""; for
-			 * (String string : listt) { data=string+"|"+data; } String
-			 * finalStr="XID: "+key+"   " +data; bw.write(finalStr);
-			 * bw.newLine(); } bw.close();
-			 */
-
+			
 			/*
 			 * String hql =
 			 * "select p.PRODUCT_NUMBER,e.ERRORS from a4techconvertiontool.product_log p join  a4techconvertiontool.error_log e on p.PRODUCT_NUMBER = e.PRODUCT_NUMBER where    P.COMPANY_ID='55202'"
@@ -247,11 +213,6 @@ public class ProductDao {
 
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
-			/*
-			 * for (int i = 0; i < 10; i++) { bw.write("something");
-			 * bw.newLine(); }
-			 */
-
 			for (Map.Entry<String, ArrayList<String>> entry : hashmap
 					.entrySet()) {
 				String key = entry.getKey();
@@ -266,15 +227,6 @@ public class ProductDao {
 			}
 			bw.close();
 			
-			
-			
-			  SimpleMailMessage message = new SimpleMailMessage();
-			  message.setFrom("amey.more@a4technology.com");
-			  message.setTo("sharvari.patil@a4technology.com");
-			  message.setSubject("Test Mail"); 
-			  message.setText("Hi"); 
-			  //sending message  
-			  //mailSender.send(message); 
 			/* String hql =
 			  "select p.PRODUCT_NUMBER,e.ERRORS from a4techconvertiontool.product_log p join  a4techconvertiontool.error_log e on p.PRODUCT_NUMBER = e.PRODUCT_NUMBER where    P.COMPANY_ID='55202'"; Query query = session.createQuery(hql); List results =
 			  query.list();*/

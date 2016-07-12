@@ -45,8 +45,8 @@
     	<form method="post" action="sendEmail.do">
     	<table>
     	<tr>
-		<td> <input type="submit" value="Send E-mail" /></td>
-		<td><input type="text" readonly="readonly" style="border: none; background: none;" value="${successmsg}" ></td>    	
+		<td> <input type="submit" value="Send E-mail" class="btn btn-primary btn-lg pull-right" style="margin: 1px 10px; float: left !important;"/></td>
+		<td><input type="text" readonly="readonly" style="border: none; background: none;" value="${successmsg}"  size="45"></td>    	
     	</tr>
     	
     	</table>

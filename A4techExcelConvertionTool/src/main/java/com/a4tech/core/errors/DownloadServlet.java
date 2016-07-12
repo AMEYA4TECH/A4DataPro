@@ -54,54 +54,6 @@ public class DownloadServlet extends HttpServlet {
 		}
 		fileInputStream.close();
 		out.close();
-		
-		  	final String username = "ameymorea4tech@gmail.com";
-			final String password = "AmeyMoreA4Tech11";
-
-			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.port", "587");
-
-			Session session1 = Session.getInstance(props,
-			  new javax.mail.Authenticator() {
-				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(username, password);
-				}
-			  });
-
-			try {
-				if(!StringUtils.isEmpty(filepath)){
-				Message message = new MimeMessage(session1);
-				message.setFrom(new InternetAddress("ameymorea4tech@gmail.com"));
-				message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("amey.more@a4technology.com"));
-				message.setSubject("Product Error Batch File");
-				//message.setText("Kindly find the attached " +filename +"Product Error File");
-				  // Create the message part
-		         BodyPart messageBodyPart = new MimeBodyPart();
-
-		         // Now set the actual message
-		         messageBodyPart.setText("Kindly find the attached " +filename +" Product Error File"
-		        		 + "\n\n\n\n Note: This is a System Generated Message Kindly Do not reply back");
-		        
-		         Multipart multipart = new MimeMultipart();
-		         multipart.addBodyPart(messageBodyPart);
-		         messageBodyPart = new MimeBodyPart();
-		         String filenameAttach = filepath+ filename;
-		         DataSource source = new FileDataSource(filenameAttach);
-		         messageBodyPart.setDataHandler(new DataHandler(source));
-		         messageBodyPart.setFileName(filename);
-		         multipart.addBodyPart(messageBodyPart);
-		        message.setContent(multipart);
-				//Transport.send(message);
-				_LOGGER.info("Email Send SuccessFully ");
-				System.out.println("Done");
-				
-				}
-			}catch(Exception e){
-				_LOGGER.error("Error while sending email" +e.toString());
-			}
+			
 	}
 }

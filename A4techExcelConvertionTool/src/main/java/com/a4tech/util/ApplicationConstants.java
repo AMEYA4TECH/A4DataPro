@@ -1,5 +1,10 @@
 package com.a4tech.util;
 
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+
 public class ApplicationConstants {
    
 	
@@ -62,9 +67,15 @@ public class ApplicationConstants {
 	//public static final String  
     
     
-    
-    
-    
+	  public static Map<String, String> SUPPLIER_EMAIL_ID_MAP =new HashMap<String, String>();
+	 
+	    static {
+	       
+	    	SUPPLIER_EMAIL_ID_MAP.put("55201", "venkateswarlu.nidamanuri@a4technology.com");
+	    	SUPPLIER_EMAIL_ID_MAP.put("55202", "amey.more@a4technology.com");
+	    	SUPPLIER_EMAIL_ID_MAP.put("55203", "sharvari.patil@a4technology.com");
+	    	SUPPLIER_EMAIL_ID_MAP.put("55204", "venkateswarlu.nidamanuri@a4technology.com");
+	    }
     
     
     
