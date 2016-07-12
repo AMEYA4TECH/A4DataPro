@@ -164,14 +164,14 @@
    
    </bean>
    
-   <bean id="tilesConfigurer"
+   <!-- <bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="definitions">
 			<list>
 				<value>/WEB-INF/tiles.xml</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
    <!-- <bean id="ExcelMapping" name="ExcelMapping" class="com.a4tech.core.excelMapping.ExcelMapping">
    <property name="postServiceImpl"  ref="postService"/>
    <property name="productDaoObj"  ref="productDao"/> 
