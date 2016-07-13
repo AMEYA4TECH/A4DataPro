@@ -1,6 +1,8 @@
 package com.a4tech.controller;
 import java.io.File;
-import java.util.Map;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -16,11 +18,15 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,35 +34,60 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.a4tech.core.model.FileBean;
+import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.util.ApplicationConstants;
- /*
-//@Controller
-//@RequestMapping("/sendEmail.do")
-public class EmailController {
- 
-    @Autowired
-    private JavaMailSender mailSender;
-     
-    String username;
-    String password;
-    String domain;
-    String portNo;
-    
-    private static Logger _LOGGER = Logger.getLogger(Class.class);
-    
-    @RequestMapping(method = RequestMethod.GET)
-    public String doSendEmail(HttpServletRequest request,Model model) {
-        boolean flag=false;
-		String supplierId=(String) request.getSession().getAttribute("asiNumber");
-		String emailMsg="No Error File Found for Supplier "+supplierId +" ,Email not sent!!!";
-		supplierId = supplierId+".txt";
-		
-		String filepath = "D:\\A4 ESPUpdate\\ErrorFiles\\";
-		File f = new File(filepath+ supplierId);
 
+
+@Controller
+@RequestMapping("/sendEmails")
+public class DownloadFileController {
+	private static final long serialVersionUID = 1L;
+	private static Logger _LOGGER = Logger.getLogger(ProductDao.class);
+	
+		@Autowired
+	    private JavaMailSender mailSender;
+	     
+	    String username;
+	    String password;
+	    String domain;
+	    String portNo;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String doSendEmail(HttpServletRequest request,
+			HttpServletResponse response,Model model) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		String supplierId=(String) request.getSession().getAttribute("asiNumber");
+		  
+		 
+		String fileName= supplierId+".txt";
+		String filepath = "D:\\A4 ESPUpdate\\ErrorFiles\\";
+		String emailMsg="No Error File Found for Supplier "+supplierId +" ,Email not sent!!!";
+		
+		File f = new File(filepath+ fileName);
+		boolean flag=false;
 		  if(f.exists()){
 			  flag=true;
 		  }
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		response.setHeader("Content-Disposition", "attachment; filename=\""
+				+ fileName + "\"");
+		FileInputStream fileInputStream = new FileInputStream(filepath
+				+ fileName);
+
+		int i;
+		while ((i = fileInputStream.read()) != -1) {
+			out.write(i);
+		}
+		fileInputStream.close();
+		out.close();
+		
+		
+		
+		
+		
 		
 		try {
 			if(flag){
@@ -72,11 +103,11 @@ public class EmailController {
 						return new PasswordAuthentication(username, password);
 					}
 				  });
-		    DataSource source = new FileDataSource(filepath+ supplierId);
+		    DataSource source = new FileDataSource(filepath+ fileName);
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(ApplicationConstants.SUPPLIER_EMAIL_ID_MAP.get(supplierId.replaceAll(".txt", ""))));
+				InternetAddress.parse(ApplicationConstants.SUPPLIER_EMAIL_ID_MAP.get(supplierId)));
 			message.setSubject("Product Error Batch File");
 			//message.setText("Kindly find the attached " +filename +"Product Error File");
 			  // Create the message part
@@ -93,28 +124,28 @@ public class EmailController {
 	         messageBodyPart.setDataHandler(new DataHandler(source));
 	         messageBodyPart.setFileName(supplierId);
 	         multipart.addBodyPart(messageBodyPart);
-	         String ss=messageBodyPart.getFileName();
-	        int a= messageBodyPart.getSize();
 	        message.setContent(multipart);
 			Transport.send(message);
 			emailMsg="Email Sent Successfully !!!";
 			
-			_LOGGER.info("Email Sent Successfully to Suppier " +supplierId+"On Email Id: "+ApplicationConstants.SUPPLIER_EMAIL_ID_MAP.get(supplierId.replaceAll(".txt", "")));
+			_LOGGER.info("Email Sent Successfully to Suppier " +supplierId+" On Email Id: "+ApplicationConstants.SUPPLIER_EMAIL_ID_MAP.get(supplierId));
 			}
 		}catch(Exception e){
 			_LOGGER.error("Error While Sending Email To Supplier "+supplierId +e.toString());
 		}
 		
-		 SimpleMailMessage message = new SimpleMailMessage();
+		 /*SimpleMailMessage message = new SimpleMailMessage();
 		  message.setFrom("amey.more@a4technology.com");
 		  message.setTo("sharvari.patil@a4technology.com");
 		  message.setSubject("Test Mail"); 
 		  message.setText("Hi"); 
 		  //sending message  
-		  mailSender.send(message); 
+		  mailSender.send(message); */
 		  model.addAttribute("successmsg", emailMsg);
         return "success";    
-        }
+			
+	}
+	
 
 	public JavaMailSender getMailSender() {
 		return mailSender;
@@ -155,7 +186,4 @@ public class EmailController {
 	public void setPortNo(String portNo) {
 		this.portNo = portNo;
 	}
-    
-    
-    
-}*/
+}

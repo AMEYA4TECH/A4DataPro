@@ -33,27 +33,18 @@
         <br/><br/>
       <a class="btn btn-home btn-lg" style="margin: 0px 41% auto;" href="<c:url value='/uploadFile.htm' />"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
     </div>
-        <br>
-        <br>
-        <br>
+        <br/>
+        <br/>
+        <br/>
         <div class="filedownload" align="left">
         <h4>Click on the link to download Product Error File:
-	<a href="DownloadServlet"><u>Download a File</u></a></h4>
-        
+	<c:url value="/sendEmails.html" var="sendEmailsLink" />
+	<a href="${sendEmailsLink}"><u>Download a File</u></a></h4>
+      <br/>
+         <h4 style="font-size: 39px !important;"><strong>${successmsg}</strong> </h4>
         </div>
-    	<br>
-    	<form method="post" action="sendEmail.do">
-    	<table>
-    	<tr>
-		<td> <input type="submit" value="Send E-mail" class="btn btn-primary btn-lg pull-right" style="margin: 1px 10px; float: left !important;"/></td>
-		<td><input type="text" readonly="readonly" style="border: none; background: none;" value="${successmsg}"  size="45"></td>    	
-    	</tr>
-    	
-    	</table>
-                       
-        </form>
-         
-    	 
+      
+    	<br> 	 
       </div>
     </div>
   </div>
