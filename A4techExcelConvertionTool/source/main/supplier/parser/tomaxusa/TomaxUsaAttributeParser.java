@@ -29,6 +29,7 @@ public class TomaxUsaAttributeParser {
 	private static final Logger _LOGGER = Logger.getLogger(TomaxUsaAttributeParser.class);
 	
 	public ShippingEstimate getShippingEstimates( String shippingValue,ShippingEstimate shippingEstObj,String str) {
+		try{
 		//ShippingEstimate shipingObj = new ShippingEstimate();
 		if(str.equals("NOI")){
 		List<NumberOfItems> listOfNumberOfItems = new ArrayList<NumberOfItems>();
@@ -81,12 +82,18 @@ public class TomaxUsaAttributeParser {
 			shippingEstObj.setDimensions(dimensionObj);
 			}
 		}
+		}catch(Exception e){
+			_LOGGER.error(e.getMessage());
+		}
 		return shippingEstObj;
 	}
 	
-	public List<Packaging> getPackageValues(String packageValues){
-		List<Packaging> listOfPackage = new ArrayList<Packaging>();
-		Packaging packaging = null;
+	public List<Packaging> getPackageValues(String packageValues,List<Packaging> listOfPackage){
+		
+		if(CollectionUtils.isEmpty(listOfPackage)){
+		 listOfPackage = new ArrayList<Packaging>();
+		}
+		 Packaging packaging = null;
 		String[] packValues = packageValues.split(ApplicationConstants.CONST_DELIMITER_COMMA);
 			for (String pack : packValues) {
 				packaging = new Packaging();

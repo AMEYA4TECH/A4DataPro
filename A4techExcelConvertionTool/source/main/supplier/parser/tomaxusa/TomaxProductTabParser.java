@@ -66,6 +66,7 @@ public class TomaxProductTabParser {
 		  ShippingEstimate	shippingEstObj=new ShippingEstimate();
 		  StringBuilder listOfPrices = new StringBuilder();
 		  StringBuilder listOfQuantity = new StringBuilder();
+		  List<Packaging> listOfPackaging=new ArrayList<Packaging>();
 		try{
 			 
 		_LOGGER.info("Total sheets in excel::"+workbook.getNumberOfSheets());
@@ -172,6 +173,7 @@ public class TomaxProductTabParser {
 								listOfPrices = new StringBuilder();
 							    listOfQuantity = new StringBuilder();
 							    shippingEstObj=new ShippingEstimate();
+							    listOfPackaging=new ArrayList<Packaging>();
 
 						 }
 						    if(!productXids.contains(xid)){
@@ -304,8 +306,8 @@ public class TomaxProductTabParser {
 					case 14://Optional upgrade packaging
 						String packageValue=CommonUtility.getCellValueStrinOrInt(cell);
 						 if(!StringUtils.isEmpty(packageValue)){
-							 List<Packaging> listOfPackage=tomaxUsaAttributeParser.getPackageValues(packageValue);
-							 productConfigObj.setPackaging(listOfPackage);
+							 listOfPackaging=tomaxUsaAttributeParser.getPackageValues(packageValue,listOfPackaging);
+							 productConfigObj.setPackaging(listOfPackaging);
 						 }
 						
 						break;
@@ -320,8 +322,8 @@ public class TomaxProductTabParser {
 					case 16://item size
 						String sizeValue=CommonUtility.getCellValueStrinOrInt(cell);
 						 if(!StringUtils.isEmpty(sizeValue)){
-							 productConfigObj =tomaxUsaSizeParser.getSizes(sizeValue, productConfigObj);
-							 //productConfigObj.setColors(colors);
+							 productExcelObj =tomaxUsaSizeParser.getSizes(sizeValue, productConfigObj,productExcelObj);
+							 productConfigObj=productExcelObj.getProductConfigurations();
 						 }
 						break;
 					case 17://imprint size
@@ -351,8 +353,21 @@ public class TomaxProductTabParser {
 						
 						String shippinDim=CommonUtility.getCellValueStrinOrInt(cell);
 						 if(!StringUtils.isEmpty(shippinDim)){
+							 shippinDim=shippinDim.toUpperCase();
 							 shippingEstObj=tomaxUsaAttributeParser.getShippingEstimates(shippinDim,shippingEstObj,"SDIM");
 							 productConfigObj.setShippingEstimates(shippingEstObj);
+							 if(shippinDim.contains("WHITE")){
+							 listOfPackaging=tomaxUsaAttributeParser.getPackageValues("White box",listOfPackaging);
+							 productConfigObj.setPackaging(listOfPackaging);
+							 }
+							 if(shippinDim.contains("DELUXE")){
+								 listOfPackaging=tomaxUsaAttributeParser.getPackageValues("Deluxe box",listOfPackaging);
+								 productConfigObj.setPackaging(listOfPackaging);
+							 } 
+							 if(shippinDim.contains("BULK")){
+								 listOfPackaging=tomaxUsaAttributeParser.getPackageValues("Bulk",listOfPackaging);
+								 productConfigObj.setPackaging(listOfPackaging);
+							 }
 						 }
 						break;
 								
@@ -399,6 +414,7 @@ public class TomaxProductTabParser {
 		listOfPrices = new StringBuilder();
 	    listOfQuantity = new StringBuilder();
 	    shippingEstObj=new ShippingEstimate();
+	    listOfPackaging=new ArrayList<Packaging>();
 		repeatRows.clear();
 		return finalResult;
 		}catch(Exception e){

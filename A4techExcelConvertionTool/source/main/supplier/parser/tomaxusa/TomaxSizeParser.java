@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.a4tech.product.model.Dimension;
 import com.a4tech.product.model.ImprintLocation;
 import com.a4tech.product.model.ImprintSize;
+import com.a4tech.product.model.Product;
 import com.a4tech.product.model.ProductConfigurations;
 import com.a4tech.product.model.Size;
 import com.a4tech.product.model.Value;
@@ -77,7 +78,7 @@ public class TomaxSizeParser {
 		//dimList.add("");
 		
 	}
-	public ProductConfigurations getSizes(String sizeValue,ProductConfigurations existingConfig) {
+	public Product getSizes(String sizeValue,ProductConfigurations existingConfig,Product productExcelObj) {
 		Size sizeObj = new Size();
 		String sizeGroup="dimension";
 		String unitValue="in";
@@ -85,14 +86,15 @@ public class TomaxSizeParser {
 		//1.75 DIA x 4.5
 		boolean flag=false;
 		try{
+			sizeValue=sizeValue.toUpperCase();
 			//String DimenArr[] = {sizeValue} ;
-			if(sizeValue.toUpperCase().contains("IMPRINT")){
+			if(sizeValue.contains("IMPRINT")){
 				try{
 				List<ImprintSize> listOfImprintSize = new ArrayList<>();
 				List<ImprintLocation> listOfImprintLoc=new ArrayList<ImprintLocation>();
 				ImprintSize imprSizeObj = new ImprintSize();
 				ImprintLocation imprintLocationObj = new ImprintLocation();
-				sizeValue=sizeValue.toUpperCase();
+				//sizeValue=sizeValue.toUpperCase();
 				sizeValue=sizeValue.replaceAll("”","\"");
 				sizeValue=sizeValue.replaceAll(";",",");
 				//sizeValue=sizeValue.replaceAll(":","");
@@ -125,9 +127,14 @@ public class TomaxSizeParser {
 				}
 				existingConfig.setImprintLocation(listOfImprintLoc);
 				existingConfig.setImprintSize(listOfImprintSize);
+				productExcelObj.setProductConfigurations(existingConfig);
 				}catch(Exception e){
 					_LOGGER.error("Error while processng imprint values");
 				}
+			}else if(sizeValue.contains("LENGTH") && sizeValue.contains("CASE")){
+				String strTempDesc=productExcelObj.getDescription();
+				strTempDesc=strTempDesc+sizeValue;
+				productExcelObj.setDescription(strTempDesc);
 			}
 			else{
 				Dimension dimensionObj = new Dimension();
@@ -167,24 +174,24 @@ public class TomaxSizeParser {
 				}	
 				valuesObj.setValue(valuelist);
 				valuesList.add(valuesObj);
-				
 			}
 				
-				///////////////
-			
+			///////////////
 			dimensionObj.setValues(valuesList);
 			sizeObj.setDimension(dimensionObj);
+			existingConfig.setSizes(sizeObj);
+			productExcelObj.setProductConfigurations(existingConfig);
 		//}
 		}
-			existingConfig.setSizes(sizeObj);
+			
 		}
 		catch(Exception e)
 		{
 			_LOGGER.error("Error while processing Size :"+e.getMessage());
 			existingConfig.setSizes(sizeObj);
-			return existingConfig;
+			return productExcelObj;
 		}
-		return existingConfig;
+		return productExcelObj;
 	}
 	
 	public static String removeSpecialChar(String tempValue,int number){
