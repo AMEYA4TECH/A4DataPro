@@ -42,6 +42,15 @@ public class BagMakerAttributeParser {
 		List<ImprintMethod> listOfImprintMethodsNew = new ArrayList<ImprintMethod>();
 		for (String value : listOfImprintMethods) {
 			value=value.trim();
+			value=value.toUpperCase();
+			if(value.contains("4 COLOR")){
+				value="Full Color";
+			}else if(value.contains("PAD")){
+				value="PAD PRINT";
+			}else if(value.contains("EMBRO")){
+				value="Embroidery";
+			}
+			
 			ImprintMethod imprintMethodObj =new ImprintMethod();
 			if(objLookUpService.isImprintMethod(value.toUpperCase())){
 				imprintMethodObj.setAlias(value);
