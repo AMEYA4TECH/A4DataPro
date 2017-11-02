@@ -137,11 +137,11 @@ public class BeaconProMapping implements IExcelParser{
 								 
 								 // Ineed to set pricegrid over here
 								   // Add repeatable sets here
-								 productExcelObj=bagMakersPriceGridParser.getPricingData(listOfPrices.toString(), listOfQuantity.toString(), listOfDiscount.toString(), basePricePriceInlcude, 
+								/* productExcelObj=bagMakersPriceGridParser.getPricingData(listOfPrices.toString(), listOfQuantity.toString(), listOfDiscount.toString(), basePricePriceInlcude, 
 											plateScreenCharge, plateScreenChargeCode,
 										    plateReOrderCharge, plateReOrderChargeCode, priceGrids, 
 										    productExcelObj, productConfigObj);
-								 	productExcelObj.setPriceType("L");
+								 	productExcelObj.setPriceType("L");*/
 								 	//productExcelObj.setPriceGrids(priceGrids);
 								 	productExcelObj.setProductConfigurations(productConfigObj);
 								 	/* _LOGGER.info("Product Data : "
@@ -191,7 +191,7 @@ public class BeaconProMapping implements IExcelParser{
 								    	 productExcelObj = new Product();
 								    	 existingFlag=false;
 								     }else{//need to confirm what existing data client wnts
-								    	    productExcelObj=bagMakerAttributeParser.getExistingProductData(existingApiProduct, existingApiProduct.getProductConfigurations());
+								    	  //  productExcelObj=bagMakerAttributeParser.getExistingProductData(existingApiProduct, existingApiProduct.getProductConfigurations());
 											productConfigObj=productExcelObj.getProductConfigurations();
 											existingFlag=true;
 										   // priceGrids = productExcelObj.getPriceGrids();
@@ -366,8 +366,8 @@ public class BeaconProMapping implements IExcelParser{
 						String sizeValue=cell.getStringCellValue();
 						if(!StringUtils.isEmpty(sizeValue)){
 							int flag=checkSizesWords(sizeValue);
-							if(flag==0){
-								/*1)15" (w) x 12-1/2" (h) x 4-1/2" (d)
+						/*	if(flag==0){
+								1)15" (w) x 12-1/2" (h) x 4-1/2" (d)
 								2)3-5/8" x 3-5/8" x 3-5/8"
 								3)XS, S, M/L, XL
 								4)S-4XL, LT-4XLT
@@ -375,7 +375,7 @@ public class BeaconProMapping implements IExcelParser{
 								6)94" (dia)
 								7)6-9 sq in.
 								  1-3 sq inches
-								8)Small, Medium,  4XL*/
+								8)Small, Medium,  4XL
 								sizeValue=sizeValue.toLowerCase().replace("small", "S");
 								sizeValue=sizeValue.toLowerCase().replace("medium", "M");
 								if(sizeValue.contains("(") && sizeValue.contains(")")){
@@ -383,7 +383,7 @@ public class BeaconProMapping implements IExcelParser{
 								}else if(sizeValue.contains("sq in") || sizeValue.contains("sq inches")){
 								}else if(){	
 								}
-							}	
+							}*/	
 						}		
 						break;	
 					case  23://Prod. Time
@@ -530,10 +530,10 @@ public class BeaconProMapping implements IExcelParser{
 	 // same goes here as well
 	 // Ineed to set pricegrid over here
      // Add repeatable sets here
-		productExcelObj=bagMakersPriceGridParser.getPricingData(listOfPrices.toString(), listOfQuantity.toString(), listOfDiscount.toString(),basePricePriceInlcude,  
+		/*productExcelObj=bagMakersPriceGridParser.getPricingData(listOfPrices.toString(), listOfQuantity.toString(), listOfDiscount.toString(),basePricePriceInlcude,  
 																plateScreenCharge, plateScreenChargeCode,
 															    plateReOrderCharge, plateReOrderChargeCode, priceGrids, 
-															    productExcelObj, productConfigObj);
+															    productExcelObj, productConfigObj);*/
 		
 	 	productExcelObj.setPriceType("L");
 	 	//productExcelObj.setPriceGrids(priceGrids);
