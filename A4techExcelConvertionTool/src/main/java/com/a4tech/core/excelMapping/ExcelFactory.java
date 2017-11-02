@@ -20,6 +20,7 @@ import com.a4tech.sage.product.mapping.SageProductsExcelMapping;
 import com.a4tech.supplier.mapper.AlfaMapping;
 import com.a4tech.supplier.mapper.BallProMapping;
 import com.a4tech.supplier.mapper.BayStateMapping;
+import com.a4tech.supplier.mapper.BeaconProMapping;
 import com.a4tech.supplier.mapper.BellaCanvas;
 import com.a4tech.supplier.mapper.BlueGenerationMapping;
 import com.a4tech.supplier.mapper.BrandwearExcelMapping;
@@ -93,6 +94,7 @@ public class ExcelFactory {
     private MaxplusMapping                  maxplusmapping;
 	private GempirepromotionsMapping        gempiresMapping;
 	private EdwardsGarmentMapping edwardsGarmentMapping;
+	private BeaconProMapping beaconProMapping;
 	
 
 
@@ -193,6 +195,8 @@ public class ExcelFactory {
 			  return maxplusmapping;
 		  }else if(name.equalsIgnoreCase("edwardsGarment") || name.equals("51752")){
 			   return edwardsGarmentMapping;
+		  }else if(name.equalsIgnoreCase("beaconProMapping") || name.equals("39250")){
+			   return beaconProMapping;
 		  }
 		return null;
 	}

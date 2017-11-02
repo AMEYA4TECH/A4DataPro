@@ -160,14 +160,14 @@ public class BellaCanvas implements IExcelParser {
 											+ numOfProductsSuccess.size());
 									_LOGGER.info("Failure list size>>>>>>>"
 											+ numOfProductsFailure.size());
-
+									
 									productConfigObj = new ProductConfigurations();
-									 colorMapping = new StringBuilder();
-									 description = new StringBuilder();
-									 colorlist = new ArrayList<Color>();	
-									 materiallist = new ArrayList<Material>();	
-									 sizeObj = new Size();
-
+									colorMapping = new StringBuilder();
+									description = new StringBuilder();
+									colorlist = new ArrayList<Color>();	
+									materiallist = new ArrayList<Material>();	
+									sizeObj = new Size();
+									
 								}
 								if (!productXids.contains(xid)) {
 									productXids.add(xid.trim());

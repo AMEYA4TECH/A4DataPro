@@ -478,4 +478,18 @@ public class CommonUtility {
 	        return false;		
 		}
 	 }*/
-}
+	 /*@Author :Amey
+	  *@Description : this method used to reaplce a specific string or chars for a range from string
+	  * @Param : String
+	  * @Return :String
+	  */
+	 public static String replaceValues(String charOne,String charTwo,String src){
+			//String finalVal = src.substring(src.indexOf(specialCharOpen) + 1, src.indexOf(specialCharClose));
+		 int firstPos=src.indexOf(charOne);
+		 int lastPos=src.indexOf(charTwo);
+		 String tempStr=src.substring(firstPos, lastPos);
+		 src=src.replace(tempStr, "");
+			return src;
+		}
+	}
+

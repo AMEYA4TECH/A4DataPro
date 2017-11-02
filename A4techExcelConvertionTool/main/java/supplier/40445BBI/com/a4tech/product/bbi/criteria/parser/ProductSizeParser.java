@@ -24,6 +24,7 @@ public class ProductSizeParser {
 		String sizeGroup="dimension";
 		String unitValue="in";
 		String attriValueLen="Length";
+		sizeValue=sizeValue.replace("\"", "");
 		//1.75 DIA x 4.5
 		try{
 			String DimenArr[] = {sizeValue} ;

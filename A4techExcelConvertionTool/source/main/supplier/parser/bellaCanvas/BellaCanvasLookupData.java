@@ -169,19 +169,7 @@ public static Map<String, String> SIZE_MAP =new TreeMap<String, String>(String.C
 		COLOR_MAP.put("Black Midnight","Medium Black");
 
 		
-		SIZE_MAP.put("3-6/6-12/12-18/18-24","3-6,6-12,12-18,18-24");
-		SIZE_MAP.put("S-XL","S,M,L,XL");
-		SIZE_MAP.put("S-L","S,M,L");
-		SIZE_MAP.put("S-2XL","S,M,L,XL,2XL");
-		SIZE_MAP.put("S/M, L/XL","S/M,L/XL");
-		SIZE_MAP.put("XS-4XL","XS,S,M,L,XL,2XL,3XL,4XL");
-		SIZE_MAP.put("XS-3XL","XS,S,M,L,XL,2XL,3XL");
-		SIZE_MAP.put("YS-YL","S,M,L");
-		SIZE_MAP.put("XS-2XL","XS,S,M,L,XL,2XL");
-		SIZE_MAP.put("S-3XL","S,M,L,XL,2XL,3XL");
-		SIZE_MAP.put("XS/S, M/L","XS/S,M/L");
-		SIZE_MAP.put("S-S, M, L/XL","S,M,L/XL");
-		SIZE_MAP.put("S, M, L/XL","S,M,L/XL");
+		
 		
 	}
 			
