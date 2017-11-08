@@ -26,7 +26,9 @@ import com.a4tech.excel.service.IExcelParser;
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.AdditionalColor;
 import com.a4tech.product.model.AdditionalLocation;
+import com.a4tech.product.model.Apparel;
 import com.a4tech.product.model.Color;
+import com.a4tech.product.model.Dimension;
 import com.a4tech.product.model.Dimensions;
 import com.a4tech.product.model.ImprintLocation;
 import com.a4tech.product.model.ImprintMethod;
@@ -41,7 +43,10 @@ import com.a4tech.product.model.ProductConfigurations;
 import com.a4tech.product.model.ProductionTime;
 import com.a4tech.product.model.ShippingEstimate;
 import com.a4tech.product.model.Size;
+import com.a4tech.product.model.Value;
+import com.a4tech.product.model.Values;
 import com.a4tech.product.service.postImpl.PostServiceImpl;
+import com.a4tech.sage.product.util.LookupData;
 import com.a4tech.util.ApplicationConstants;
 import com.a4tech.util.CommonUtility;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -178,7 +183,7 @@ public class BeaconProMapping implements IExcelParser{
 							  	    listOfDiscount = new StringBuilder();
 							  	    basePricePriceInlcude="";
 							  	    tempQuant1="";
-							  	   
+							  	    
 
 							 }
 							    if(!listOfProductXids.contains(xid)){
@@ -365,9 +370,10 @@ public class BeaconProMapping implements IExcelParser{
 					case  22://Product Size
 						String sizeValue=cell.getStringCellValue();
 						if(!StringUtils.isEmpty(sizeValue)){
+							Size size=new Size();
 							int flag=checkSizesWords(sizeValue);
-						/*	if(flag==0){
-								1)15" (w) x 12-1/2" (h) x 4-1/2" (d)
+							if(flag==0){
+								/*1)15" (w) x 12-1/2" (h) x 4-1/2" (d)
 								2)3-5/8" x 3-5/8" x 3-5/8"
 								3)XS, S, M/L, XL
 								4)S-4XL, LT-4XLT
@@ -375,15 +381,126 @@ public class BeaconProMapping implements IExcelParser{
 								6)94" (dia)
 								7)6-9 sq in.
 								  1-3 sq inches
-								8)Small, Medium,  4XL
+								8)Small, Medium,  4XL*/
 								sizeValue=sizeValue.toLowerCase().replace("small", "S");
 								sizeValue=sizeValue.toLowerCase().replace("medium", "M");
 								if(sizeValue.contains("(") && sizeValue.contains(")")){
-								}else if(sizeValue.contains("x")){
+									sizeValue=sizeValue.replace("\"", "");
+									String tempSTR[]=sizeValue.split("x");
+
+									ArrayList<Value> valueList = new ArrayList<Value>();
+									List<Values> valueslist = new ArrayList<Values>();
+									 Dimension finalDimensionObj=new Dimension();
+									Values valuesObj = new Values();
+									Value valueObj = null;
+									for (String value : tempSTR) {
+										String attrVal=value.substring(value.indexOf("(")+1);
+										value=value.replace("(", "");
+										value=value.replace(")", "");
+										value=value.replace("-", " ");
+										attrVal=sizeDimMap.get(attrVal);
+										valueObj = new Value();
+										valueObj.setValue(value);
+										valueObj.setUnit("in");
+										valueObj.setAttribute(attrVal);
+										valueList.add(valueObj);
+										
+									}
+									
+									valuesObj.setValue(valueList);
+									valueslist.add(valuesObj);
+									finalDimensionObj.setValues(valueslist);	
+								
+									size.setDimension(finalDimensionObj);
+									productConfigObj.setSizes(size);
+								}else if(sizeValue.contains("x") && !sizeValue.contains("(") && !sizeValue.contains(")")){
+									sizeValue=sizeValue.replace("\"", "");
+									String tempSTR[]=sizeValue.split("x");
+
+									ArrayList<Value> valueList = new ArrayList<Value>();
+									List<Values> valueslist = new ArrayList<Values>();
+									 Dimension finalDimensionObj=new Dimension();
+									Values valuesObj = new Values();
+									Value valueObj = null;
+									int count=1;
+									for (String value : tempSTR) {
+										value=value.replace("-", " ");
+										valueObj = new Value();
+										valueObj.setValue(value);
+										valueObj.setUnit("in");
+										if(count==1){
+											valueObj.setAttribute("Length");
+										}else if(count==2){
+											valueObj.setAttribute("Width");
+										}else if(count==3){
+											valueObj.setAttribute("Height");
+										}
+										valueList.add(valueObj);
+										count++;
+									}
+									
+									valuesObj.setValue(valueList);
+									valueslist.add(valuesObj);
+									finalDimensionObj.setValues(valueslist);	
+								
+									size.setDimension(finalDimensionObj);
+									productConfigObj.setSizes(size);
+									
+									
+									
+									
+									
 								}else if(sizeValue.contains("sq in") || sizeValue.contains("sq inches")){
-								}else if(){	
+									sizeValue=sizeValue.replace("-", " ");
+									sizeValue=sizeValue.replace("sq in", " ");
+									sizeValue=sizeValue.replace(".", " ");
+									sizeValue=sizeValue.replace("sq inches", " ");
+									sizeValue=sizeValue.replace("\"", "");
+									String tempSTR[]=sizeValue.split("x");
+
+									ArrayList<Value> valueList = new ArrayList<Value>();
+									List<Values> valueslist = new ArrayList<Values>();
+									 Dimension finalDimensionObj=new Dimension();
+									Values valuesObj = new Values();
+									Value valueObj = null;
+									int count=1;
+									for (String value : tempSTR) {
+										value=value.replace("-", " ");
+										valueObj = new Value();
+										valueObj.setValue(value);
+										valueObj.setUnit("in");
+										if(count==1){
+											valueObj.setAttribute("Length");
+										}else if(count==2){
+											valueObj.setAttribute("Width");
+										}else if(count==3){
+											valueObj.setAttribute("Height");
+										}
+										valueList.add(valueObj);
+										count++;
+									}
+									
+									valuesObj.setValue(valueList);
+									valueslist.add(valuesObj);
+									finalDimensionObj.setValues(valueslist);	
+								
+									size.setDimension(finalDimensionObj);
+									productConfigObj.setSizes(size);
+								}else if(checkSizesWordsForStdNum(sizeValue)){
+									String strTemp=sizeValue;
+									if(sizeValue.contains("-")){
+										sizeValue=sizeAttri.get(sizeValue);
+									}
+									
+									//Size size = new Size();
+									Apparel apparel = new Apparel();
+									List<Value> listOfSizeValues = getSizeValues(sizeValue);
+									apparel.setType("Standard & Numbered");
+									apparel.setValues(listOfSizeValues);
+									size.setApparel(apparel);
+									productConfigObj.setSizes(size);
 								}
-							}*/	
+							}
 						}		
 						break;	
 					case  23://Prod. Time
@@ -601,6 +718,19 @@ public class BeaconProMapping implements IExcelParser{
 		});
 		return i;
 	}
+	
+	public static boolean  checkSizesWordsForStdNum(String sizeValue){
+		int i=org.apache.commons.lang.StringUtils.indexOfAny(sizeValue, new String[]{
+				"XS","XLT","4XLT","XL","X","S","L","M","T","LT","XS"
+		});
+		if(i==0){
+			return true;
+		}else{
+			return false;
+		}
+		
+		
+	}
 	public String getProductXid(Row row){
 		Cell xidCell =  row.getCell(0);
 		String productXid = CommonUtility.getCellValueStrinOrInt(xidCell);
@@ -679,6 +809,40 @@ public class BeaconProMapping implements IExcelParser{
 		this.beaconProPriceGridParser = beaconProPriceGridParser;
 	}
 	
-	
-
+	public static List<Value> getSizeValues(String sizes){
+		List<Value> listOfSizeValues = new ArrayList<Value>();
+		Value valueObj = null;
+		String[] values = sizes.split(ApplicationConstants.CONST_DELIMITER_COMMA);
+		for (String string : values) {
+			valueObj = new Value();
+			valueObj.setValue(string);
+			listOfSizeValues.add(valueObj);
+		}
+		return listOfSizeValues;
+	}
+	static HashMap<String, String> sizeDimMap=new HashMap<String, String>();
+	static HashMap<String, String> sizeAttri=new HashMap<String, String>();
+	static{
+		sizeDimMap.put("w", "Width");
+		sizeDimMap.put("h", "Height");
+		sizeDimMap.put("d", "Depth");
+		sizeDimMap.put("l", "Length");
+		sizeDimMap.put("dia", "Dia");
+		sizeDimMap.put("diameter", "Dia");
+		
+		sizeAttri.put("XS-3XL","XS,S,M,L,XL,2XL,3XL,XL,2XL,3XL");
+		sizeAttri.put("1X-3X","XS,S,M,L,XL,2XL,3XL,XL,2XL,3XL");
+		sizeAttri.put("XS-4X","XS,X,M,L,XL,2XL,3XL,4XL");
+		sizeAttri.put("XS-3XL","XS,S,M,L,XL,2XL,3XL");
+		sizeAttri.put("3XL-4XL","3XL,4XL");
+		sizeAttri.put("S-4XL","S,M,L,XL,2XL,3XL,4XL");
+		sizeAttri.put("LT-4XLT","LT,XLT,2XLT,3XLT,4XLT");
+		sizeAttri.put("S-3XL","S,M,L,XL,2XL,3XL");
+		sizeAttri.put("L-XL","L,XL");
+		sizeAttri.put("S-M","S,M");
+		sizeAttri.put("M-2XL","M,L,XL,2XL");
+		sizeAttri.put("2XL-4XL","2XL,3XL,4Xl");
+		sizeAttri.put("M–2X","M,L,XL,2XS");
+		
+		}
 }
