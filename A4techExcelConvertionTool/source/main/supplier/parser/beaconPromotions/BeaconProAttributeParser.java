@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.a4tech.lookup.service.LookupServiceData;
+import com.a4tech.lookup.service.restService.LookupRestService;
 import com.a4tech.product.model.BlendMaterial;
 import com.a4tech.product.model.Catalog;
 import com.a4tech.product.model.Dimension;
@@ -20,6 +21,8 @@ import com.a4tech.product.model.ImprintSize;
 import com.a4tech.product.model.Material;
 import com.a4tech.product.model.NumberOfItems;
 import com.a4tech.product.model.Packaging;
+import com.a4tech.product.model.Product;
+import com.a4tech.product.model.ProductConfigurations;
 import com.a4tech.product.model.ShippingEstimate;
 import com.a4tech.product.model.Size;
 import com.a4tech.product.model.Value;
@@ -31,18 +34,10 @@ import com.a4tech.util.CommonUtility;
 public class BeaconProAttributeParser {
 	private static final Logger _LOGGER = Logger.getLogger(BeaconProAttributeParser.class);
 	private LookupServiceData lookupServiceDataObj;
-	
-	public LookupServiceData getLookupServiceDataObj() {
-		return lookupServiceDataObj;
-	}
-
-
-	public void setLookupServiceDataObj(LookupServiceData lookupServiceDataObj) {
-		this.lookupServiceDataObj = lookupServiceDataObj;
-	}
-
-
-	public List<Material> getMaterialValue(String material) {
+	private LookupRestService  lookupRestServiceObj;
+	public static List<com.a4tech.lookup.model.Catalog> catalogs            = null;
+	public static ArrayList<String> tempCatList=new ArrayList<String>();
+		public List<Material> getMaterialValue(String material) {
 		  material=material.replace(";","/");
 		  material=material.replace(",","/");
 			
@@ -388,6 +383,62 @@ public List<ImprintSize> getImprintSize(String imprintMethValue,List<ImprintSize
 		}
 		return sizeObj;
 	}	
+	
+public Product getExistingProductData(Product existingProduct , ProductConfigurations existingProductConfig){
+		
+		ProductConfigurations newProductConfigurations=new ProductConfigurations();
+		Product newProduct=new Product();
+		List<String> listCategories=new ArrayList<String>();
+		List<Catalog> listCatalog=new ArrayList<Catalog>();
+		try{
+			if(existingProductConfig==null){
+				return new Product();
+			}
+			
+		/*	//Image
+			List<Image> imagesList=existingProduct.getImages();
+			if(!CollectionUtils.isEmpty(imagesList)){
+				List<Image> newImagesList=new ArrayList<Image>();
+				for (Image image : imagesList) {
+					image.setConfigurations( new ArrayList<Configurations>());
+					newImagesList.add(image);
+				}
+				newProduct.setImages(imagesList);
+			}*/
+			
+			//Categories
+			listCategories=existingProduct.getCategories();
+			if(!CollectionUtils.isEmpty(listCategories)){
+				newProduct.setCategories(listCategories);
+			}
+		 
+			List<String> productKeywords=existingProduct.getProductKeywords();
+			if(!CollectionUtils.isEmpty(productKeywords)){
+				newProduct.setProductKeywords(productKeywords);
+			}
+			listCatalog=existingProduct.getCatalogs();
+			if(!CollectionUtils.isEmpty(listCatalog)){
+				newProduct.setCatalogs(listCatalog);
+			}
+		newProduct.setProductConfigurations(newProductConfigurations);
+		}catch(Exception e){
+			_LOGGER.error("Error while processing Existing Product Data " +e.getMessage());
+			newProduct.setProductConfigurations(newProductConfigurations);
+			return newProduct;
+		}
+		 _LOGGER.info("Completed processing Existing Data");
+		return newProduct;
+	}
+	
+	public ArrayList<String> getCatalog(String authToken){
+		if(catalogs == null){
+		 catalogs = lookupRestServiceObj.getCatalogs(authToken);
+		 for (com.a4tech.lookup.model.Catalog catalog : catalogs) {
+			 tempCatList.add(catalog.getName().trim());
+		}
+	 	}
+	 	return tempCatList;
+	}
 	static HashMap<String, String> sizeDimMap=new HashMap<String, String>();
 	static HashMap<String, String> sizeAttri=new HashMap<String, String>();
 	static{
@@ -413,5 +464,24 @@ public List<ImprintSize> getImprintSize(String imprintMethValue,List<ImprintSize
 		sizeAttri.put("M–2X","M,L,XL,2XS");
 		
 		}
+	public LookupServiceData getLookupServiceDataObj() {
+		return lookupServiceDataObj;
+	}
+
+
+	public void setLookupServiceDataObj(LookupServiceData lookupServiceDataObj) {
+		this.lookupServiceDataObj = lookupServiceDataObj;
+	}
+
+
+	public LookupRestService getLookupRestServiceObj() {
+		return lookupRestServiceObj;
+	}
+
+
+	public void setLookupRestServiceObj(LookupRestService lookupRestServiceObj) {
+		this.lookupRestServiceObj = lookupRestServiceObj;
+	}
+	
 	}	
 		

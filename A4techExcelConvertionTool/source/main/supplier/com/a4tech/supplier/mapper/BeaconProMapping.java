@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -23,10 +25,12 @@ import parser.beaconPromotions.BeaconProPriceGridParser;
 
 import com.a4tech.core.errors.ErrorMessageList;
 import com.a4tech.excel.service.IExcelParser;
+import com.a4tech.lookup.service.LookupServiceData;
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.AdditionalColor;
 import com.a4tech.product.model.AdditionalLocation;
 import com.a4tech.product.model.Apparel;
+import com.a4tech.product.model.Catalog;
 import com.a4tech.product.model.Color;
 import com.a4tech.product.model.Dimension;
 import com.a4tech.product.model.Dimensions;
@@ -58,7 +62,7 @@ public class BeaconProMapping implements IExcelParser{
 	ProductDao productDaoObj;
 	BeaconProAttributeParser  beaconProAttributeParser;
 	BeaconProPriceGridParser  beaconProPriceGridParser;
-	
+	private LookupServiceData lookupServiceDataObj;
 	@Autowired
 	ObjectMapper mapperObj;
 	
@@ -96,7 +100,8 @@ public class BeaconProMapping implements IExcelParser{
 		  String impSize="";
 		  String impLocVal="";
 		  try{
-			 
+			  String basePriceInclude="";
+			  String productName="";
 		_LOGGER.info("Total sheets in excel::"+workbook.getNumberOfSheets());
 	    Sheet sheet = workbook.getSheetAt(0);
 		Iterator<Row> iterator = sheet.iterator();
@@ -148,7 +153,20 @@ public class BeaconProMapping implements IExcelParser{
 										    productExcelObj, productConfigObj);
 								 	productExcelObj.setPriceType("L");*/
 								 	//productExcelObj.setPriceGrids(priceGrids);
-								 	productExcelObj.setProductConfigurations(productConfigObj);
+								 if( !StringUtils.isEmpty(listOfPrices.toString())){
+									 priceGrids=new ArrayList<PriceGrid>();
+									 priceGrids = beaconProPriceGridParser.getPriceGrids(listOfPrices.toString(),listOfQuantity.toString(), 
+												"R",ApplicationConstants.CONST_STRING_CURRENCY_USD,
+												basePriceInclude,ApplicationConstants.CONST_BOOLEAN_TRUE, ApplicationConstants.CONST_STRING_FALSE, 
+												productName,null,1,priceGrids);
+									 }
+									 
+									 if(CollectionUtils.isEmpty(priceGrids)){
+											priceGrids = beaconProPriceGridParser.getPriceGridsQur();	
+										}
+									 	productExcelObj.setPriceType("L");
+									 	productExcelObj.setPriceGrids(priceGrids);
+									 	productExcelObj.setProductConfigurations(productConfigObj);
 								 	/* _LOGGER.info("Product Data : "
 												+ mapperObj.writeValueAsString(productExcelObj));
 								 	*/
@@ -168,23 +186,15 @@ public class BeaconProMapping implements IExcelParser{
 									//reset all list and objects over here
 									priceGrids = new ArrayList<PriceGrid>();
 									productConfigObj = new ProductConfigurations();
-									 ShipingObj=new ShippingEstimate();
-									 dimensionObj=new Dimensions();
-									 setUpchrgesVal="";
-									 plateScreenCharge="";
-							  		 plateScreenChargeCode="";
-							  		 plateReOrderCharge="";
-							  		 plateReOrderChargeCode="";
-							  		 extraColorRucnChrg="";
-							  	     extraLocRunChrg="";
-							  	     extraLocColorScreenChrg="";
+									ShipingObj=new ShippingEstimate();
+									dimensionObj=new Dimensions();
 							  	    listOfQuantity = new StringBuilder();
 							  	    listOfPrices = new StringBuilder();
 							  	    listOfDiscount = new StringBuilder();
 							  	    basePricePriceInlcude="";
 							  	    tempQuant1="";
-							  	    
-
+							  	    productName="";
+							  	    basePriceInclude="";
 							 }
 							    if(!listOfProductXids.contains(xid)){
 							    	listOfProductXids.add(xid);
@@ -196,8 +206,8 @@ public class BeaconProMapping implements IExcelParser{
 								    	 productExcelObj = new Product();
 								    	 existingFlag=false;
 								     }else{//need to confirm what existing data client wnts
-								    	  //  productExcelObj=bagMakerAttributeParser.getExistingProductData(existingApiProduct, existingApiProduct.getProductConfigurations());
-											productConfigObj=productExcelObj.getProductConfigurations();
+								    	    productExcelObj=beaconProAttributeParser.getExistingProductData(existingApiProduct, existingApiProduct.getProductConfigurations());
+											//productConfigObj=productExcelObj.getProductConfigurations();
 											existingFlag=true;
 										   // priceGrids = productExcelObj.getPriceGrids();
 								     }
@@ -218,9 +228,9 @@ public class BeaconProMapping implements IExcelParser{
 						}
 						break;
 					case  3://Product Name
-						String productName = CommonUtility.getCellValueStrinOrInt(cell);
+						 productName = CommonUtility.getCellValueStrinOrInt(cell);
 						//productName = CommonUtility.removeSpecialSymbols(productName,specialCharacters);
-						if(!StringUtils.isEmpty(productName)){
+						if(!StringUtils.isEmpty(productName.trim())){
 						int len=productName.length();
 						 if(len>60){
 							String strTemp=productName.substring(0, 60);
@@ -234,7 +244,7 @@ public class BeaconProMapping implements IExcelParser{
 					case  4://Plain Description
 						String description =CommonUtility.getCellValueStrinOrInt(cell);
 						//description = CommonUtility.removeSpecialSymbols(description,specialCharacters);
-						if(!StringUtils.isEmpty(description)){
+						if(!StringUtils.isEmpty(description.trim())){
 						int length=description.length();
 						 if(length>800){
 							String strTemp=description.substring(0, 800);
@@ -247,7 +257,7 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  5://Plain Keywords
 						String keywords = CommonUtility.getCellValueStrinOrInt(cell);
-						if(!StringUtils.isEmpty(keywords)){
+						if(!StringUtils.isEmpty(keywords.trim())){
 						List<String> productKeywords = CommonUtility.getStringAsList(keywords,
                                 ApplicationConstants.CONST_DELIMITER_COMMA);
 						productExcelObj.setProductKeywords(productKeywords);
@@ -262,7 +272,7 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  6://Notes Section
 						String additionalProductInfo = CommonUtility.getCellValueStrinOrInt(cell);
-						if(!StringUtils.isEmpty(additionalProductInfo)){
+						if(!StringUtils.isEmpty(additionalProductInfo.trim())){
 						additionalProductInfo=removeSpecialChar(additionalProductInfo);
 						productExcelObj.setAdditionalProductInfo(additionalProductInfo);
 						}else{
@@ -272,7 +282,7 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  7://Technologo URL
 						String productDataSheet=CommonUtility.getCellValueStrinOrInt(cell);
-						if(!StringUtils.isEmpty(productDataSheet)){
+						if(!StringUtils.isEmpty(productDataSheet.trim())){
 						productExcelObj.setProductDataSheet(productDataSheet);
 						}
 						break;
@@ -288,35 +298,35 @@ public class BeaconProMapping implements IExcelParser{
 						}
 						break;
 					case  10://Standard Includes
-
+						basePriceInclude=CommonUtility.getCellValueStrinOrInt(cell);
 						break;
 					case  11://Colors Availble
 						//pending
 						break;
 					case  12://Imprint Method 1
 						imprintMethodValue=cell.getStringCellValue();
-						if(!StringUtils.isEmpty(imprintMethodValue)){
+						if(!StringUtils.isEmpty(imprintMethodValue.trim())){
 							 imprintMethods = beaconProAttributeParser.getImprintMethods(imprintMethodValue,imprintMethods);
 								productConfigObj.setImprintMethods(imprintMethods); 
 						  }
 						break;
 					case  13://Imprint Method 2
 						imprintMethodValue=cell.getStringCellValue();
-						if(!StringUtils.isEmpty(imprintMethodValue)){
+						if(!StringUtils.isEmpty(imprintMethodValue.trim())){
 							 imprintMethods = beaconProAttributeParser.getImprintMethods(imprintMethodValue,imprintMethods);
 								productConfigObj.setImprintMethods(imprintMethods); 
 						  }
 						break;
 					case  14://Imprint Method 3
 						imprintMethodValue=cell.getStringCellValue();
-						if(!StringUtils.isEmpty(imprintMethodValue)){
+						if(!StringUtils.isEmpty(imprintMethodValue.trim())){
 							 imprintMethods = beaconProAttributeParser.getImprintMethods(imprintMethodValue,imprintMethods);
 								productConfigObj.setImprintMethods(imprintMethods); 
 						  }
 						break;
 					case  15://Imprint size 1
 						 impSize=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(impSize)){
+						 if(!StringUtils.isEmpty(impSize.trim())){
                            
 							 listOfImpSize=beaconProAttributeParser.getImprintSize(impSize,listOfImpSize);
 							 productConfigObj.setImprintSize(listOfImpSize);
@@ -324,7 +334,7 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  16://Imprint Size 2
 						 impSize=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(impSize)){
+						 if(!StringUtils.isEmpty(impSize.trim())){
                           
 							 listOfImpSize=beaconProAttributeParser.getImprintSize(impSize,listOfImpSize);
 							 productConfigObj.setImprintSize(listOfImpSize);
@@ -332,7 +342,7 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  17://Imprint Size 3
 						 impSize=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(impSize)){
+						 if(!StringUtils.isEmpty(impSize.trim())){
                           
 							 listOfImpSize=beaconProAttributeParser.getImprintSize(impSize,listOfImpSize);
 							 productConfigObj.setImprintSize(listOfImpSize);
@@ -340,28 +350,28 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  18://Imprint location 1
 						 impLocVal=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(impLocVal)){
+						 if(!StringUtils.isEmpty(impLocVal.trim())){
 							 listOfImprintLocValues=beaconProAttributeParser.getImprintLocationVal(impLocVal, listOfImprintLocValues);
 							 productConfigObj.setImprintLocation(listOfImprintLocValues);
 						 }
 						break;
 					case  19://Imprint location 2
 						impLocVal=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(impLocVal)){
+						 if(!StringUtils.isEmpty(impLocVal.trim())){
 							 listOfImprintLocValues=beaconProAttributeParser.getImprintLocationVal(impLocVal, listOfImprintLocValues);
 							 productConfigObj.setImprintLocation(listOfImprintLocValues);
 						 }
 						break;
 					case  20://Imprint location 3
 						impLocVal=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(impLocVal)){
+						 if(!StringUtils.isEmpty(impLocVal.trim())){
 							 listOfImprintLocValues=beaconProAttributeParser.getImprintLocationVal(impLocVal, listOfImprintLocValues);
 							 productConfigObj.setImprintLocation(listOfImprintLocValues);
 						 }
 						break;
 					case  21://Standard Packaging
 						String packaging=cell.getStringCellValue();
-						if(!StringUtils.isEmpty(packaging)){
+						if(!StringUtils.isEmpty(packaging.trim())){
 							List<Packaging> packagingList=beaconProAttributeParser.getPackagingCriteria(packaging);
 							productConfigObj.setPackaging(packagingList);
 							
@@ -369,10 +379,10 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  22://Product Size
 						String sizeValue=cell.getStringCellValue();
-						if(!StringUtils.isEmpty(sizeValue)){
+						if(!StringUtils.isEmpty(sizeValue.trim())){
 							Size size=new Size();
 							int flag=checkSizesWords(sizeValue);
-							if(flag==0){
+							if(flag!=0){
 								/*1)15" (w) x 12-1/2" (h) x 4-1/2" (d)
 								2)3-5/8" x 3-5/8" x 3-5/8"
 								3)XS, S, M/L, XL
@@ -395,12 +405,14 @@ public class BeaconProMapping implements IExcelParser{
 									Value valueObj = null;
 									for (String value : tempSTR) {
 										String attrVal=value.substring(value.indexOf("(")+1);
-										value=value.replace("(", "");
+										value=value.replace("(", "@@");
 										value=value.replace(")", "");
 										value=value.replace("-", " ");
-										attrVal=sizeDimMap.get(attrVal);
+										String temp[]=value.split("@@");
+										attrVal=sizeDimMap.get(temp[1].toLowerCase().trim());
+										value=value.replace("@@"+temp[1], "");
 										valueObj = new Value();
-										valueObj.setValue(value);
+										valueObj.setValue(value.trim());
 										valueObj.setUnit("in");
 										valueObj.setAttribute(attrVal);
 										valueList.add(valueObj);
@@ -509,7 +521,7 @@ public class BeaconProMapping implements IExcelParser{
 						ProductionTime productionTime = new ProductionTime();
 						List<ProductionTime> listOfProductionTime = new ArrayList<ProductionTime>();
 						prodTimeLo=CommonUtility.getCellValueStrinOrInt(cell);
-						if(!StringUtils.isEmpty(prodTimeLo)){
+						if(!StringUtils.isEmpty(prodTimeLo.trim())){
 					    prodTimeLo=prodTimeLo.replaceAll(ApplicationConstants.CONST_STRING_DAYS,ApplicationConstants.CONST_STRING_EMPTY);
 						productionTime.setBusinessDays(prodTimeLo);
 						productionTime.setDetails(ApplicationConstants.CONST_STRING_DAYS);
@@ -519,35 +531,35 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case  24://Shipping Weight/box
 						String shippingWt=CommonUtility.getCellValueDouble(cell);
-						 if(!StringUtils.isEmpty(shippingWt)){
+						 if(!StringUtils.isEmpty(shippingWt.trim())){
 							 shippingEstObj=beaconProAttributeParser.getShippingEstimates(shippingWt,shippingEstObj,"WT",0,"",new Dimensions());
 							 productConfigObj.setShippingEstimates(shippingEstObj);
 						 }
 						break;
 					case  25://Shipping Qty/Box
 						String shippingItem=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(shippingItem)){
+						 if(!StringUtils.isEmpty(shippingItem.trim())){
 							 shippingEstObj=beaconProAttributeParser.getShippingEstimates(shippingItem,shippingEstObj,"NOI",0,"",new Dimensions());
 							 productConfigObj.setShippingEstimates(shippingEstObj);
 						 }
 						break;
 					case  26://Shipping Dim. 1
 						String dimLen=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(dimLen)){
+						 if(!StringUtils.isEmpty(dimLen.trim())){
 							 shippingEstObj=beaconProAttributeParser.getShippingEstimates(dimLen,shippingEstObj,"SDIM",0,dimLen,new Dimensions());
 							 productConfigObj.setShippingEstimates(shippingEstObj);
 						 }
 						break;
 					case 27://Shipping Dim 2
 						String dimWid=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(dimWid)){
+						 if(!StringUtils.isEmpty(dimWid.trim())){
 							 shippingEstObj=beaconProAttributeParser.getShippingEstimates(dimWid,shippingEstObj,"SDIM",1,dimWid,shippingEstObj.getDimensions());
 							 productConfigObj.setShippingEstimates(shippingEstObj);
 						 }
 						break;
 					case 28://Shipping Dim 3
 						String dimH=CommonUtility.getCellValueStrinOrInt(cell);
-						 if(!StringUtils.isEmpty(dimH)){
+						 if(!StringUtils.isEmpty(dimH.trim())){
 							 shippingEstObj=beaconProAttributeParser.getShippingEstimates(dimH,shippingEstObj,"SDIM",2,dimH,shippingEstObj.getDimensions());
 							 productConfigObj.setShippingEstimates(shippingEstObj);
 						 }
@@ -563,68 +575,127 @@ public class BeaconProMapping implements IExcelParser{
 						break;
 					case 32://Current Catalog Page
 						
+						//Canyon|6
+						//Beacon|174, 176, 184
+						//Canyon|Disco
+						try{
+						String catValue=CommonUtility.getCellValueStrinOrInt(cell);
+						boolean flag=false;
+						if(catValue.contains("|")){
+						String arrTemp[]=catValue.split("\\|");
+						Pattern pattern = Pattern.compile(".*[^0-9].*");
+						flag=pattern.matcher(arrTemp[1]).matches();
+						
+						if(!flag){
+							String catValues=arrTemp[0];
+							String catpages=arrTemp[1];
+							List<Catalog> catalogs=new ArrayList<Catalog>();
+							 List<String> catalogsList=new ArrayList<>();
+							catalogsList = beaconProAttributeParser.getCatalog(accessToken);
+							ArrayList<String> tempList=new ArrayList<String>();
+							Catalog catlogObj=new Catalog();
+							List<String> catalogValues = catalogsList.stream()
+	                                .filter(ctName -> catValues.contains(ctName))
+	                                .collect(Collectors.toList());
+							if(!CollectionUtils.isEmpty(catalogValues)){
+								for (String catNam : catalogValues) {
+									catlogObj.setCatalogName(catNam);
+								}
+							}
+							catlogObj.setCatalogPage(catpages);
+							catalogs.add(catlogObj);
+							productExcelObj.setCatalogs(catalogs);
+							/*if(CatYear.contains("2017")){
+							catlogObj.setCatalogName("2017 Goldstar Canada");
+							catlogObj.setCatalogPage(PageNO);
+							catalogList.add(catlogObj);
+							productExcelObj.setCatalogs(catalogList);
+							}*/
+							
+							
+						}else{
+							
+							String value=null;
+							 List<String> catalogsList=new ArrayList<>();
+							catalogsList = beaconProAttributeParser.getCatalog(accessToken);
+							ArrayList<String> tempList=new ArrayList<String>();
+							List<Catalog> catalogs=new ArrayList<Catalog>();
+							Catalog catlogObj=new Catalog();
+							List<String> catalogValues = catalogsList.stream()
+	                                .filter(mtrlName -> value.contains(mtrlName))
+	                                .collect(Collectors.toList());
+							if(!CollectionUtils.isEmpty(catalogValues)){
+								for (String catNam : catalogValues) {
+									catlogObj.setCatalogName(catNam);
+									catlogObj.setCatalogPage("");
+									catalogs.add(catlogObj);
+									
+								}
+								productExcelObj.setCatalogs(catalogs);
+							}
+							
+							
+						}
+						
+						}else{
+							List<Catalog> catalogs=new ArrayList<Catalog>();
+							Catalog catlogObj=new Catalog();
+							catlogObj.setCatalogName(catValue);
+							catlogObj.setCatalogPage("");
+							catalogs.add(catlogObj);
+							productExcelObj.setCatalogs(catalogs);
+						}
+						
+ 						/*if(CatYear.contains("2017")){
+							catlogObj.setCatalogName("2017 Goldstar Canada");
+							catlogObj.setCatalogPage(PageNO);
+							catalogList.add(catlogObj);
+							productExcelObj.setCatalogs(catalogList);
+						}*/
+					}catch(Exception e){
+						_LOGGER.error("Error while processing catalog");
+					}
+						
 						break;
 					case 33://Combined Charges
 
 						break;
 					case 34://Qty 1
-
-						break;
 					case 35://Qty 2
-
-						break;
 					case 36://Qty 3
-
-						break;
 					case 37://Qty 4
-
-						break;
 					case 38://Qty 5
-
-						break;
 					case 39://Qty 6
-
-						break;
 					case 40://Qty 7
-
-						break;
 					case 41://Qty 8
-
-						break;
 					case  42://Qty 9
-
+						String quantity = CommonUtility.getCellValueStrinOrInt(cell);
+						  if(!StringUtils.isEmpty(quantity)){
+					        	 listOfQuantity.append(quantity).append(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
+					         }
 						break;
 					case  43://USD1
-
-						break;
 					case  44://USD2
-
-						break;
 					case  45://USD3
-
-						break;
 					case  46://USD4
-
-						break;
 					case  47://USD5
-
-						break;
 					case  48://USD6
-
-						break;
 					case  49://USD7
-
-						break;
 					case  50://USD8
-
-						break;
-					
 					case  51://USD9
-
+							
+							String listPrice3=CommonUtility.getCellValueStrinOrDecimal(cell);
+							listPrice3=listPrice3.replaceAll(" ","");
+							if(!StringUtils.isEmpty(listPrice3)){
+								listOfPrices.append(listPrice3.trim()).append(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
+							 }
 						break;
 						
 					case  52://Discount Code
-
+						String discount = CommonUtility.getCellValueStrinOrInt(cell);
+						  if(!StringUtils.isEmpty(discount)){
+					        	 listOfDiscount.append(discount).append(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
+					         }
 						break;
 					
 					}
@@ -809,6 +880,14 @@ public class BeaconProMapping implements IExcelParser{
 		this.beaconProPriceGridParser = beaconProPriceGridParser;
 	}
 	
+	public LookupServiceData getLookupServiceDataObj() {
+		return lookupServiceDataObj;
+	}
+
+	public void setLookupServiceDataObj(LookupServiceData lookupServiceDataObj) {
+		this.lookupServiceDataObj = lookupServiceDataObj;
+	}
+
 	public static List<Value> getSizeValues(String sizes){
 		List<Value> listOfSizeValues = new ArrayList<Value>();
 		Value valueObj = null;
@@ -845,4 +924,4 @@ public class BeaconProMapping implements IExcelParser{
 		sizeAttri.put("M–2X","M,L,XL,2XS");
 		
 		}
-}
+	}

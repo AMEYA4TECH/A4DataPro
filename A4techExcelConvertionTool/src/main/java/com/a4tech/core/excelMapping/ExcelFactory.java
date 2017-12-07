@@ -535,5 +535,13 @@ public class ExcelFactory {
 	public void setEdwardsGarmentMapping(EdwardsGarmentMapping edwardsGarmentMapping) {
 		this.edwardsGarmentMapping = edwardsGarmentMapping;
 	}
+
+	public BeaconProMapping getBeaconProMapping() {
+		return beaconProMapping;
+	}
+
+	public void setBeaconProMapping(BeaconProMapping beaconProMapping) {
+		this.beaconProMapping = beaconProMapping;
+	}
 	
 }

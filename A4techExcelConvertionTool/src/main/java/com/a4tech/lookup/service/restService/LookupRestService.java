@@ -169,9 +169,10 @@ public class LookupRestService {
 	       ResponseEntity<Catalogs> response = restTemplate.exchange(catalogLookupUrl, HttpMethod.GET, 
 	                                                                 requestEntity, Catalogs.class);
 	       Catalogs data = response.getBody();
-	      return data.getListOfCatalog();
+	      return null;
 		}catch(Exception exce){
 			_LOGGER.error("unable to get Supplier Catalog lookup Data:"+exce.getMessage());
+			
 		}
 		return null;
 	}
