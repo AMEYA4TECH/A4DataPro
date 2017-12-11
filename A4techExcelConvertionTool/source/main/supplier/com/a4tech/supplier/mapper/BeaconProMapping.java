@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import parser.beaconPromotions.BeaconProAttributeParser;
 import parser.beaconPromotions.BeaconProPriceGridParser;
+import parser.beaconPromotions.BeaconProductMaterialParser;
 
 import com.a4tech.core.errors.ErrorMessageList;
 import com.a4tech.excel.service.IExcelParser;
@@ -62,6 +63,7 @@ public class BeaconProMapping implements IExcelParser{
 	ProductDao productDaoObj;
 	BeaconProAttributeParser  beaconProAttributeParser;
 	BeaconProPriceGridParser  beaconProPriceGridParser;
+	BeaconProductMaterialParser beaconProductMaterialParser;
 	private LookupServiceData lookupServiceDataObj;
 	@Autowired
 	ObjectMapper mapperObj;
@@ -886,6 +888,15 @@ public class BeaconProMapping implements IExcelParser{
 
 	public void setLookupServiceDataObj(LookupServiceData lookupServiceDataObj) {
 		this.lookupServiceDataObj = lookupServiceDataObj;
+	}
+	
+	public BeaconProductMaterialParser getBeaconProductMaterialParser() {
+		return beaconProductMaterialParser;
+	}
+
+	public void setBeaconProductMaterialParser(
+			BeaconProductMaterialParser beaconProductMaterialParser) {
+		this.beaconProductMaterialParser = beaconProductMaterialParser;
 	}
 
 	public static List<Value> getSizeValues(String sizes){

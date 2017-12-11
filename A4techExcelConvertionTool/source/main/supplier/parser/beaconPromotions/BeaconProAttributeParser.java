@@ -13,6 +13,7 @@ import com.a4tech.lookup.service.LookupServiceData;
 import com.a4tech.lookup.service.restService.LookupRestService;
 import com.a4tech.product.model.BlendMaterial;
 import com.a4tech.product.model.Catalog;
+import com.a4tech.product.model.Combo;
 import com.a4tech.product.model.Dimension;
 import com.a4tech.product.model.Dimensions;
 import com.a4tech.product.model.ImprintLocation;
@@ -38,14 +39,109 @@ public class BeaconProAttributeParser {
 	public static List<com.a4tech.lookup.model.Catalog> catalogs            = null;
 	public static ArrayList<String> tempCatList=new ArrayList<String>();
 		public List<Material> getMaterialValue(String material) {
-		  material=material.replace(";","/");
-		  material=material.replace(",","/");
-			
-		  List<Material> materiallist = new ArrayList<Material>();
-		  Material materialObj = new Material();
+			  List<Material> materiallist = new ArrayList<Material>();
+			  Material materialObj = new Material();
+		 // material=material.replace(";","/");
+		  //material=material.replace(",","/");
+			// add condition here to check if its present in custom map
+		  String tempAliasForblend=material;
+		  String tempValue= UpchargeConstants.MATERIAL_MAP.get(material);
+		  String tempMat=material;
+		  if(tempValue!=null){
+			  if(tempValue.toUpperCase().contains("COMBO")){
+					String ComboValue[]={};
+					String MaterialForCombo=tempValue;
+					MaterialForCombo=MaterialForCombo.replace("%%%%", " ");
+			 		
+					//materialValue1=materialValue1.replaceAll("%","");
+					
+			 	   //materialValue1=materialValue1.replaceAll("88 Polyvinyl Chloride/12 PlyWATERPROOF","Polyester:Vinyl");
+				   // materialValue1=materialValue1.replaceAll( "80 PVC/20 PolyesterWATERPROOF","PVC:Polyester");
+				   //materialValue1=materialValue1.replaceAll("62 Cotton/38 PVCWATERPROOF","Cotton:PVC");
+					
+					
+					
+					Combo comboObj = new Combo();
+					ComboValue=tempValue.split(":");
+					
+		    		 //for (String materialValue : ComboValue) {
+		    			 materialObj = new Material();
+						 //materialObj = getMaterialValue(listOfLookupMaterial.toString(), materialValue1+" "+finalTempAliasVal);
+		    			 materialObj.setName(ComboValue[0]);
+		    			 materialObj.setAlias(MaterialForCombo);
+		    			 comboObj.setName(ComboValue[1]);
+		    			 materialObj.setCombo(comboObj);
+		    		// }
+		    			 materiallist.add(materialObj);
+					//return listOfMaterial;
+					
+				
+			  }else if(tempValue.toUpperCase().contains("BLEND")){
+				  
+				   //if (listOfLookupMaterial.size()==2 ||  listOfLookupMaterial.size()==3) {
+					   
+					   String tempArr[]=tempValue.split("/");
+					   List<String> listOfLookupMaterialBlend1 = getMaterialType(tempArr[0]
+							    .toUpperCase());
+					   if (listOfLookupMaterialBlend1.isEmpty()) { 
+						   listOfLookupMaterialBlend1.add("Other Fabric");
+					   }
+					   List<String> listOfLookupMaterialBlend2 = getMaterialType(tempArr[1]
+							    .toUpperCase());
+					   if (listOfLookupMaterialBlend2.isEmpty()) { 
+						   listOfLookupMaterialBlend2.add("Other Fabric");
+					   }
+					   String PercentageValue[]=new String [2];
+					   if(material.contains("%")){
+							   PercentageValue=material.split("%");
+							  PercentageValue[0]=PercentageValue[0].replace("[^0-9|.x%/ ]", "");
+						  }else{
+							  PercentageValue[0]="50";
+						  }
+					   
+							  
+							  
+				    BlendMaterial blendObj=new BlendMaterial();
+				    BlendMaterial blendObj1=new BlendMaterial();
+				                int PercentageValue1=100-Integer.parseInt(PercentageValue[0]);
+				                String PercentageValue2=Integer.toString(PercentageValue1);
+				    materialObj.setName("Blend");
+				       List<BlendMaterial> listOfBlend= new ArrayList<>();
+				       blendObj.setPercentage(PercentageValue[0]);
+				       blendObj.setName(listOfLookupMaterialBlend1.get(0));
+				       blendObj1.setPercentage(PercentageValue2);
+				       blendObj1.setName(listOfLookupMaterialBlend2.get(0));
+				       listOfBlend.add(blendObj);
+				       listOfBlend.add(blendObj1);
+				       materialObj.setAlias(tempAliasForblend);
+				    materialObj.setBlendMaterials(listOfBlend);
+				    materiallist.add(materialObj); 
+				  // }
+				  
+			  }else{
+				  List<String> listOfLookupMaterial = getMaterialType(tempValue
+						    .toUpperCase());
+						   //tempAliasForblend=material;
+						   if (!listOfLookupMaterial.isEmpty()) { 
+				  materialObj = getMaterialValue(listOfLookupMaterial.toString(),
+					      material);
+				  
+					    materiallist.add(materialObj); 
+						   }else{
+							   materialObj.setName("Other");
+					    		// materialObj.setAlias(values[1]);//
+					    		 materialObj.setAlias(material);
+							    materiallist.add(materialObj); 
+				  }
+			  }
+			  
+			  
+		  }
+		  ////
+		  else{
 		  List<String> listOfLookupMaterial = getMaterialType(material
 		    .toUpperCase());
-		  String tempAliasForblend=material;
+		   tempAliasForblend=material;
 		  /*if(listOfLookupMaterial.get(0).equalsIgnoreCase("OTHER"))
 		  {
 		   listOfLookupMaterial.remove(0);
@@ -107,7 +203,7 @@ public class BeaconProAttributeParser {
 	    		 materialObj.setAlias(material);
 			    materiallist.add(materialObj); 
 			   }
-		  
+		  }
 		  return materiallist;
 		 }
 	

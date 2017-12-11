@@ -1074,11 +1074,16 @@
        <!-- <property name="lookupServiceDataObj" ref="lookupServiceData"/>
          <property name="lookupRestServiceObj" ref="lookupRestService"/> -->
        <property name="beaconProAttributeParser" ref="beaconProAttributeParserId" />
-       <property name="beaconProPriceGridParser" ref="beaconProPriceGridParserId" /> 
-     
+       <property name="beaconProPriceGridParser" ref="beaconProPriceGridParserId" />
+       <property name="beaconProductMaterialParser" ref="beaconProductMaterialParserID" /> 
        </bean>
        <bean id="beaconProAttributeParserId" name="beaconProAttributeParserObj"
   		class="parser.beaconPromotions.BeaconProAttributeParser" autowire="byName">
+  		<property name="lookupServiceDataObj" ref="lookupServiceData"/>
+  		<property name="lookupRestServiceObj" ref="lookupRestService"/>
+  	</bean>
+  	<bean id="beaconProductMaterialParserID" name="beaconProductMaterialParserObj"
+  		class="parser.beaconPromotions.BeaconProductMaterialParser" autowire="byName">
   		<property name="lookupServiceDataObj" ref="lookupServiceData"/>
   		<property name="lookupRestServiceObj" ref="lookupRestService"/>
   	</bean>

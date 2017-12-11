@@ -6,6 +6,7 @@ import java.util.Map;
 public class UpchargeConstants {
 	
 	 public static Map<String, String> UPCHARGE_MAP =new HashMap<String, String>();
+	 public static Map<String, String> MATERIAL_MAP =new HashMap<String, String>();
 	    static {
 	//UPCHARGE_MAP.put("Charge ID ","Charge Nam@@@@@Discount#####USD1_____USD2_____USD3_____USD4_____USD5_____USD6_____USD7_____USD8_____USD9");
 	UPCHARGE_MAP.put("1","Add'l Decoraction Method: Engraved Logo (Badge)@@@@@A#####2.93_____2.7_____2.53_____2.37_____2.19");
@@ -174,5 +175,77 @@ public class UpchargeConstants {
 	UPCHARGE_MAP.put("166","Add'l Decoraiton Option: Additional Location Run@@@@@C#####0.6");
 	UPCHARGE_MAP.put("167","Setup per color@@@@@G#####85");
 	UPCHARGE_MAP.put("168","Corporate Gift Handling (per location, including first)@@@@@G#####12.5");
+	
+	MATERIAL_MAP.put("Value","Code");
+	MATERIAL_MAP.put("Full Grain Cowhide","Leather");
+	MATERIAL_MAP.put("Distressed Buffalo Hide","Leather");
+	MATERIAL_MAP.put("Full Grain Cowhide, 18 oz. beige canvas","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("Full Grain Washed Cowhide, 18 oz washed brown canvas","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("16 oz. Washed Beige Cotton Canvas, Genuine Leather, Vegan Leather","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("Full Grain Buffalo Hide, 18 oz. Forest Green Canvas","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("16 oz Washed Blue Colorfast Cotton Canvas, Split Leather","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("Full Grain Buffalo Hide, 18 oz. beige canvas","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("300 denier polyester oxford water resistant fabric, Full Grain Buffalo Hide","Leather:Combo:Polyester");
+	MATERIAL_MAP.put("16 oz. Washed Green and Realtree Xtra Cotton Canvas, Genuine Leather, Vegan Leather","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("Leather and Charcoal Grey Wool/Polyester Blend","Blend:Wool::Polyester:");
+	MATERIAL_MAP.put("Full Grain Washed Cowhide","Leather");
+	MATERIAL_MAP.put("Distressed Cowhide, 18 oz. Forest Green Canvas","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("Grey Wool, Polyester, Genuine Cowhide","Leather:Combo:Polyester");
+	MATERIAL_MAP.put("1200D Water Resistant Black Polyester, hardcover EVA, full grain cowhide","Leather:Combo:Polyester");
+	MATERIAL_MAP.put("Koskin","Other");
+	MATERIAL_MAP.put("Full Grain Drum Dyed Cowhide","Leather");
+	MATERIAL_MAP.put("Pull Up Buffalo Hide","Leather");
+	MATERIAL_MAP.put("Full Grain Drum Dyed Cowhide, Vegetable Tanned Full Grain Cowhide","Leather");
+	MATERIAL_MAP.put("16 oz. Washed Green Cotton Canvas, Genuine Leather, Vegan Leather","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("Pull Up Buffalo Hide with 18 oz. Brown Cotton Canvas","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("16 oz. Washed Brown Cotton Canvas, Full Grain Cowhide, Vegan Leather","Leather:Combo:Canvas");
+	MATERIAL_MAP.put("BPA Free Plastic","Plastic");
+	MATERIAL_MAP.put("Vegetable Tanned Full Grain Cowhide","Leather");
+	MATERIAL_MAP.put("New Zealand lambskin.","Leather");
+	MATERIAL_MAP.put("Nappa Leather","Leather");
+	MATERIAL_MAP.put("Vintage Nappa","Leather");
+	MATERIAL_MAP.put("Lambskin","Leather");
+	MATERIAL_MAP.put("65/35 Poly/Cotton","Blend:Polyester:65:Cotton:35");
+	MATERIAL_MAP.put("1200D Water Resistant Black Polyester, 10 oz. Realtree Xtra Camo Cotton Duck, Full Grain Cowhide","Leather:Combo:Polyester");
+	MATERIAL_MAP.put("100% Polyester.  8.8 oz. per sq. yard.  Flame retardant NFPA 701 Standard.","Polyester");
+	MATERIAL_MAP.put("100% Polyester.  5 oz. per sq. yard.  Flame retardant NFPA 701 Standard.","Polyester");
+	MATERIAL_MAP.put("100% Polyester, 4.13 oz per sq yard","Polyester");
+	MATERIAL_MAP.put(" fabric.","Other Fabric");
+	MATERIAL_MAP.put("White No Curl","Other");
+	MATERIAL_MAP.put("White 10 oz. Vinyl, Fiberglass and Plastic","Vinyl:Combo:Plastic");
+	MATERIAL_MAP.put("White 10 oz. Vinyl","Vinyl");
+	MATERIAL_MAP.put("Fiberglass and Plastic","Other:Combo:Plastic");
+	MATERIAL_MAP.put("White 13 oz. Smooth Vinyl, Fiberglass","Vinyl:Combo:Plastic");
+	MATERIAL_MAP.put("White 13 oz. Smooth Vinyl","Vinyl");
+	MATERIAL_MAP.put("Fiberglass","Other");
+	MATERIAL_MAP.put("White Polyester Knit Fabric, Carbon Composite","Polyester");
+	MATERIAL_MAP.put("White Polyester Knit Fabric","Polyester");
+	MATERIAL_MAP.put("Carbon Composite","Other");
+	MATERIAL_MAP.put("White Polyester Flag Fabric","Polyester");
+	MATERIAL_MAP.put("White Polyester Flag Fabric, Carbon Composite, Metal","Polyester:Combo:Other");
+	MATERIAL_MAP.put("White Polyester Knit Fabric, Aluminum","Polyester:Combo:Aluminum");
+	MATERIAL_MAP.put("White Polyester Knit Fabric, Anodized Aluminum","Polyester:Combo:Aluminum");
+	MATERIAL_MAP.put("Anodized Aluminum","Aluminum");
+	MATERIAL_MAP.put("1/16 White Plastic","Plastic");
+	MATERIAL_MAP.put("1/16 non-metallic 2-ply plastic","Plastic");
+	MATERIAL_MAP.put("1/16 Metallic 2-ply Plastic","Plastic");
+	MATERIAL_MAP.put("1/16 2-ply plastic","Plastic");
+	MATERIAL_MAP.put(".020 Aluminum","Aluminum");
+	MATERIAL_MAP.put(".020 Brass","Brass");
+	MATERIAL_MAP.put(".020 Frosted Brass, .020 Frosted Nickle","Brass:Combo:Nickel");
+	MATERIAL_MAP.put("1/16 Brushed Silver or Brushed Gold","Silver, Gold");
+	MATERIAL_MAP.put("50 lb offset","Other");
+	MATERIAL_MAP.put("80 lb matte paper stock","Paper");
+	MATERIAL_MAP.put("Self cover","Other");
+	MATERIAL_MAP.put("60 lb paper stock with gloss text and UV coated cover","Paper");
+	MATERIAL_MAP.put("Printed weave cover","Other Fabric");
+	MATERIAL_MAP.put("Morocco Leatherette","Other Leather/Suede");
+	MATERIAL_MAP.put("Pacifica Vinyl Jacket","Vinyl");
+	MATERIAL_MAP.put("Casemade Lexide Cover","Other");
+	MATERIAL_MAP.put("70 Denier nylon with clear Vinyl front.","Nylon:Combo:Vinyl");
+	MATERIAL_MAP.put("Drum Dyed Full Grain Cowhide","Leather");
+	MATERIAL_MAP.put("100% Polyester, 4.57 oz per sq yard","Polyester");
+	MATERIAL_MAP.put("Microfiber Terry Cloth","Other Fabric");
+
 	    }
 }
