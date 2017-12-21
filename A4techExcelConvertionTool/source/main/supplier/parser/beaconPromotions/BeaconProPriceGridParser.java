@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import parser.tomaxusa.TomaxPriceGridParser;
 
@@ -19,61 +21,69 @@ import com.a4tech.util.LookupData;
 public class BeaconProPriceGridParser {
 
 	private Logger              _LOGGER       =  Logger.getLogger(TomaxPriceGridParser.class);
-    public List<PriceGrid> getPriceGrids(String listOfPrices,
-			    String listOfQuan, String discountCodes,
-				String currency, String priceInclude, boolean isBasePrice,
-				String qurFlag, String priceName, String criterias,Integer sequence,
-				List<PriceGrid> existingPriceGrid) 
+    public List<PriceGrid> getPriceGrids(String listOfPrices, String listOfQuan, String discountCodes,String currency, String priceInclude,
+			 boolean isBasePrice,String qurFlag, String priceName, 
+			 String criterias,Integer sequence,String serviceCharge,String upChargeType,String upchargeUsageType,String optionName,
+			 List<PriceGrid> existingPriceGrid) 
 				{
-			try{
-			//Integer sequence = 1;
-			List<PriceConfiguration> configuration = null;
-			PriceGrid priceGrid = new PriceGrid();
-			String[] prices = listOfPrices
-					.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
-			String[] quantity = listOfQuan
-					.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
-			if(!CommonUtility.isdescending(quantity))
-			{
-				priceGrid.setIsQUR(ApplicationConstants.CONST_BOOLEAN_TRUE);
-			
+		try{
+			if(CollectionUtils.isEmpty(existingPriceGrid)){
+				existingPriceGrid=new ArrayList<PriceGrid>();
+				sequence = 1;
 			}else{
-				priceGrid
+				sequence = existingPriceGrid.size()+1;
+			}
+			
+			
+		//Integer sequence = 1;
+		List<PriceConfiguration> configuration = null;
+		PriceGrid priceGrid = new PriceGrid();
+		String[] prices = listOfPrices
+				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
+		String[] quantity = listOfQuan
+				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
+		
+		priceGrid.setCurrency(currency);
+		String tempDesc=priceName;
+		if(tempDesc.contains("@@@@@")){
+			String strTempp[]=tempDesc.split("@@@@@");
+			priceGrid.setDescription(strTempp[1]);
+		}else{
+			priceGrid.setDescription(priceName);
+		}
+		priceGrid.setPriceIncludes(priceInclude);
+		priceGrid
 				.setIsQUR(qurFlag.equalsIgnoreCase(ApplicationConstants.CONST_STRING_FALSE) ? ApplicationConstants.CONST_BOOLEAN_FALSE
 						: ApplicationConstants.CONST_BOOLEAN_TRUE);
-			}
-			if(!CommonUtility.isdescending(prices))
-			{
-				priceGrid.setIsQUR(ApplicationConstants.CONST_BOOLEAN_TRUE);
+		if(!isBasePrice){
+			priceGrid.setServiceCharge(ApplicationConstants.CONST_STRING_SERVICECHARGE);
+			priceGrid.setUpchargeType(upChargeType);
+			priceGrid.setUpchargeUsageType(upchargeUsageType);
 			
-			}
-			
-			priceGrid.setCurrency(currency);
-			priceGrid.setDescription(priceName);
-			priceGrid.setPriceIncludes(priceInclude);
-			/*priceGrid
-					.setIsQUR(qurFlag.equalsIgnoreCase(ApplicationConstants.CONST_STRING_FALSE) ? ApplicationConstants.CONST_BOOLEAN_FALSE
-							: ApplicationConstants.CONST_BOOLEAN_TRUE);*/
-			priceGrid.setIsBasePrice(isBasePrice);
-			priceGrid.setSequence(sequence);
-			List<Price> listOfPrice = null;
-			if (!priceGrid.getIsQUR()) {
-				listOfPrice = getPrices(prices, quantity, discountCodes);
-			} else {
-				listOfPrice = new ArrayList<Price>();
-			}
-			priceGrid.setPrices(listOfPrice);
-			if (criterias != null && !criterias.isEmpty()) {
-				configuration = getConfigurations(criterias+":"+priceName);//because over here pricename & criteria value is same
-			}
-			priceGrid.setPriceConfigurations(configuration);
-			existingPriceGrid.add(priceGrid);
-			}catch(Exception e){
-				_LOGGER.error("Error while processing PriceGrid: "+e.getMessage());
-			}
-			return existingPriceGrid;
-
+			//UpchargeUsageType
 		}
+		
+		
+		priceGrid.setIsBasePrice(isBasePrice);
+		priceGrid.setSequence(sequence);
+		List<Price> listOfPrice = null;
+		if (!priceGrid.getIsQUR()) {
+			listOfPrice = getPrices(prices, quantity, discountCodes);
+		} else {
+			listOfPrice = new ArrayList<Price>();
+		}
+		priceGrid.setPrices(listOfPrice);
+		if (criterias != null && !criterias.isEmpty()) {
+			configuration = getConfigurations(criterias+":"+priceName,optionName);//because over here pricename & criteria value is same
+		}
+		priceGrid.setPriceConfigurations(configuration);
+		existingPriceGrid.add(priceGrid);
+		}catch(Exception e){
+			_LOGGER.error("Error while processing PriceGrid: "+e.getMessage());
+		}
+		return existingPriceGrid;
+
+	}
 
 		public List<Price> getPrices(String[] prices, String[] quantity, String discount) {
 
@@ -113,7 +123,7 @@ public class BeaconProPriceGridParser {
 			return listOfPrices;
 		}
 		
-		public List<PriceConfiguration> getConfigurations(String criterias) {
+		public List<PriceConfiguration> getConfigurations(String criterias,String optionName) {
 			List<PriceConfiguration> priceConfiguration = new ArrayList<PriceConfiguration>();
 			String[] config = null;
 			PriceConfiguration configs = null;
@@ -127,6 +137,10 @@ public class BeaconProPriceGridParser {
 					config = criteria.split(ApplicationConstants.CONST_DELIMITER_COLON);
 					String criteriaValue = LookupData.getCriteriaValue(config[0]);
 					configuraion.setCriteria(criteriaValue);
+					if(!StringUtils.isEmpty(optionName))
+					{
+						configs.setOptionName(optionName);
+					}
 					if (config[1].contains(ApplicationConstants.CONST_STRING_COMMA_SEP)) {
 						String[] values = config[1].split(ApplicationConstants.CONST_STRING_COMMA_SEP);
 						for (String Value : values) {
@@ -136,6 +150,10 @@ public class BeaconProPriceGridParser {
 							priceConfiguration.add(configs);
 						}
 					} else {
+						if(!StringUtils.isEmpty(optionName))
+						{
+							configs.setOptionName(optionName);
+						}
 						configs = new PriceConfiguration();
 						configs.setCriteria(criteriaValue);
 						configs.setValue(Arrays.asList((Object) config[1]));
@@ -149,6 +167,10 @@ public class BeaconProPriceGridParser {
 				//String criteriaValue = LookupData.getCriteriaValue(config[0]);
 				configs.setCriteria(config[0]);
 				configs.setValue(Arrays.asList((Object) config[1]));
+				if(!StringUtils.isEmpty(optionName))
+				{
+					configs.setOptionName(optionName);
+				}
 				priceConfiguration.add(configs);
 			}
 			}catch(Exception e){

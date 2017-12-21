@@ -1068,6 +1068,7 @@
 
 
  <!-- supplier 39250 Beacon Promotions start -->
+     <bean id="beaconProPriceGridParserId" name="beaconProPriceGridParserObj" class="parser.beaconPromotions.BeaconProPriceGridParser" autowire="byName"/>
      <bean id="beaconProMappingId" class="com.a4tech.supplier.mapper.BeaconProMapping" autowire="byName">
        <property name="postServiceImpl" ref="postService"/>
        <property name="productDaoObj" ref="productDao"/>
@@ -1081,13 +1082,14 @@
   		class="parser.beaconPromotions.BeaconProAttributeParser" autowire="byName">
   		<property name="lookupServiceDataObj" ref="lookupServiceData"/>
   		<property name="lookupRestServiceObj" ref="lookupRestService"/>
+  		<property name="beaconProPriceGridParser" ref="beaconProPriceGridParserId" />
   	</bean>
   	<bean id="beaconProductMaterialParserID" name="beaconProductMaterialParserObj"
   		class="parser.beaconPromotions.BeaconProductMaterialParser" autowire="byName">
   		<property name="lookupServiceDataObj" ref="lookupServiceData"/>
   		<property name="lookupRestServiceObj" ref="lookupRestService"/>
   	</bean>
-  	<bean id="beaconProPriceGridParserId" name="beaconProPriceGridParserObj" class="parser.beaconPromotions.BeaconProPriceGridParser" autowire="byName"/>
+  	
   	<!-- <bean id="gillStudiosPriceGridParserId" name="gillStudiosPriceGridParserObj" class="parser.gillstudios.GillStudiosPriceGridParser" autowire="byName"/>
   	<bean id="gillStudiosImprintMethodParserId" name="gillStudiosImprintMethodParserObj" class="parser.gillstudios.GillStudiosImprintMethodParser" autowire="byName">
   	<property name="lookupServiceDataObj" ref="lookupServiceData"/>

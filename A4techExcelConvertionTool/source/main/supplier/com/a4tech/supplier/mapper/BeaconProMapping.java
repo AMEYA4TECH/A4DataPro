@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import parser.beaconPromotions.BeaconProAttributeParser;
 import parser.beaconPromotions.BeaconProPriceGridParser;
 import parser.beaconPromotions.BeaconProductMaterialParser;
+import parser.beaconPromotions.UpchargeConstants;
 
 import com.a4tech.core.errors.ErrorMessageList;
 import com.a4tech.excel.service.IExcelParser;
@@ -86,13 +87,7 @@ public class BeaconProMapping implements IExcelParser{
 		   String shippingWeightValue="";
 		  String noOfitem="";
 		  boolean existingFlag=false;
-		  String plateScreenCharge="";
-		  String plateScreenChargeCode="";
-		  String plateReOrderCharge="";
-		  String plateReOrderChargeCode="";
-		  String extraColorRucnChrg="";
-		  String extraLocRunChrg="";
-		  String extraLocColorScreenChrg="";
+		
 		  StringBuilder listOfQuantity = new StringBuilder();
 		  StringBuilder listOfPrices = new StringBuilder();
 		  StringBuilder listOfDiscount = new StringBuilder();
@@ -157,10 +152,20 @@ public class BeaconProMapping implements IExcelParser{
 								 	//productExcelObj.setPriceGrids(priceGrids);
 								 if( !StringUtils.isEmpty(listOfPrices.toString())){
 									 priceGrids=new ArrayList<PriceGrid>();
+									 String discCheck=listOfDiscount.toString();
+									 if(discCheck.contains("0")){
+										 priceGrids = beaconProPriceGridParser.getPriceGridsQur();
+									 }else{
+										 
+										/* (String listOfPrices, String listOfQuan, String discountCodes,String currency, String priceInclude,
+			 boolean isBasePrice,String qurFlag, String priceName, 
+			 String criterias,Integer sequence,String serviceCharge,String upChargeType,String upchargeUsageType,String optionName,
+			 List<PriceGrid> existingPriceGrid)  */
 									 priceGrids = beaconProPriceGridParser.getPriceGrids(listOfPrices.toString(),listOfQuantity.toString(), 
-												"R",ApplicationConstants.CONST_STRING_CURRENCY_USD,
-												basePriceInclude,ApplicationConstants.CONST_BOOLEAN_TRUE, ApplicationConstants.CONST_STRING_FALSE, 
-												productName,null,1,priceGrids);
+											    listOfDiscount.toString(),ApplicationConstants.CONST_STRING_CURRENCY_USD,basePriceInclude,
+												ApplicationConstants.CONST_BOOLEAN_TRUE, ApplicationConstants.CONST_STRING_FALSE, 
+												productName,null,1,null,null,null,null,priceGrids);
+									 }
 									 }
 									 
 									 if(CollectionUtils.isEmpty(priceGrids)){
@@ -169,13 +174,10 @@ public class BeaconProMapping implements IExcelParser{
 									 	productExcelObj.setPriceType("L");
 									 	productExcelObj.setPriceGrids(priceGrids);
 									 	productExcelObj.setProductConfigurations(productConfigObj);
-								 	/* _LOGGER.info("Product Data : "
+								 	 _LOGGER.info("Product Data : "
 												+ mapperObj.writeValueAsString(productExcelObj));
-								 	*/
-								 	/*if(xidList.contains(productExcelObj.getExternalProductId().trim())){
-								 		productExcelObj.setAvailability(new ArrayList<Availability>());
-								 	}*/
-								 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId);
+								 	
+								 	int num = 0;//postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId);
 								 	if(num ==1){
 								 		numOfProductsSuccess.add("1");
 								 	}else if(num == 0) {
@@ -193,6 +195,9 @@ public class BeaconProMapping implements IExcelParser{
 							  	    listOfQuantity = new StringBuilder();
 							  	    listOfPrices = new StringBuilder();
 							  	    listOfDiscount = new StringBuilder();
+							  	    listOfImpSize=new ArrayList<ImprintSize>();
+							  	    listOfImprintLocValues = new ArrayList<ImprintLocation>();
+							  	    imprintMethods = new ArrayList<ImprintMethod>();
 							  	    basePricePriceInlcude="";
 							  	    tempQuant1="";
 							  	    productName="";
@@ -303,6 +308,11 @@ public class BeaconProMapping implements IExcelParser{
 						basePriceInclude=CommonUtility.getCellValueStrinOrInt(cell);
 						break;
 					case  11://Colors Availble
+						String colorValue=CommonUtility.getCellValueStrinOrInt(cell);
+						if(!StringUtils.isEmpty(colorValue)){
+							 List<Color> colors =beaconProAttributeParser.getProductColors(colorValue);
+							 productConfigObj.setColors(colors);
+						 }
 						//pending
 						break;
 					case  12://Imprint Method 1
@@ -660,7 +670,18 @@ public class BeaconProMapping implements IExcelParser{
 						
 						break;
 					case 33://Combined Charges
-
+							String combineCharge=CommonUtility.getCellValueStrinOrInt(cell);
+							if(!StringUtils.isEmpty(combineCharge))
+							{
+								String combArr[]=combineCharge.split("\\|");
+								for (String strComb : combArr) {
+									strComb=UpchargeConstants.UPCHARGE_MAP.get(strComb);
+									if(!StringUtils.isEmpty(strComb)){
+									productExcelObj=beaconProAttributeParser.getCombinedCharge(strComb, productExcelObj);
+								}
+								}
+							}
+							
 						break;
 					case 34://Qty 1
 					case 35://Qty 2
@@ -724,16 +745,29 @@ public class BeaconProMapping implements IExcelParser{
 																plateScreenCharge, plateScreenChargeCode,
 															    plateReOrderCharge, plateReOrderChargeCode, priceGrids, 
 															    productExcelObj, productConfigObj);*/
+	
 		
-	 	productExcelObj.setPriceType("L");
-	 	//productExcelObj.setPriceGrids(priceGrids);
-	 	productExcelObj.setProductConfigurations(productConfigObj);
-	 	/* _LOGGER.info("Product Data : "
-					+ mapperObj.writeValueAsString(productExcelObj));
-	 	*/
-	 	/*if(xidList.contains(productExcelObj.getExternalProductId().trim())){
-	 		productExcelObj.setAvailability(new ArrayList<Availability>());
-	 	}*/
+	 if( !StringUtils.isEmpty(listOfPrices.toString())){
+		 priceGrids=new ArrayList<PriceGrid>();
+		 String discCheck=listOfDiscount.toString();
+		 if(discCheck.contains("0")){
+			 priceGrids = beaconProPriceGridParser.getPriceGridsQur();
+		 }else{
+		 priceGrids = beaconProPriceGridParser.getPriceGrids(listOfPrices.toString(),listOfQuantity.toString(), 
+				    listOfDiscount.toString(),ApplicationConstants.CONST_STRING_CURRENCY_USD,
+					basePriceInclude,ApplicationConstants.CONST_BOOLEAN_TRUE, ApplicationConstants.CONST_STRING_FALSE, 
+					productName,null,1,null,null,null,null,priceGrids);
+		 }
+		 }
+		 
+		 if(CollectionUtils.isEmpty(priceGrids)){
+				priceGrids = beaconProPriceGridParser.getPriceGridsQur();	
+			}
+		 	productExcelObj.setPriceType("L");
+		 	productExcelObj.setPriceGrids(priceGrids);
+		 	productExcelObj.setProductConfigurations(productConfigObj);
+		 	 _LOGGER.info("Product Data : "
+						+ mapperObj.writeValueAsString(productExcelObj));
 	 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId);
 	 	if(num ==1){
 	 		numOfProductsSuccess.add("1");
@@ -754,18 +788,15 @@ public class BeaconProMapping implements IExcelParser{
 		ShipingObj=new ShippingEstimate();
 		dimensionObj=new Dimensions();
 		setUpchrgesVal="";
-		plateScreenCharge="";
- 		 plateScreenChargeCode="";
- 		 plateReOrderCharge="";
- 		 plateReOrderChargeCode="";
- 		 extraColorRucnChrg="";
- 	     extraLocRunChrg="";
- 	     extraLocColorScreenChrg="";
+		
  	    listOfQuantity = new StringBuilder();
   	    listOfPrices = new StringBuilder();
   	    listOfDiscount = new StringBuilder();
-  	   basePricePriceInlcude="";
-  	   tempQuant1="";
+  	    listOfImpSize=new ArrayList<ImprintSize>();
+  	    listOfImprintLocValues = new ArrayList<ImprintLocation>();
+  	    imprintMethods = new ArrayList<ImprintMethod>();
+  	    basePricePriceInlcude="";
+  	    tempQuant1="";
        return finalResult;
 	}catch(Exception e){
 		_LOGGER.error("Error while Processing excel sheet ,Error message: "+e.getMessage()+"for column"+columnIndex+1);

@@ -9,10 +9,13 @@ import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import parser.tomaxusa.TomaxConstants;
+
 import com.a4tech.lookup.service.LookupServiceData;
 import com.a4tech.lookup.service.restService.LookupRestService;
 import com.a4tech.product.model.BlendMaterial;
 import com.a4tech.product.model.Catalog;
+import com.a4tech.product.model.Color;
 import com.a4tech.product.model.Combo;
 import com.a4tech.product.model.Dimension;
 import com.a4tech.product.model.Dimensions;
@@ -21,7 +24,10 @@ import com.a4tech.product.model.ImprintMethod;
 import com.a4tech.product.model.ImprintSize;
 import com.a4tech.product.model.Material;
 import com.a4tech.product.model.NumberOfItems;
+import com.a4tech.product.model.Option;
+import com.a4tech.product.model.OptionValue;
 import com.a4tech.product.model.Packaging;
+import com.a4tech.product.model.PriceGrid;
 import com.a4tech.product.model.Product;
 import com.a4tech.product.model.ProductConfigurations;
 import com.a4tech.product.model.ShippingEstimate;
@@ -36,6 +42,7 @@ public class BeaconProAttributeParser {
 	private static final Logger _LOGGER = Logger.getLogger(BeaconProAttributeParser.class);
 	private LookupServiceData lookupServiceDataObj;
 	private LookupRestService  lookupRestServiceObj;
+	BeaconProPriceGridParser  beaconProPriceGridParser;
 	public static List<com.a4tech.lookup.model.Catalog> catalogs            = null;
 	public static ArrayList<String> tempCatList=new ArrayList<String>();
 		public List<Material> getMaterialValue(String material) {
@@ -64,12 +71,12 @@ public class BeaconProAttributeParser {
 					Combo comboObj = new Combo();
 					ComboValue=tempValue.split(":");
 					
-		    		 //for (String materialValue : ComboValue) {
+		    		//for (String materialValue : ComboValue) {
 		    			 materialObj = new Material();
 						 //materialObj = getMaterialValue(listOfLookupMaterial.toString(), materialValue1+" "+finalTempAliasVal);
 		    			 materialObj.setName(ComboValue[0]);
-		    			 materialObj.setAlias(MaterialForCombo);
-		    			 comboObj.setName(ComboValue[1]);
+		    			 materialObj.setAlias(MaterialForCombo.replace(":Combo:","-"));
+		    			 comboObj.setName(ComboValue[2]);
 		    			 materialObj.setCombo(comboObj);
 		    		// }
 		    			 materiallist.add(materialObj);
@@ -77,39 +84,52 @@ public class BeaconProAttributeParser {
 					
 				
 			  }else if(tempValue.toUpperCase().contains("BLEND")){
-				  
+				  tempValue=tempValue.replace("::", ":");
 				   //if (listOfLookupMaterial.size()==2 ||  listOfLookupMaterial.size()==3) {
 					   
-					   String tempArr[]=tempValue.split("/");
-					   List<String> listOfLookupMaterialBlend1 = getMaterialType(tempArr[0]
+					   String tempArr[]=tempValue.split(":");
+					   String materialOne="";
+					   String materialTwo="";
+					   String percOne="";
+					   String percTwo="";
+					   
+					   if(tempArr.length>3 || tempArr.length==5){
+						   materialOne=tempArr[1];
+						   materialTwo=tempArr[3];
+						   percOne=tempArr[2];
+						   percTwo=tempArr[4];
+					   }else if(tempArr.length<=3 || tempArr.length==3){
+						    materialOne=tempArr[1];
+						    materialTwo=tempArr[2];
+						    percOne="50";
+						    percTwo="50";
+					   }
+					   List<String> listOfLookupMaterialBlend1 = getMaterialType(materialOne
 							    .toUpperCase());
 					   if (listOfLookupMaterialBlend1.isEmpty()) { 
 						   listOfLookupMaterialBlend1.add("Other Fabric");
 					   }
-					   List<String> listOfLookupMaterialBlend2 = getMaterialType(tempArr[1]
+					   List<String> listOfLookupMaterialBlend2 = getMaterialType(materialTwo
 							    .toUpperCase());
 					   if (listOfLookupMaterialBlend2.isEmpty()) { 
 						   listOfLookupMaterialBlend2.add("Other Fabric");
 					   }
-					   String PercentageValue[]=new String [2];
+					 /*  String PercentageValue[]=new String [2];
 					   if(material.contains("%")){
 							   PercentageValue=material.split("%");
 							  PercentageValue[0]=PercentageValue[0].replace("[^0-9|.x%/ ]", "");
 						  }else{
 							  PercentageValue[0]="50";
-						  }
-					   
-							  
-							  
+						  }*/
 				    BlendMaterial blendObj=new BlendMaterial();
 				    BlendMaterial blendObj1=new BlendMaterial();
-				                int PercentageValue1=100-Integer.parseInt(PercentageValue[0]);
-				                String PercentageValue2=Integer.toString(PercentageValue1);
-				    materialObj.setName("Blend");
+				               // int PercentageValue1=100-Integer.parseInt(PercentageValue[0]);
+				               // String PercentageValue2=Integer.toString(PercentageValue1);
+				       materialObj.setName("Blend");
 				       List<BlendMaterial> listOfBlend= new ArrayList<>();
-				       blendObj.setPercentage(PercentageValue[0]);
+				       blendObj.setPercentage(percOne);
 				       blendObj.setName(listOfLookupMaterialBlend1.get(0));
-				       blendObj1.setPercentage(PercentageValue2);
+				       blendObj1.setPercentage(percTwo);
 				       blendObj1.setName(listOfLookupMaterialBlend2.get(0));
 				       listOfBlend.add(blendObj);
 				       listOfBlend.add(blendObj1);
@@ -119,19 +139,25 @@ public class BeaconProAttributeParser {
 				  // }
 				  
 			  }else{
+				  String tempArr[]=tempValue.split(",");
+				  for (String string : tempArr) {
+					
+				
 				  List<String> listOfLookupMaterial = getMaterialType(tempValue
 						    .toUpperCase());
 						   //tempAliasForblend=material;
 						   if (!listOfLookupMaterial.isEmpty()) { 
 				  materialObj = getMaterialValue(listOfLookupMaterial.toString(),
-					      material);
+						  string);
 				  
 					    materiallist.add(materialObj); 
 						   }else{
 							   materialObj.setName("Other");
 					    		// materialObj.setAlias(values[1]);//
-					    		 materialObj.setAlias(material);
+					    		 materialObj.setAlias(string);
+					    		 
 							    materiallist.add(materialObj); 
+				  }
 				  }
 			  }
 			  
@@ -325,7 +351,7 @@ public List<ImprintSize> getImprintSize(String imprintMethValue,List<ImprintSize
 			
 		return listOfImprintLocValues;
 	}
-	public List<Packaging> getPackagingCriteria(String packaging){
+	public static List<Packaging> getPackagingCriteria(String packaging){
 		List<Packaging> packagingList =new ArrayList<Packaging>();
 		Packaging packObj;
 		try{
@@ -560,6 +586,239 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 		sizeAttri.put("M–2X","M,L,XL,2XS");
 		
 		}
+	
+	public List<Color> getProductColors(String color){
+		List<Color> listOfColors = new ArrayList<>();
+		try{
+		Color colorObj = null;
+		color=color.replaceAll("\\|",",");
+		String[] colors =getValuesOfArray(color, ",");
+		for (String colorName : colors) {
+			if(StringUtils.isEmpty(colorName)){
+				continue;
+			}
+			colorName=colorName.replaceAll("&","/");
+			colorName=colorName.replaceAll(" w/","/");
+			colorName=colorName.replaceAll(" W/","/");
+			//colorName = colorName.trim();
+			
+			colorObj = new Color();
+			String colorGroup = UpchargeConstants.getColorGroup(colorName.trim());
+			//if (colorGroup == null) {
+				//if (colorGroup!=null && colorGroup.contains(ApplicationConstants.CONST_DELIMITER_FSLASH)) {
+			if (colorName.contains("/") || colorGroup.contains(ApplicationConstants.CONST_DELIMITER_FSLASH) || colorGroup.contains("COMBO")) {
+				
+				if(colorGroup==null){
+					colorGroup=colorName;
+				}
+				colorGroup=colorGroup.replaceAll("&","/");
+				colorGroup=colorGroup.replaceAll(" w/","/");
+				colorGroup=colorGroup.replaceAll(" W/","/");
+				String delmtr=ApplicationConstants.CONST_DELIMITER_FSLASH;
+				if(colorGroup.toUpperCase().contains("COMBO")){
+					delmtr=":COMBO:";
+				}
+				//if (colorName.contains(ApplicationConstants.CONST_DELIMITER_FSLASH)) {
+					if(isComboColor(colorGroup)){
+						
+						List<Combo> listOfCombo = null;
+						String[] comboColors = CommonUtility.getValuesOfArray(colorGroup,delmtr);
+						String colorFirstName = UpchargeConstants.getColorGroup(comboColors[0].trim());
+						colorObj.setName(colorFirstName == null?"Other":colorFirstName);
+						int combosSize = comboColors.length;
+						if (combosSize == ApplicationConstants.CONST_INT_VALUE_TWO) {
+							String colorComboFirstName = UpchargeConstants.getColorGroup(comboColors[1].trim());
+							colorComboFirstName = colorComboFirstName == null?"Other":colorComboFirstName;
+							listOfCombo = getColorsCombo(colorComboFirstName, ApplicationConstants.CONST_STRING_EMPTY,
+									combosSize);
+						} else{
+							String colorComboFirstName = UpchargeConstants.getColorGroup(comboColors[1].trim());
+							colorComboFirstName = colorComboFirstName == null?"Other":colorComboFirstName;
+							
+							String colorComboSecondName = UpchargeConstants.getColorGroup(comboColors[2].trim());
+							colorComboSecondName = colorComboSecondName == null?"Other":colorComboSecondName;
+							listOfCombo = getColorsCombo(colorComboFirstName,colorComboSecondName, combosSize);
+						}
+						String alias="";
+						if(colorGroup.contains(":COMBO:")){
+							alias = colorGroup.replaceAll(":COMBO:", "-");
+						}else{
+							alias = colorGroup.replaceAll(ApplicationConstants.CONST_DELIMITER_FSLASH, "-");
+						}
+						colorObj.setAlias(alias);
+						colorObj.setCombos(listOfCombo);
+					} else {
+						String[] comboColors = CommonUtility.getValuesOfArray(colorGroup,delmtr);
+						String mainColorGroup = UpchargeConstants.getColorGroup(comboColors[0].trim());
+						if(mainColorGroup != null){
+							colorObj.setName(mainColorGroup);
+							colorObj.setAlias(colorName);
+						} else {
+							colorObj.setName(ApplicationConstants.CONST_VALUE_TYPE_OTHER);
+							colorObj.setAlias(colorName);
+						}
+					}
+				/*} else {
+					if (colorGroup == null) {
+					colorGroup = ApplicationConstants.CONST_VALUE_TYPE_OTHER;
+					}
+					colorObj.setName(colorGroup);
+					colorObj.setAlias(colorName);
+				}*/
+			} else {
+				if (colorGroup == null) {
+					colorGroup = ApplicationConstants.CONST_VALUE_TYPE_OTHER;
+					}
+				colorObj.setName(colorGroup);
+				colorObj.setAlias(colorName);
+			}
+			listOfColors.add(colorObj);
+		}
+		}catch(Exception e){
+			_LOGGER.error("Error while processing color: "+e.getMessage());
+		}
+		return listOfColors;
+	}
+	private List<Combo> getColorsCombo(String firstValue,String secondVal,int comboLength){
+		List<Combo> listOfCombo = new ArrayList<>();
+		Combo comboObj1 = new Combo();
+		Combo comboObj2 = new Combo();
+		comboObj1.setName(firstValue);
+		comboObj1.setType(ApplicationConstants.CONST_STRING_SECONDARY);
+		comboObj2.setName(secondVal);
+		comboObj2.setType(ApplicationConstants.CONST_STRING_TRIM);
+		if(comboLength == ApplicationConstants.CONST_INT_VALUE_TWO){
+			listOfCombo.add(comboObj1);
+		} else {
+			listOfCombo.add(comboObj1);
+			listOfCombo.add(comboObj2);
+		}
+		return listOfCombo;
+	}
+	
+	public static boolean isComboColor(String colorValue){
+		String delmtr="/";
+		if(colorValue.toUpperCase().contains("COMBO")){
+			delmtr=":COMBO:";
+		}
+    	String[] colorVals = CommonUtility.getValuesOfArray(colorValue,delmtr);
+    	String mainColor       = null;
+    	String secondaryColor  = null;
+    	String thirdColor      = null;
+    	if(colorVals.length == ApplicationConstants.CONST_INT_VALUE_TWO){
+    		 mainColor = UpchargeConstants.getColorGroup(colorVals[0].trim());
+    		 secondaryColor = UpchargeConstants.getColorGroup(colorVals[1].trim());
+    		 if(mainColor != null && secondaryColor != null){
+    			 return true;
+    		 }
+    	} else if(colorVals.length == ApplicationConstants.CONST_INT_VALUE_THREE){
+    		 mainColor      = UpchargeConstants.getColorGroup(colorVals[0].trim());
+    		 secondaryColor = UpchargeConstants.getColorGroup(colorVals[1].trim());
+    		 thirdColor     = UpchargeConstants.getColorGroup(colorVals[2].trim());
+    		 if(mainColor != null && secondaryColor != null && thirdColor != null){
+    			 return true;
+    		 }
+    	} else{
+    		
+    	}
+    	return false;
+    }
+	
+	public static String[] getValuesOfArray(String data,String delimiter){
+		   if(!StringUtils.isEmpty(data)){
+			   return data.split(delimiter);
+		   }
+		   return null;
+	   }
+
+/*public List<Color> getColorCriteria(String colorValue) {
+		
+		Color colorObj = null;
+		List<Color> colorList = new ArrayList<Color>();
+		//HighCaliberConstants
+		try {
+		//Map<String, String> HCLCOLOR_MAP=new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		// Map<String, String> HCLCOLOR_MAP =HighCaliberConstants.getHCLCOLOR_MAP();
+			List<Combo> comboList = null;
+			String value = colorValue;
+			String tempcolorArray[]=value.split(ApplicationConstants.CONST_STRING_COMMA_SEP);
+			for (String colorVal : tempcolorArray) {
+			String strColor=colorVal;
+			strColor=strColor.replaceAll("&","/");
+			//strColor=strColor.replaceAll(" w/","/");
+			//strColor=strColor.replaceAll(" W/","/");
+			boolean isCombo = false;
+				colorObj = new Color();
+				comboList = new ArrayList<Combo>();
+    			isCombo = isComboColors(strColor);
+    			if(isCombo){
+    				if(HighCaliberConstants.HCLCOLOR_MAP.get(strColor.trim())!=null){
+    				//if(HCLCOLOR_MAP.get(strColor.trim())!=null){
+    					isCombo=false;
+    				}
+    			}
+    			
+				if (!isCombo) {
+					String colorName=TomaxConstants.TCOLOR_MAP.get(strColor.trim());
+					//String colorName=HCLCOLOR_MAP.get(strColor.trim());
+					if(StringUtils.isEmpty(colorName)){
+						colorName=ApplicationConstants.CONST_STRING_UNCLASSIFIED_OTHER;
+					}
+					colorObj.setName(colorName);
+					colorObj.setAlias(colorVal.trim());
+					colorList.add(colorObj);
+				} else {
+					//245-Mid Brown/Navy
+					String colorArray[] = strColor.split(ApplicationConstants.CONST_DELIMITER_FSLASH);
+					//if(colorArray.length==2){
+					String combo_color_1=TomaxConstants.TCOLOR_MAP.get(colorArray[0].trim());
+					//String combo_color_1=HCLCOLOR_MAP.get(colorArray[0].trim());
+					if(StringUtils.isEmpty(combo_color_1)){
+						combo_color_1=ApplicationConstants.CONST_STRING_UNCLASSIFIED_OTHER;
+					}
+					colorObj.setName(combo_color_1);
+					colorObj.setAlias(strColor);
+					
+					Combo comboObj = new Combo();
+					String combo_color_2=TomaxConstants.TCOLOR_MAP.get(colorArray[1].trim());
+					//String combo_color_2=HCLCOLOR_MAP.get(colorArray[1].trim());
+					if(StringUtils.isEmpty(combo_color_2)){
+						combo_color_2=ApplicationConstants.CONST_STRING_UNCLASSIFIED_OTHER;
+					}
+					comboObj.setName(combo_color_2.trim());
+					comboObj.setType(ApplicationConstants.CONST_STRING_SECONDARY);
+					if(colorArray.length==3){
+						String combo_color_3=TomaxConstants.TCOLOR_MAP.get(colorArray[2].trim());
+						//String combo_color_3=HCLCOLOR_MAP.get(colorArray[2].trim());
+						if(StringUtils.isEmpty(combo_color_3)){
+							combo_color_3=ApplicationConstants.CONST_STRING_UNCLASSIFIED_OTHER;
+						}
+						Combo comboObj2 = new Combo();
+						comboObj2.setName(combo_color_3.trim());
+						comboObj2.setType(ApplicationConstants.CONST_STRING_TRIM);
+						comboList.add(comboObj2);
+					}
+					comboList.add(comboObj);
+					colorObj.setCombos(comboList);
+					colorList.add(colorObj);
+				 	}
+		}
+		//}
+		} catch (Exception e) {
+			_LOGGER.error("Error while processing Color :" + e.getMessage());
+			return new ArrayList<Color>();
+		}
+		_LOGGER.info("Colors Processed");
+		return colorList;
+		}*/
+
+	private boolean isComboColors1(String value) {
+	boolean result = false;
+	if (value.contains("/")) {
+		result = true;
+	}
+	return result;
+	}
 	public LookupServiceData getLookupServiceDataObj() {
 		return lookupServiceDataObj;
 	}
@@ -578,6 +837,176 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 	public void setLookupRestServiceObj(LookupRestService lookupRestServiceObj) {
 		this.lookupRestServiceObj = lookupRestServiceObj;
 	}
+	
+	
+	public Product getCombinedCharge(String combStr,Product productExcelObj){
+		ProductConfigurations productConfigurations=productExcelObj.getProductConfigurations();
+		List<PriceGrid> existingPriceGrids=productExcelObj.getPriceGrids();
+		try{
+				//"LMIN:Less than Minimum@@@@@G#####55");
+				//IMOP:   Add'l Decoration Option: Consecutive Numbering@@@@@A@@@@@0.55___0.48___0.27___0.17___0.13");
+		//combStr="PCKG:Special Packaging: Rustic Tin RT810@@@@@C@@@@@19.5";
+		//List<PriceGrid> existingPriceGrids=productExcelObj.getPriceGrids();
+		String tempStr[]=combStr.split(":");
+		String tempString=combStr.replace(tempStr[0]+":", "");
+		String valueArr[]=tempString.split("@@@@@");
+		String critValue=valueArr[0];
+		String discValue=valueArr[1];		
+		String pricesTemp=valueArr[2];
+		
+		if(tempStr[0].equals("IMMD")){
+			
+		}else if(tempStr[0].equals("IMOP")){
+			//Shipping: Early Release
+			//Corporate Gift Handling (per location, including first)
+			String imprintOptionName="Imprint";
+			List<Option> listOfOptionNew =new ArrayList<Option>();
+			
+			if(critValue.contains(":")){
+				String tempArr[]=critValue.split(":");
+				imprintOptionName=tempArr[0];
+				critValue=tempArr[1];
+			}
+			critValue=critValue.trim();
+			imprintOptionName=imprintOptionName.trim();
+			listOfOptionNew=getOptions( critValue,"Imprint",imprintOptionName);
+			List<Option> listOfOptionTemp=productConfigurations.getOptions();
+			if(!CollectionUtils.isEmpty(listOfOptionTemp)){
+				listOfOptionNew.addAll(listOfOptionTemp);
+			}
+			productConfigurations.setOptions(listOfOptionNew);
+			existingPriceGrids=beaconProPriceGridParser.getPriceGrids(pricesTemp,"1",discValue,"USD","",
+					false, "False", critValue, "Imprint Option",
+					 1,"Optional","Imprint Option Charge", "Other",imprintOptionName,
+					existingPriceGrids);
+			
+		
+		
+		}else if(tempStr[0].equals("PROP")){
+
+			//Shipping: Early Release
+			//Corporate Gift Handling (per location, including first)
+			String productOptionName="Product";
+			List<Option> listOfOptionNew =new ArrayList<Option>();
+			if(critValue.contains(":")){
+				String tempArr[]=critValue.split(":");
+				productOptionName=tempArr[0];
+				critValue=tempArr[1];
+			}
+			critValue=critValue.trim();
+			productOptionName=productOptionName.trim();
+			listOfOptionNew=getOptions( critValue,"Product",productOptionName);
+			List<Option> listOfOptionTemp=productConfigurations.getOptions();
+			if(!CollectionUtils.isEmpty(listOfOptionTemp)){
+				listOfOptionNew.addAll(listOfOptionTemp);
+			}
+			productConfigurations.setOptions(listOfOptionNew);
+			existingPriceGrids=beaconProPriceGridParser.getPriceGrids(pricesTemp,"1",discValue,"USD","",
+					false, "False", critValue, "Product Option",
+					 1,"Optional","Product Option Charge", "Other",productOptionName,
+					existingPriceGrids);
+			
+		
+		}else if(tempStr[0].equals("LMIN")){
+			/*(String listOfPrices, String listOfQuan, String discountCodes,String currency, String priceInclude,
+					 boolean isBasePrice,String qurFlag, String priceName, 
+					 String criterias,Integer sequence,String upChargeType,String upchargeUsageType,
+					 List<PriceGrid> existingPriceGrid)*/
+			critValue=critValue.trim();
+			existingPriceGrids=beaconProPriceGridParser.getPriceGrids(pricesTemp,"1",discValue,"USD","",
+					false, "False", critValue, "Less than Minimum",
+					 1,"Optional","Less than Minimum Charge", "Other",null,
+					existingPriceGrids);
+		}else if(tempStr[0].equals("SHOP")){
+			//Shipping: Early Release
+			//Corporate Gift Handling (per location, including first)
+			String shippingName="Shipping";
+			List<Option> listOfOptionNew =new ArrayList<Option>();
+			if(critValue.contains(":")){
+				String tempArr[]=critValue.split(":");
+				shippingName=tempArr[0];
+				critValue=tempArr[1];
+			}
+			critValue=critValue.trim();
+			shippingName=shippingName.trim();
+			listOfOptionNew=getOptions( critValue,"Shipping",shippingName);
+			List<Option> listOfOptionTemp=productConfigurations.getOptions();
+			if(!CollectionUtils.isEmpty(listOfOptionTemp)){
+				listOfOptionNew.addAll(listOfOptionTemp);
+			}
+			productConfigurations.setOptions(listOfOptionNew);
+			existingPriceGrids=beaconProPriceGridParser.getPriceGrids(pricesTemp,"1",discValue,"USD","",
+					false, "False", critValue, "Shipping Option",
+					 1,"Optional","Shipping Charge", "Other",shippingName,
+					existingPriceGrids);
+			
+		}else if(tempStr[0].equals("PCKG")){
+			if(critValue.contains(":")){
+				String tempArr[]=critValue.split(":");
+				critValue=tempArr[1];
+			}
+			critValue=critValue.trim();
+			List<Packaging> packagingList=getPackagingCriteria(critValue);
+			List<Packaging> packagingListTemp=productConfigurations.getPackaging();
+			if(!CollectionUtils.isEmpty(packagingListTemp)){
+				packagingList.addAll(packagingListTemp);
+			}
+			
+			productConfigurations.setPackaging(packagingList);
+			existingPriceGrids=beaconProPriceGridParser.getPriceGrids(pricesTemp,"1",discValue,"USD","",
+					false, "False", critValue, 
+					"Packaging", 1,"Optional","Packaging Charge", "Other",null,
+					existingPriceGrids);
+			
+		}
+		productExcelObj.setProductConfigurations(productConfigurations);
+		productExcelObj.setPriceGrids(existingPriceGrids);
+		}catch(Exception e){
+			_LOGGER.error("Error while processing combine charges "+e.getMessage()+"for Value"+combStr);
+			productExcelObj.setProductConfigurations(productConfigurations);
+			productExcelObj.setPriceGrids(existingPriceGrids);
+		}
+		return productExcelObj;
+		
+	}
+
+	//public static List<Option> getOptions(List<String> opntnList,String optionNamee) {
+	public static List<Option> getOptions(String optionDataValue,String optionType,String optionNamee) {
+		List<Option> optionList=new ArrayList<>();
+		try{
+			   Option optionObj=new Option();
+			   List<OptionValue> valuesList=new ArrayList<OptionValue>();
+				 OptionValue optionValueObj=null;
+				//  for (String optionDataValue: opntnList) {
+					  optionValueObj=new OptionValue();
+					  optionValueObj.setValue(optionDataValue.trim());
+					  valuesList.add(optionValueObj);
+				//  }
+					  optionObj.setOptionType(optionType);
+					  optionObj.setName(optionNamee.trim());
+					  optionObj.setValues(valuesList); 
+					  optionObj.setAdditionalInformation("");
+					  optionObj.setCanOnlyOrderOne(false);
+					  optionObj.setRequiredForOrder(false);
+					  optionList.add(optionObj);
+		   }catch(Exception e){
+			   _LOGGER.error("Error while processing Options :"+e.getMessage());          
+		      return new ArrayList<Option>();
+		      
+		     }
+		  return optionList;
+		  
+	 }
+	
+	public BeaconProPriceGridParser getBeaconProPriceGridParser() {
+		return beaconProPriceGridParser;
+	}
+
+
+	public void setBeaconProPriceGridParser(
+			BeaconProPriceGridParser beaconProPriceGridParser) {
+		this.beaconProPriceGridParser = beaconProPriceGridParser;
+	}	
 	
 	}	
 		
