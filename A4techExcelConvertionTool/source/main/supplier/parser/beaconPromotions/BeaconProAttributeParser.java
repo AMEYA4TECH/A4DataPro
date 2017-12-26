@@ -879,11 +879,7 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 					false, "False", critValue, "Imprint Option",
 					 1,"Optional","Imprint Option Charge", "Other",imprintOptionName,
 					existingPriceGrids);
-			
-		
-		
 		}else if(tempStr[0].equals("PROP")){
-
 			//Shipping: Early Release
 			//Corporate Gift Handling (per location, including first)
 			String productOptionName="Product";
@@ -905,8 +901,6 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 					false, "False", critValue, "Product Option",
 					 1,"Optional","Product Option Charge", "Other",productOptionName,
 					existingPriceGrids);
-			
-		
 		}else if(tempStr[0].equals("LMIN")){
 			/*(String listOfPrices, String listOfQuan, String discountCodes,String currency, String priceInclude,
 					 boolean isBasePrice,String qurFlag, String priceName, 
@@ -977,11 +971,12 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 			   Option optionObj=new Option();
 			   List<OptionValue> valuesList=new ArrayList<OptionValue>();
 				 OptionValue optionValueObj=null;
-				//  for (String optionDataValue: opntnList) {
+				 String opntnArr[]=optionDataValue.split(",");
+				  for (String optionValue: opntnArr) {
 					  optionValueObj=new OptionValue();
-					  optionValueObj.setValue(optionDataValue.trim());
+					  optionValueObj.setValue(optionValue.trim());
 					  valuesList.add(optionValueObj);
-				//  }
+				  }
 					  optionObj.setOptionType(optionType);
 					  optionObj.setName(optionNamee.trim());
 					  optionObj.setValues(valuesList); 

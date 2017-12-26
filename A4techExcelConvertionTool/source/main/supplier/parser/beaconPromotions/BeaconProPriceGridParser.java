@@ -165,11 +165,24 @@ public class BeaconProPriceGridParser {
 				configs = new PriceConfiguration();
 				config = criterias.split(ApplicationConstants.CONST_DELIMITER_COLON);
 				//String criteriaValue = LookupData.getCriteriaValue(config[0]);
-				configs.setCriteria(config[0]);
-				configs.setValue(Arrays.asList((Object) config[1]));
+				
 				if(!StringUtils.isEmpty(optionName))
-				{
+				{	configs.setCriteria(config[0]);
+				    if(config[1].contains(",")){
+				    	String tempArr[]=config[1].split(",");
+				    	List<Object> value=new ArrayList<Object>();
+				    	for (Object object : tempArr) {
+				    		value.add(object);
+						}
+				    	configs.setValue(value);
+				    	
+				    }else{
+					configs.setValue(Arrays.asList((Object) config[1]));
+				    }
 					configs.setOptionName(optionName);
+				}else{
+					configs.setCriteria(config[0]);
+					configs.setValue(Arrays.asList((Object) config[1]));
 				}
 				priceConfiguration.add(configs);
 			}
