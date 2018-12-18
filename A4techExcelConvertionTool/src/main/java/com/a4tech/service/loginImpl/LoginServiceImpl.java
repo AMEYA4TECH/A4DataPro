@@ -66,7 +66,8 @@ public class LoginServiceImpl implements ILoginService {
             accessBean = new AccessBean();
             accessBean = response.getBody();
             _LOGGER.info("ASI response recieved");
-            accessBean.setAccessToken(accessBean.getAccessToken());
+            //accessBean.setAccessToken(accessBean.getAccessToken());
+            accessBean.setAccessToken(response.getStatusCode().toString());
 
             Calendar expireTimeCalculator = Calendar.getInstance();
             expireTimeCalculator.add(Calendar.MINUTE, AUTH_TOKEN_EXPIRE_MINUTES);

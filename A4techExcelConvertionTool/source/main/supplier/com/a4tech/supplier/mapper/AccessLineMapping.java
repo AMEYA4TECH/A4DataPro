@@ -1,6 +1,8 @@
 package com.a4tech.supplier.mapper;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -268,6 +270,8 @@ private static final Logger _LOGGER = Logger.getLogger(AccessLineMapping.class);
 					String colorValuee = cell.getStringCellValue();
 					
 					if(!StringUtils.isEmpty(colorValuee)){
+						
+						
 					   List<Color> colorsList = ColorParser.getColorCriteria(colorValuee);
 					   productConfigObj.setColors(colorsList);
 					//   productExcelObj.setCategories(categories);
@@ -1052,4 +1056,74 @@ private static final Logger _LOGGER = Logger.getLogger(AccessLineMapping.class);
 		this.accessLinePriceGridParserr = accessLinePriceGridParserr;
 	}
 	
+	
+	private HashMap<String, ArrayList<String>> getColorSpecialCase(String colorValue){
+		
+	HashMap<String,ArrayList<String>> mapNew =new HashMap<String, ArrayList<String>>();
+	ArrayList<String> colorListFinal = new ArrayList<String>();
+	
+		String finalKey="";
+		String secondaryValueFinal="";
+		String AccntOrTrimVal="";
+		String str=colorValue.replace("&", "and");
+		if(colorValue.contains("and") && colorValue.contains("with")){
+			String strArrar1[]=colorValue.split(",");
+			colorListFinal=(ArrayList<String>) Arrays.asList(strArrar1);
+			for (String stringCol : strArrar1) {
+				if(stringCol.contains("and") ){
+			int count = countOccurences(stringCol,"and");
+			if(count ==1 ){
+				      
+			}else if(count==2 && stringCol.contains("with")){
+				int index=colorListFinal.indexOf(stringCol);
+				
+				String strnNewValue[]= stringCol.split("with");
+				String extraValue=strnNewValue[0];
+				if(extraValue.contains("and")){
+					String strnNewValueee[]=extraValue.split("and");
+					ArrayList<String> colorListFinal2 = new ArrayList<String>();
+					colorListFinal2=(ArrayList<String>) Arrays.asList(strnNewValueee);
+					colorListFinal.addAll(colorListFinal2);
+					
+				}
+				String secAndAccent=strnNewValue[1];
+				
+				String secondValAcct[]=secAndAccent.split("and");
+				 secondaryValueFinal=secondValAcct[0];
+				 AccntOrTrimVal=secondValAcct[0];
+				if(AccntOrTrimVal.contains("Accent")){
+					AccntOrTrimVal=AccntOrTrimVal.replace("Accents", "__ACC");
+				}
+				colorListFinal.remove(index);
+				}
+			  }
+			}
+			
+			finalKey=secondaryValueFinal+":"+AccntOrTrimVal;
+		}/*else if(){
+			
+		}else if(){
+			
+		}else{
+			
+		}*/
+		mapNew.put(finalKey, colorListFinal);
+		return mapNew;
+		
+		
+	} 
+	static int countOccurences(String str, String word)  
+	{
+	    // split the string by spaces in a 
+	    String a[] = str.split(" "); 
+	    // search for pattern in a 
+	    int count = 0; 
+	    for (int i = 0; i < a.length; i++)  
+	    { 
+	    // if match found increase count 
+	    if (word.equals(a[i])) 
+	        count++;
+	    }
+	    return count; 
+	} 
 }

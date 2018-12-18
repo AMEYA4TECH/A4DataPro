@@ -212,7 +212,7 @@ public class BagMakersMapping implements IExcelParser{
 							    	listOfProductXids.add(xid);
 							    }
 								 productExcelObj = new Product();
-								 existingApiProduct = postServiceImpl.getProduct(accessToken, xid, environmentType); 
+								 existingApiProduct = postServiceImpl.getProduct(accessToken, xid.trim(), environmentType); 
 								     if(existingApiProduct == null){
 								    	 _LOGGER.info("Existing Xid is not available,product treated as new product");
 								    	 productExcelObj = new Product();
@@ -230,7 +230,7 @@ public class BagMakersMapping implements IExcelParser{
 					
 					switch (columnIndex + 1) {
 					case 1://XID
-						productExcelObj.setExternalProductId(xid);
+						productExcelObj.setExternalProductId(xid.trim());
 						 _LOGGER.info("XID is:"+xid);
 						break;
 					
@@ -441,15 +441,20 @@ public class BagMakersMapping implements IExcelParser{
 					case  20://Eco Characteristics
 						String keywords = CommonUtility.getCellValueStrinOrInt(cell);
 						if(!StringUtils.isEmpty(keywords)){
-						List<String> productKeywords = CommonUtility.getStringAsList(keywords,
+							List<String> productKeywords =new ArrayList<String>();
+						 productKeywords = CommonUtility.getStringAsList(keywords,
                                 ApplicationConstants.CONST_DELIMITER_COMMA);
-						productExcelObj.setProductKeywords(productKeywords);
-						/*List<String> productKeywordsTemp=new ArrayList<String>();
-						for (String keyword : productKeywords) {
-							if(keyword.length()<=30){
-								productKeywordsTemp.add(keyword);
+						List<String> productKeywordsTemp =new ArrayList<String>();
+						for (String string : productKeywords) {
+							string = CommonUtility.removeSpecialSymbols(string.trim(), ApplicationConstants.CHARACTERS_NUMBERS_PATTERN);
+							if(productKeywordsTemp.size()<30){
+								if(string.length()<=30){
+							productKeywordsTemp.add(string);
+								}
 							}
-						}*/
+						  }
+						//System.out.println(productKeywordsTemp.size());
+						productExcelObj.setProductKeywords(productKeywordsTemp);				
 						
 						}
 						break;
@@ -458,10 +463,25 @@ public class BagMakersMapping implements IExcelParser{
 						if(!StringUtils.isEmpty(keywords2)){
 						List<String> productKeywords2 = CommonUtility.getStringAsList(keywords2,
                                 ApplicationConstants.CONST_DELIMITER_COMMA);
+						List<String> productKeywordsTemp2 =new ArrayList<String>();
+						for (String string : productKeywords2) {
+							string = CommonUtility.removeSpecialSymbols(string.trim(), ApplicationConstants.CHARACTERS_NUMBERS_PATTERN);
+							if(productKeywordsTemp2.size()<30){
+								if(string.length()<=30){
+							productKeywordsTemp2.add(string);
+								}
+							}
+						  }
+						
+						
 						if(!CollectionUtils.isEmpty(productExcelObj.getProductKeywords())){
-							productKeywords2.addAll(productExcelObj.getProductKeywords());
+							if(productKeywordsTemp2.size()>29){
+							
+							}else{
+								productKeywordsTemp2.addAll(productExcelObj.getProductKeywords());
+							}
 						}
-						productExcelObj.setProductKeywords(productKeywords2);
+						productExcelObj.setProductKeywords(productKeywordsTemp2);
 						}
 						break;
 					case  22://Special Notes
