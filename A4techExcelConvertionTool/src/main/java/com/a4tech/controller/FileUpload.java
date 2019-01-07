@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.a4tech.core.excelMapping.ExcelFactory;
-import com.a4tech.core.model.FileBean;
 import com.a4tech.excel.service.IExcelParser;
 import com.a4tech.ftp.model.FtpLoginBean;
 import com.a4tech.product.dao.service.ProductDao;
@@ -35,6 +33,8 @@ import com.a4tech.util.ApplicationConstants;
 import com.a4tech.util.CommonUtility;
 import com.a4tech.util.ConvertCsvToExcel;
 import com.a4tech.util.LookupData;
+import com.a4tech.v5.core.excelMapping.ExcelFactory;
+import com.a4tech.v5.core.model.FileBean;
 
 @Controller
 @RequestMapping({ "/", "/uploadFile.htm" })

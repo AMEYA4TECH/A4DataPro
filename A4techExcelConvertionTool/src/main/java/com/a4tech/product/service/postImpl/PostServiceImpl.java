@@ -15,14 +15,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.a4tech.core.errors.ErrorMessage;
-import com.a4tech.core.errors.ErrorMessageList;
-import com.a4tech.core.model.ExternalAPIResponse;
 import com.a4tech.product.dao.entity.ErrorEntity;
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.Product;
 import com.a4tech.product.service.PostService;
 import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.core.errors.ErrorMessage;
+import com.a4tech.v5.core.errors.ErrorMessageList;
+import com.a4tech.v5.core.model.ExternalAPIResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

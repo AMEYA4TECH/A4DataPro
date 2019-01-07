@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.a4tech.core.errors.ErrorMessageList;
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.Availability;
 import com.a4tech.product.model.ImprintLocation;
@@ -30,6 +29,7 @@ import com.a4tech.product.model.Product;
 import com.a4tech.product.model.ProductConfigurations;
 import com.a4tech.util.ApplicationConstants;
 import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.core.errors.ErrorMessageList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class PrimeLineImprintTabParser {

@@ -30,6 +30,15 @@ public class Price implements Comparator<Price> {
     @JsonProperty("PriceUnit")
     private PriceUnit priceUnit;
     
+    
+    @JsonProperty("IsQUR")
+    private Boolean                  isQUR;
+
+
+    @JsonProperty("Currency")
+    private String                   currency;
+    
+   
 	@JsonProperty("Sequence")
     public Integer getSequence() {
         return sequence;
@@ -85,8 +94,28 @@ public class Price implements Comparator<Price> {
 	public void setNetCost(String netCost) {
 		this.netCost = netCost;
 	}
+	
+	@JsonProperty("IsQUR")
+    public Boolean getIsQUR() {
+        return isQUR;
+    }
 
-
+    @JsonProperty("IsQUR")
+    public void setIsQUR(Boolean isQUR) {
+        this.isQUR = isQUR;
+    }
+    
+    
+       @JsonProperty("Currency")
+        public String getCurrency() {
+            return currency;
+        }
+    
+        @JsonProperty("Currency")
+        public void setCurrency(String currency) {
+            this.currency = currency;
+    }
+	
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

@@ -15,6 +15,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import parser.v5.digiSpec.DigiSpecAttributeParser;
+import parser.v5.digiSpec.DigiSpecDataMapping;
+
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.Artwork;
 import com.a4tech.product.model.Catalog;

@@ -2,6 +2,7 @@ package com.a4tech.core.errors;
 
 import java.util.List;
 
+import com.a4tech.v5.core.errors.ErrorMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ErrorMessageList {

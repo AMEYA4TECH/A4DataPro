@@ -23,6 +23,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main/java/supplier/38228BamBam"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/source/main/supplier"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main/java/supplier/82283RFGLine"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/source/main/v5"/>
         <property name="java-output-path" value="/A4DataPro/target/classes"/>
         <property name="context-root" value="A4DataPro"/>
     </wb-module>

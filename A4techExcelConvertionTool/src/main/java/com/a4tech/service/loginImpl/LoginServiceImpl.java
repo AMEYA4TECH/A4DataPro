@@ -18,9 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.a4tech.core.model.AccessBean;
 import com.a4tech.product.service.ILoginService;
 import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.core.model.AccessBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 

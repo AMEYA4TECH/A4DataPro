@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.a4tech.ftp.FilesParsing;
 import com.a4tech.ftp.service.FtpService;
 import com.a4tech.product.service.IMailService;
+import com.a4tech.v5.ftp.FilesParsing;
 
 
 public class FtpServiceImpl implements FtpService{

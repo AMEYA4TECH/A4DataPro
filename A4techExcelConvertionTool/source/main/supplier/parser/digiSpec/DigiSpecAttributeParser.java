@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import parser.v5.digiSpec.DigiSpecColorAndMaterialMapping;
+import parser.v5.digiSpec.DigiSpecPriceGridParser;
+
 import com.a4tech.lookup.service.LookupServiceData;
 import com.a4tech.product.model.Artwork;
 import com.a4tech.product.model.Catalog;

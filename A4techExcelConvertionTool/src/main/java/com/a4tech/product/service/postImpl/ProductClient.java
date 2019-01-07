@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.a4tech.core.model.ExternalAPIResponse;
 import com.a4tech.product.model.Product;
+import com.a4tech.v5.core.model.ExternalAPIResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.spi.inject.Inject;
 

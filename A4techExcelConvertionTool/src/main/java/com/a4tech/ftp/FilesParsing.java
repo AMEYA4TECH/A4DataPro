@@ -18,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.a4tech.core.excelMapping.ExcelFactory;
 import com.a4tech.excel.service.IExcelParser;
 import com.a4tech.product.dao.entity.BaseSupplierLoginDetails;
 import com.a4tech.product.dao.service.ProductDao;
@@ -27,6 +26,8 @@ import com.a4tech.product.service.IMailService;
 import com.a4tech.util.ApplicationConstants;
 import com.a4tech.util.CommonUtility;
 import com.a4tech.util.ConvertCsvToExcel;
+import com.a4tech.core.excelMapping.ExcelFactory;
+import com.a4tech.ftp.FilesParsing;
 import com.opencsv.CSVReader;
 
 public class FilesParsing {
