@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.a4tech.product.model.Availability;
-import com.a4tech.product.model.AvailableVariations;
-import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.product.model.Availability;
+import com.a4tech.v5.product.model.AvailableVariations;
+import com.a4tech.v5.util.ApplicationConstants;
 
 /*@author Venkat
  *@param List List ,ParentList ChildList

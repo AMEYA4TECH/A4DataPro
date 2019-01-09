@@ -5,22 +5,17 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import com.a4tech.ftp.FilesParsing;
-import com.a4tech.ftp.service.FtpService;
-import com.a4tech.product.service.IMailService;
+import com.a4tech.v5.ftp.FilesParsing;
+import com.a4tech.v5.ftp.service.FtpService;
+import com.a4tech.v5.product.service.IMailService;
 
 
 public class FtpServiceImpl implements FtpService{

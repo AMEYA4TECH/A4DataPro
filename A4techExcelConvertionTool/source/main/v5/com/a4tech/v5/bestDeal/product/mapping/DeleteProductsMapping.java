@@ -11,12 +11,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.a4tech.bestDeal.product.parser.BestDealAttributeParser;
-import com.a4tech.bestDeal.product.parser.BestDealPriceGridParser;
-import com.a4tech.product.dao.service.ProductDao;
-import com.a4tech.product.service.postImpl.PostServiceImpl;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.bestDeal.product.parser.BestDealAttributeParser;
+import com.a4tech.v5.bestDeal.product.parser.BestDealPriceGridParser;
+import com.a4tech.v5.product.dao.service.ProductDao;
+import com.a4tech.v5.product.service.postImpl.PostServiceImpl;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 
 public class DeleteProductsMapping {
 	

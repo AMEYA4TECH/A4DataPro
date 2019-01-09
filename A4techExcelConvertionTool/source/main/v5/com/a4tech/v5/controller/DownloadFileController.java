@@ -15,8 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.a4tech.controller.DownloadFileController;
-import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.controller.DownloadFileController;
+import com.a4tech.v5.util.ApplicationConstants;
 
 @Controller
 @RequestMapping("/downloadFile")

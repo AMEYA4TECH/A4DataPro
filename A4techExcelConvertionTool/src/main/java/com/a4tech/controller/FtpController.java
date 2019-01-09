@@ -34,7 +34,6 @@ import com.a4tech.product.service.IProductDao;
 import com.a4tech.util.ApplicationConstants;
 import com.a4tech.util.CommonUtility;
 import com.a4tech.util.ConvertCsvToExcel;
-import com.a4tech.controller.FtpController;
 import com.opencsv.CSVReader;
 
 @RestController

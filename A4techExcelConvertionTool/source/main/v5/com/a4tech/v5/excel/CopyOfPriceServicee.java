@@ -10,15 +10,15 @@ import org.springframework.util.StringUtils;
 
 import parser.BagMakers.BagMakersPriceGridParser;
 
-import com.a4tech.product.model.ImprintMethod;
-import com.a4tech.product.model.Price;
-import com.a4tech.product.model.PriceConfiguration;
-import com.a4tech.product.model.PriceGrid;
-import com.a4tech.product.model.PriceUnit;
-import com.a4tech.product.model.Product;
-import com.a4tech.product.model.ProductConfigurations;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.LookupData;
+import com.a4tech.v5.product.model.ImprintMethod;
+import com.a4tech.v5.product.model.Price;
+import com.a4tech.v5.product.model.PriceConfiguration;
+import com.a4tech.v5.product.model.PriceGrid;
+import com.a4tech.v5.product.model.PriceUnit;
+import com.a4tech.v5.product.model.Product;
+import com.a4tech.v5.product.model.ProductConfigurations;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.LookupData;
 
 public abstract class CopyOfPriceServicee {
 	private static Logger              _LOGGER       =  Logger.getLogger(BagMakersPriceGridParser.class);

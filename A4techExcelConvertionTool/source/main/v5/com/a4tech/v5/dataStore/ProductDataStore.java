@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.a4tech.product.model.Product;
+import com.a4tech.v5.product.model.Product;
 
 public class ProductDataStore {
 	public static Map<String, Product> storeProduct = new HashMap<String, Product>();

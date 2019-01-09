@@ -143,9 +143,9 @@ public abstract class CopyOfPriceServicee {
 						configs = new PriceConfiguration();
 						configs.setCriteria(criteriaValue);
 						configs.setValue(Arrays.asList((Object) Value));
-						if(!StringUtils.isEmpty(optionName)){
+						/*if(!StringUtils.isEmpty(optionName)){
 							configs.setOptionName(optionName);
-						}
+						}*/
 						priceConfiguration.add(configs);
 					}
 				} else {

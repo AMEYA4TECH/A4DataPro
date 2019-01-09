@@ -12,20 +12,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.a4tech.lookup.model.Catalog;
-import com.a4tech.lookup.model.Catalogs;
-import com.a4tech.lookup.model.Categories;
-import com.a4tech.lookup.model.Colors;
-import com.a4tech.lookup.model.FobPoints;
-import com.a4tech.lookup.model.ImprintMethods;
-import com.a4tech.lookup.model.LineName;
-import com.a4tech.lookup.model.Materials;
-import com.a4tech.lookup.model.Origin;
-import com.a4tech.lookup.model.Packages;
-import com.a4tech.lookup.model.Shapes;
-import com.a4tech.lookup.model.Themes;
-import com.a4tech.lookup.model.TradeNames;
-import com.a4tech.product.model.Color;
+import com.a4tech.v5.lookup.model.Catalog;
+import com.a4tech.v5.lookup.model.Catalogs;
+import com.a4tech.v5.lookup.model.Categories;
+import com.a4tech.v5.lookup.model.Colors;
+import com.a4tech.v5.lookup.model.FobPoints;
+import com.a4tech.v5.lookup.model.ImprintMethods;
+import com.a4tech.v5.lookup.model.LineName;
+import com.a4tech.v5.lookup.model.Materials;
+import com.a4tech.v5.lookup.model.Origin;
+import com.a4tech.v5.lookup.model.Packages;
+import com.a4tech.v5.lookup.model.Shapes;
+import com.a4tech.v5.lookup.model.Themes;
+import com.a4tech.v5.lookup.model.TradeNames;
+import com.a4tech.v5.product.model.Color;
 
 public class LookupRestService {
 	

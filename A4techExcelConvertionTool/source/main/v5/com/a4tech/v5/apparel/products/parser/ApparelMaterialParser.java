@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.a4tech.lookup.service.LookupServiceData;
-import com.a4tech.product.model.BlendMaterial;
-import com.a4tech.product.model.Combo;
-import com.a4tech.product.model.Material;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.lookup.service.LookupServiceData;
+import com.a4tech.v5.product.model.BlendMaterial;
+import com.a4tech.v5.product.model.Combo;
+import com.a4tech.v5.product.model.Material;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 
 public class ApparelMaterialParser {
 	private LookupServiceData lookupServiceData;

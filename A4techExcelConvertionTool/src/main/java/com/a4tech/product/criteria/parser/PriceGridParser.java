@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.a4tech.excel.PriceService;
-import com.a4tech.excel.PriceServicee;
 import com.a4tech.product.model.Price;
 import com.a4tech.product.model.PriceConfiguration;
 import com.a4tech.product.model.PriceGrid;
@@ -17,7 +15,7 @@ import com.a4tech.util.LookupData;
 
 
 
-public class PriceGridParser extends PriceServicee{
+public class PriceGridParser {
 	private Logger              _LOGGER              = Logger.getLogger(getClass());
 	public List<PriceGrid> getPriceGrids(String listOfPrices,String listOfQuan,String listOfDisc ,String currency,String priceInclude,
 			                 boolean isBasePrice ,String isQur,String priceName,String criterias ,List<PriceGrid> existingPriceGrid){
@@ -30,18 +28,17 @@ public class PriceGridParser extends PriceServicee{
 		String[] discount = listOfDisc.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
 		
 		
-		//priceGrid.setCurrency(currency);
+		priceGrid.setCurrency(currency);
 		priceGrid.setDescription(priceName);
-		//priceGrid.setIsQUR(isQur.equalsIgnoreCase("Y")?ApplicationConstants.CONST_BOOLEAN_TRUE:ApplicationConstants.CONST_BOOLEAN_FALSE);
+		priceGrid.setIsQUR(isQur.equalsIgnoreCase("Y")?ApplicationConstants.CONST_BOOLEAN_TRUE:ApplicationConstants.CONST_BOOLEAN_FALSE);
 		priceGrid.setIsBasePrice(isBasePrice);
 		priceGrid.setSequence(sequence);
 		List<Price> listOfPrice = null;
-		listOfPrice = getPrices(prices,quantity,discount);
-		/*if(!priceGrid.getIsQUR()){
+		if(!priceGrid.getIsQUR()){
 			listOfPrice = getPrices(prices,quantity,discount);
 		}else{
 			listOfPrice = new ArrayList<Price>();
-		}*/
+		}
 		priceGrid.setPrices(listOfPrice);
 		if(criterias != null && !criterias.isEmpty()){
 		   configuration = getConfigurations(criterias);
@@ -55,7 +52,7 @@ public class PriceGridParser extends PriceServicee{
 		
 	}
 	
-	public List<Price> getPrices(String[] prices, String[] quantity , String[] discount,String currency,String isQur){
+	public List<Price> getPrices(String[] prices, String[] quantity , String[] discount){
 		List<Price> listOfPrices = new ArrayList<Price>();
 		 try{
 		  
@@ -73,8 +70,6 @@ public class PriceGridParser extends PriceServicee{
 			 price.setDiscountCode(discount[i]);
 			 priceUnit.setItemsPerUnit(ApplicationConstants.CONST_STRING_VALUE_ONE);
 			 price.setPriceUnit(priceUnit);
-			 price.setCurrency(currency);
-			 price.setIsQUR(isQur.equalsIgnoreCase("Y")?ApplicationConstants.CONST_BOOLEAN_TRUE:ApplicationConstants.CONST_BOOLEAN_FALSE);
 			 listOfPrices.add(price);
 		   }
 	}catch (Exception e){
@@ -135,19 +130,19 @@ public class PriceGridParser extends PriceServicee{
 		String[] upChargeDiscount = discounts.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
 		
 		
-		//priceGrid.setCurrency(currency);
+		priceGrid.setCurrency(currency);
 		priceGrid.setDescription(upChargeName);
-		//priceGrid.setIsQUR((qurFlag.equalsIgnoreCase("Y"))?ApplicationConstants.CONST_BOOLEAN_TRUE: ApplicationConstants.CONST_BOOLEAN_FALSE);
+		priceGrid.setIsQUR((qurFlag.equalsIgnoreCase("Y"))?ApplicationConstants.CONST_BOOLEAN_TRUE: ApplicationConstants.CONST_BOOLEAN_FALSE);
 		priceGrid.setIsBasePrice(ApplicationConstants.CONST_BOOLEAN_FALSE);
 		priceGrid.setSequence(upChargeSequence);
 		priceGrid.setUpchargeType(upChargeType);
 		priceGrid.setUpchargeUsageType(upchargeUsageType);
 		List<Price> listOfPrice = null;
-		//if(!priceGrid.getIsQUR()){
+		if(!priceGrid.getIsQUR()){
 			 listOfPrice = getPrices(upChargePrices,upChargeQuantity,upChargeDiscount);
-		//}else{
+		}else{
 			listOfPrice = new ArrayList<Price>();
-		//}
+		}
 		
 		priceGrid.setPrices(listOfPrice);
 		if(upChargeCriterias != null && !upChargeCriterias.isEmpty()){

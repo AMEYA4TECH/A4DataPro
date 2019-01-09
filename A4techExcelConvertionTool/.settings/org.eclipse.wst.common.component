@@ -2,7 +2,6 @@
     <wb-module deploy-name="A4DataPro">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main/java/supplier/USBProducts"/>
@@ -24,6 +23,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/source/main/supplier"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main/java/supplier/82283RFGLine"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/source/main/v5"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <property name="java-output-path" value="/A4DataPro/target/classes"/>
         <property name="context-root" value="A4DataPro"/>
     </wb-module>

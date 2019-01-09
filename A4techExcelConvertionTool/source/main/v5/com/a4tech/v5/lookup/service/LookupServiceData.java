@@ -2,9 +2,9 @@ package com.a4tech.v5.lookup.service;
 
 import java.util.List;
 
-import com.a4tech.lookup.model.Catalog;
-import com.a4tech.lookup.service.restService.LookupRestService;
-import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.lookup.model.Catalog;
+import com.a4tech.v5.lookup.service.restService.LookupRestService;
+import com.a4tech.v5.util.ApplicationConstants;
 
 public class LookupServiceData {
 	

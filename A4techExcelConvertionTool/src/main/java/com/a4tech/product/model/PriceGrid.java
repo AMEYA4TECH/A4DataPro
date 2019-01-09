@@ -22,14 +22,16 @@ public class PriceGrid implements Comparator<PriceGrid>{
 
     @JsonProperty("IsBasePrice")
     private Boolean                  isBasePrice;
-    
+    @JsonProperty("IsQUR")
+    private Boolean                  isQUR;
     @JsonProperty("Description")
     private String                   description;
     @JsonProperty("PriceIncludes")
     private String                   priceIncludes;
     @JsonProperty("Sequence")
     private Integer                  sequence;
-    
+    @JsonProperty("Currency")
+    private String                   currency;
     @JsonProperty("ServiceCharge")
     private String					 serviceCharge;
    	@JsonProperty("ProductNumber")
@@ -55,7 +57,15 @@ public class PriceGrid implements Comparator<PriceGrid>{
         this.isBasePrice = isBasePrice;
     }
 
-    
+    @JsonProperty("IsQUR")
+    public Boolean getIsQUR() {
+        return isQUR;
+    }
+
+    @JsonProperty("IsQUR")
+    public void setIsQUR(Boolean isQUR) {
+        this.isQUR = isQUR;
+    }
 
     @JsonProperty("Description")
     public String getDescription() {
@@ -85,6 +95,16 @@ public class PriceGrid implements Comparator<PriceGrid>{
     @JsonProperty("Sequence")
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
+    }
+
+    @JsonProperty("Currency")
+    public String getCurrency() {
+        return currency;
+    }
+
+    @JsonProperty("Currency")
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     @JsonProperty("ProductNumber")
