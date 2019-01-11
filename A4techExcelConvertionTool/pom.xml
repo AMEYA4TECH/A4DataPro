@@ -255,7 +255,8 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-		<finalName>${project.artifactId}</finalName>
+		<!-- <finalName>${project.artifactId}</finalName> -->
+		<finalName>FTPDataPro</finalName>
 		<plugins>
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
