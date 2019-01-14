@@ -154,7 +154,7 @@
    <property name="descrptionParserObj" ref="descrptionParserObj" />
      <property name="productDaoObj" ref="productDao" />
    	</bean>
-	 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
   		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
   		<property name="url" value="jdbc:sqlserver://192.168.1.10;databaseName=a4datapro;" />
      	<property name="username" value="sa" />
@@ -177,7 +177,7 @@
 				<value>com.a4tech.product.dao.entity.ErrorEntity</value>
 				<value>com.a4tech.product.dao.entity.BatchEntity</value>
 				<value>com.a4tech.product.dao.entity.FtpServerFileEntity</value>
-				<value>com.a4tech.product.dao.entity.SupplierLoginDetails</value>
+				<value>com.a4tech.product.dao.entity.SupplierLoginDetails</value>				
 				<value>com.a4tech.product.dao.entity.ProductionSupplierLoginDetails</value>
 				<value>com.a4tech.product.dao.entity.BaseSupplierLoginDetails</value>
 				<value>com.a4tech.product.dao.entity.SupplierColumnsEntity</value>
@@ -186,8 +186,8 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				 <!--  <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
-				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				  <!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+			 <prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop> 
 				<prop key="hibernate.current_session_context_class">thread</prop>
 				<prop key="show_sql">true</prop>
 				<prop key="hbm2ddl.auto">update</prop>
@@ -312,8 +312,7 @@
      	   <property name="adspicPriceGridParser" ref="adspecPriceGridParserId"/>
      	   <property name="productDaoObj" ref="productDao"/>
      	   <property name="adspecAttrParser" ref="adspecProductAttributeParserId"/>
-     </bean>
-       
+     </bean>   
      <!-- supplier 32125 configuration end -->
      
       <!-- supplier 91284 configuration start -->
