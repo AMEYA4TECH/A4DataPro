@@ -15,8 +15,10 @@ import com.a4tech.product.model.BlendMaterial;
 import com.a4tech.product.model.Catalog;
 import com.a4tech.product.model.Color;
 import com.a4tech.product.model.Combo;
+import com.a4tech.product.model.Configurations;
 import com.a4tech.product.model.Dimension;
 import com.a4tech.product.model.Dimensions;
+import com.a4tech.product.model.Image;
 import com.a4tech.product.model.ImprintMethod;
 import com.a4tech.product.model.ImprintSize;
 import com.a4tech.product.model.Material;
@@ -27,6 +29,7 @@ import com.a4tech.product.model.Product;
 import com.a4tech.product.model.ProductConfigurations;
 import com.a4tech.product.model.ShippingEstimate;
 import com.a4tech.product.model.Size;
+import com.a4tech.product.model.Theme;
 import com.a4tech.product.model.Value;
 import com.a4tech.product.model.Values;
 import com.a4tech.product.model.Weight;
@@ -40,14 +43,20 @@ public class BagMakerAttributeParser {
 	
 	public List<ImprintMethod> getImprintMethods(List<String> listOfImprintMethods){
 		List<ImprintMethod> listOfImprintMethodsNew = new ArrayList<ImprintMethod>();
+		String aliasName="";
 		for (String value : listOfImprintMethods) {
+			aliasName=value;
+			if(value.toLowerCase().contains("screen")){
+				value="Silkscreen";
+			}
+			
 			value=value.trim();
 			ImprintMethod imprintMethodObj =new ImprintMethod();
 			if(objLookUpService.isImprintMethod(value.toUpperCase())){
-				imprintMethodObj.setAlias(value);
+				imprintMethodObj.setAlias(aliasName);
 				imprintMethodObj.setType(value);
 			}else{
-				imprintMethodObj.setAlias(value);
+				imprintMethodObj.setAlias(aliasName);
 				imprintMethodObj.setType("OTHER");
 			}
 			listOfImprintMethodsNew.add(imprintMethodObj);
@@ -79,7 +88,7 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 				return new Product();
 			}
 			
-		/*	//Image
+			//Image
 			List<Image> imagesList=existingProduct.getImages();
 			if(!CollectionUtils.isEmpty(imagesList)){
 				List<Image> newImagesList=new ArrayList<Image>();
@@ -88,14 +97,14 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 					newImagesList.add(image);
 				}
 				newProduct.setImages(imagesList);
-			}*/
+			}
 			
 			//Categories
 			listCategories=existingProduct.getCategories();
 			if(!CollectionUtils.isEmpty(listCategories)){
 				newProduct.setCategories(listCategories);
 			}
-		 
+			//keywords
 			List<String> productKeywords=existingProduct.getProductKeywords();
 			if(!CollectionUtils.isEmpty(productKeywords)){
 				newProduct.setProductKeywords(productKeywords);
@@ -104,6 +113,28 @@ public Product getExistingProductData(Product existingProduct , ProductConfigura
 			if(!CollectionUtils.isEmpty(listCatalog)){
 				newProduct.setCatalogs(listCatalog);
 			}
+			
+			//themes
+			List<Theme>	themes=existingProductConfig.getThemes();
+			if(!CollectionUtils.isEmpty(themes)){
+				List<Theme>	themesTemp=new ArrayList<Theme>();
+				for (Theme theme : themes) {
+					Theme themeObj=new Theme();
+					String tempValue=theme.getName();
+					tempValue=tempValue.trim();
+					if(tempValue.toUpperCase().contains("ECO") || tempValue.toUpperCase().contains("FRIENDLY")){
+					String	themeName="ECO & ENVIRONMENTALLY FRIENDLY";
+					themeObj.setName(themeName);
+					themesTemp.add(themeObj);
+					}else{
+						themeObj.setName(tempValue);
+						themesTemp.add(themeObj);
+					}
+				}
+				newProductConfigurations.setThemes(themesTemp);
+			}
+			
+			
 		newProduct.setProductConfigurations(newProductConfigurations);
 		}catch(Exception e){
 			_LOGGER.error("Error while processing Existing Product Data " +e.getMessage());
@@ -169,6 +200,7 @@ public List<Color> getProductColors(String color){
 					String alias = colorGroup.replaceAll(ApplicationConstants.CONST_DELIMITER_FSLASH, "-");
 					colorObj.setAlias(alias);
 					colorObj.setCombos(listOfCombo);
+					listOfColors.add(colorObj);
 				} else {
 					String[] comboColors = CommonUtility.getValuesOfArray(colorGroup,
 							ApplicationConstants.CONST_DELIMITER_FSLASH);
@@ -180,7 +212,9 @@ public List<Color> getProductColors(String color){
 						colorObj.setName(ApplicationConstants.CONST_VALUE_TYPE_OTHER);
 						colorObj.setAlias(colorName);
 					}
+					listOfColors.add(colorObj);
 				}
+				//listOfColors.add(colorObj);
 			/*} else {
 				if (colorGroup == null) {
 				colorGroup = ApplicationConstants.CONST_VALUE_TYPE_OTHER;
@@ -190,12 +224,27 @@ public List<Color> getProductColors(String color){
 			}*/
 		} else {
 			if (colorGroup == null) {
-				colorGroup = ApplicationConstants.CONST_VALUE_TYPE_OTHER;
-				}
+				List<String> listOfLookupColor = getColorType(colorName.toUpperCase());
+				if(!listOfLookupColor.isEmpty()){
+				//	int numOfMaterials = listOfLookupColor.size();
+				//if(numOfMaterials == 1){ // this condition used to single material value(E.X 100% Cotton)
+						//colorObj = getColorValue(listOfLookupColor.get(0), colorName);//
+					colorObj = getColorValue("MEDIUM "+listOfLookupColor.get(0), colorName);//
+						listOfColors.add(colorObj);
+							//}
+				}else{
+			colorGroup = ApplicationConstants.CONST_VALUE_TYPE_OTHER;
 			colorObj.setName(colorGroup);
 			colorObj.setAlias(colorName);
+			listOfColors.add(colorObj);
+				}
+		}else if(!StringUtils.isEmpty(colorGroup)){
+			colorObj.setName(colorGroup);
+			colorObj.setAlias(colorName);
+			listOfColors.add(colorObj);
 		}
-		listOfColors.add(colorObj);
+		//listOfColors.add(colorObj);
+	}
 	}
 	}catch(Exception e){
 		_LOGGER.error("Error while processing color: "+e.getMessage());
@@ -252,7 +301,10 @@ public Size getSizes(String sizeValue) {
 		sizeValue=sizeValue.replace("H", "");
 		sizeValue=sizeValue.replace("L", "");
 		sizeValue=sizeValue.replace("\"", "");
-		
+		if(sizeValue.contains("6 + 3")){
+		sizeValue=sizeValue.replace("6 + 3", "9");
+		}
+		//6 + 3
 		//if (sizeGroup.equals("dimension")) {
 		Dimension dimensionObj = new Dimension();
 		//String DimenArr[] = sizeValue.split(ApplicationConstants.CONST_STRING_COMMA_SEP);
@@ -547,6 +599,31 @@ public  List<Option> getOptions(String optionName,String  optionDataValue) {
 				
 		return finalMaterialValues;	
 	}
+	
+	public List<String> getColorType(String value){
+		//List<String> listOfLookUpColors = objLookUpService.getColorValues();
+		List<String> listOfLookUpColors = new ArrayList<String>();
+	/*	List<String> finalColorValues = listOfLookUpColors.stream()
+				                                  .filter(clrName -> value.contains(clrName))
+				                                  .collect(Collectors.toList());*/
+		
+		listOfLookUpColors.add("BLACK");
+		listOfLookUpColors.add("BLUE");
+		listOfLookUpColors.add("BROWN");
+		listOfLookUpColors.add("GRAY");
+		listOfLookUpColors.add("GREEN");
+		listOfLookUpColors.add("ORANGE");
+		listOfLookUpColors.add("PINK");
+		listOfLookUpColors.add("PURPLE");
+		listOfLookUpColors.add("RED");
+		listOfLookUpColors.add("PINK");
+		listOfLookUpColors.add("WHITE");
+		listOfLookUpColors.add("YELLOW");
+		List<String> finalColorValues = listOfLookUpColors.stream()
+                .filter(clrName -> value.toUpperCase().contains(clrName))
+                .collect(Collectors.toList());
+		return finalColorValues;	
+	}
 		
 	public Material getMaterialValue(String name,String alias){
 		Material materialObj = new Material();
@@ -555,7 +632,28 @@ public  List<Option> getOptions(String optionName,String  optionDataValue) {
 		materialObj.setAlias(alias);
 		return materialObj;
 	}
+	public Color getColorValue(String name,String alias){
+		Color colorObj = new Color();
+		name = CommonUtility.removeCurlyBraces(name);
+		colorObj.setName(name);
+		colorObj.setAlias(alias);
+		return colorObj;
+	}
 	
+	public List<String> getProductCategories(String categoryVal){
+		List<String> listOfCategories = new ArrayList<>();
+		 List<String> categories = CommonUtility.getStringAsList(categoryVal,
+					ApplicationConstants.CONST_DELIMITER_COMMA);
+		 for (String catValue : categories) {
+			 if(objLookUpService.isCategory(catValue.trim())){
+					listOfCategories.add(catValue);
+				}else{
+					System.out.println("No categroy match");
+				}
+		}
+		
+		return listOfCategories;
+	}
 	
 	public static String[] getValuesOfArray(String data,String delimiter){
 	   if(!StringUtils.isEmpty(data)){

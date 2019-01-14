@@ -11,13 +11,17 @@
 	 	<property name="jobDetail" ref="ftpServerCronJobDetails"></property> 
 	 	<!-- <property name="cronExpression" value="0 33 17 * * ?"></property> 0 20 19 ? * TUE * -->
 	 	 <property name="cronExpression" value="0 30 14 1/1 * ? *"></property> 
-	 	 <!-- <property name="cronExpression" value="0 0 9 ? * TUE,WED,THU,FRI *"></property>  -->
+		 <!-- <property name="cronExpression" value="0 0 9 ? * TUE,WED,THU,FRI *"></property> --> 
 	 </bean>
 	<!--  <bean id="ftpServerFailureCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 	 	<property name="jobDetail" ref="ftpServerFailureCronJobDetails"></property>
 	 	<property name="cronExpression" value="0 33 17 * * ?"></property>
 	 	<property name="cronExpression" value="0 0/2 * 1/1 * ? *"></property>
 	 </bean>	 -->
+	 <bean id="fileMovesCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	 	<property name="jobDetail" ref="fileMovesCronJobDetails"></property> 
+	 	 <property name="cronExpression" value="0 30 12 1/1 * ? *"></property> 
+	 </bean>
 	<!-- cron Job details -->
       <bean id="ftpServerCronJobDetails" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
       	<property name="jobClass" value="com.a4tech.scheduler.FtpServerScheduler"/>
@@ -26,7 +30,11 @@
       <!-- <bean id="ftpServerFailureCronJobDetails" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
       	<property name="jobClass" value="com.a4tech.scheduler.FtpCheckingSchedular"/>
       	<property name="durability" value="true"></property>
-      </bean> -->		
+      </bean> -->
+      <bean id="fileMovesCronJobDetails" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+      	<property name="jobClass" value="com.a4tech.scheduler.FilesMoveScheduler"/>
+      	<property name="durability" value="true"></property>
+      </bean>		
     <!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="jobDetails">
@@ -39,6 +47,7 @@
     		<list>
     			<ref bean="ftpServerCronTrigger"/>
     			<!-- <ref bean="ftpServerFailureCronTrigger"/> -->
+    			<ref bean="fileMovesCronTrigger"/>
     		</list>
     	</property>
     </bean>

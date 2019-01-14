@@ -1,23 +1,27 @@
 package com.a4tech.ftp.service.impl;
 
-import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.stereotype.Service;
 
 import com.a4tech.ftp.FilesParsing;
 import com.a4tech.ftp.service.FtpService;
 import com.a4tech.product.service.IMailService;
+
 
 public class FtpServiceImpl implements FtpService{
   private FTPClient 	ftpClient ;
@@ -30,7 +34,7 @@ public class FtpServiceImpl implements FtpService{
   private IMailService  mailService;
 private Logger _LOGGER = Logger.getLogger(FtpServiceImpl.class);
 	@Override
-	public boolean uploadFile(MultipartFile mFile ,String asiNumber,String environmentType) {
+	public boolean uploadFile(File file ,String asiNumber,String environmentType) {
 		_LOGGER.info("Enter the Upload file class");
 		try {
 			ftpClient.connect(serveraddress,Integer.parseInt(portNo));
@@ -44,10 +48,10 @@ private Logger _LOGGER = Logger.getLogger(FtpServiceImpl.class);
 			}
 			ftpClient.enterLocalPassiveMode();
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-			InputStream inputStream =  new BufferedInputStream(mFile.getInputStream());
-			String fileName = environmentType+"_"+asiNumber + "_"+mFile.getOriginalFilename();
-			boolean fileStatus = ftpClient.storeFile(fileName, inputStream);
-			inputStream.close();
+			//InputStream inputStream =  new BufferedInputStream();
+			String fileName = environmentType+"_"+asiNumber + "_"+file.getName();
+			boolean fileStatus = ftpClient.storeFile(fileName, new FileInputStream(file));
+			//inputStream.close();
 			return fileStatus;
 		} catch (IOException exe) {
 			_LOGGER.error("unable to save file in Ftp Server: "+exe.getMessage());
@@ -140,6 +144,32 @@ private Logger _LOGGER = Logger.getLogger(FtpServiceImpl.class);
 		
 		}
 	}
+	/*@Override
+	public void filesMove() {
+        File source = new File("D:\\A4 ESPUpdate\\FtpFiles");
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDate date = currentDate.toLocalDate();
+        String dest = "D:\\A4 ESPUpdate\\FtpFilesBackUp\\"+date;
+        File destination = new File(dest);
+        if(!destination.isDirectory()){
+        	destination.mkdir();
+        }
+        try {
+            FileUtils.copyDirectory(source, destination);
+            _LOGGER.info("All files has been copied successfully");
+        } catch (IOException e) {
+            _LOGGER.error("Unable to Copy file from source folder to destination folder: "+e.getCause());
+        }
+        
+        try {
+			FileUtils.cleanDirectory(source);
+			_LOGGER.info("all files removed form src folder");
+		} catch (IOException e) {
+			_LOGGER.error("unable to remove files from source folder: "+e.getCause());
+		}
+		
+				
+	}*/
 	/* private void listDirectory(FTPClient ftpClient, String parentDir,
 	        String currentDir, int level) throws IOException {
 		OutputStream output = null;
@@ -210,6 +240,7 @@ private Logger _LOGGER = Logger.getLogger(FtpServiceImpl.class);
 	public void setFilesParsing(FilesParsing filesParsing) {
 		this.filesParsing = filesParsing;
 	}
+	
 
 
 }
