@@ -304,15 +304,24 @@
 					<path>/A4DataPro</path>
 				</configuration>
 			</plugin> -->
-			 <plugin>
+			<!-- <plugin>
 					<groupId>org.apache.tomcat.maven</groupId>
 					<artifactId>tomcat7-maven-plugin</artifactId>
 					<version>2.2</version>
 					<configuration>
-						<port>8090</port>
-						<path>/FTPDataPro</path>
+						<port>8085</port>
+						<path>/A4DataPro</path>
 					</configuration>
-				</plugin> 
+				</plugin> -->	
+				
+<plugin>
+  <groupId>org.apache.tomcat.maven</groupId>
+  <artifactId>tomcat7-maven-plugin</artifactId>
+  <version>2.2</version>
+  <configuration>
+  <maven.tomcat.port>8085</maven.tomcat.port>
+  </configuration>
+ </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
