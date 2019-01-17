@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:web-services="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.a4tech.v5.*" />
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<context:annotation-config />
+	
+	<bean id="productServiceV5" class="com.a4tech.v5.product.service.imple.ProductServiceImpl" />
+	
+	<bean id="productV5" class="com.a4tech.v5.product.model.Product" />
+	
+    <bean id="lookupDataIdV5" class="com.a4tech.v5.util.LookupData">
+    	<property name="lookupServiceData" ref="lookupServiceData"/>
+    </bean>
+	<bean id="postServiceV5" class="com.a4tech.v5.product.service.postImpl.PostServiceImpl">
+		<property name="restTemplate" ref="restTemplate"></property>
+		<property name="productDao" ref="productDao"></property>
+		<property name="postApiURL" value="${product.post.URL}"/>
+		<property name="getProductUrl" value="${product.get.URL}"/>
+	</bean>
+
+   <bean id="lookupRestService" class="com.a4tech.lookup.service.restService.LookupRestService">
+   		<property name="restTemplate"        ref="restTemplate"/>
+   		<property name="imprintMethodUrl"    value="${imprintMethod.lookup.url}"/>
+   		<property name="materialLookupUrl"   value="${materials.lookup.url}"/>
+   		<property name="shapesLookupUrl"     value="${shapes.lookup.url}"/>
+   		<property name="originLookupUrl"     value="${origin.lookup.url}"/>
+   		<property name="fobPointLookupUrl"   value="${fobPoint.lookup.url}"/>
+   		<property name="lineNamesLookupUrl"  value="${lineName.lookup.url}"/>
+   		<property name="tradeNameLookupUrl"  value="${tradeName.lookup.url}"/>
+   		<property name="categoriesLookupUrl" value="${categories.lookup.url}"/>
+   		<property name="catalogLookupUrl"    value="${catalog.lookup.url}"/>
+   	    <property name="themeLookupUrl"      value="${themes.lookup.url}"/>
+   	    <property name="packagesLookupUrl"   value="${packages.lookup.url}"/>
+   </bean>
+   <bean id="lookupServiceData" class="com.a4tech.lookup.service.LookupServiceData">
+   		<property name="lookupRestService" ref="lookupRestService"/>
+   </bean>
+	<bean id="objectMapper" name="objectMapper"
+		class="com.fasterxml.jackson.databind.ObjectMapper" />
+	<bean id="loginServiceImpl" class="com.a4tech.service.loginImpl.LoginServiceImpl"
+		autowire="byName">
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="loginApiURL" value="${login.endpoint.URL}" />
+	</bean>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<!-- <property name="maxUploadSize" value="100000"/> -->
+	</bean>
+	
+	</beans>

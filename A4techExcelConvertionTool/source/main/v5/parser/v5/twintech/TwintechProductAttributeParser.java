@@ -2,6 +2,7 @@ package parser.v5.twintech;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.a4tech.lookup.service.LookupServiceData;
 import com.a4tech.product.model.Availability;
 import com.a4tech.product.model.AvailableVariations;
@@ -18,8 +19,8 @@ import com.a4tech.product.model.ShippingEstimate;
 import com.a4tech.product.model.Value;
 import com.a4tech.product.model.Values;
 import com.a4tech.product.model.Weight;
-import com.a4tech.sage.product.util.LookupData;
 import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.sage.product.util.LookupData;
 
 public class TwintechProductAttributeParser {
 	private LookupServiceData lookupServiceDataObj;

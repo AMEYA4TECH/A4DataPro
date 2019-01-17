@@ -20,7 +20,7 @@ import com.a4tech.v5.product.model.ProductConfigurations;
 import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.LookupData;
 
-public abstract class CopyOfPriceServicee {
+public abstract class CopyOfPriceServicee {/*
 	private static Logger              _LOGGER       =  Logger.getLogger(BagMakersPriceGridParser.class);
 	public static List<PriceGrid> getPriceGrids(String listOfPrices, String listOfQuan, String discountCodes,
 			String currency, String priceInclude, boolean isBasePrice,
@@ -275,4 +275,4 @@ public abstract class CopyOfPriceServicee {
 		// TODO Auto-generated method stub
 		return null;
 	}
-}
+*/}

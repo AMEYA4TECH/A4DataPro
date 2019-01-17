@@ -36,9 +36,9 @@ import com.a4tech.product.model.Theme;
 import com.a4tech.product.model.Value;
 import com.a4tech.product.model.Values;
 import com.a4tech.product.model.Weight;
-import com.a4tech.sage.product.util.LookupData;
 import com.a4tech.util.ApplicationConstants;
 import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.sage.product.util.LookupData;
 
 public class WBTIndustriesAttributeParser {
 	private LookupServiceData lookupServiceDataObj;
