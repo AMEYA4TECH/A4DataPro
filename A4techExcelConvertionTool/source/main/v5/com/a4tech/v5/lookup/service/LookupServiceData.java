@@ -8,7 +8,7 @@ import com.a4tech.v5.util.ApplicationConstants;
 
 public class LookupServiceData {
 	
-	private LookupRestService  lookupRestService;
+	private LookupRestService  lookupRestServiceV5;
 	public static List<String> imprintMethods 		= null;
 	public static List<String> materialValues 		= null;
 	public static List<String> shapes 				= null;
@@ -24,7 +24,7 @@ public class LookupServiceData {
     
 	public  List<String> getImprintMethods(){
 		  if(imprintMethods == null){
-			  imprintMethods = lookupRestService.getImprintMethodData();
+			  imprintMethods = lookupRestServiceV5.getImprintMethodData();
 			  return imprintMethods;
 		  }
 		return imprintMethods;
@@ -32,7 +32,7 @@ public class LookupServiceData {
 	public  List<String> getMaterialValues(){
 		 
 		  if(materialValues == null){
-			  materialValues = lookupRestService.getMaterialsData();
+			  materialValues = lookupRestServiceV5.getMaterialsData();
 			  return materialValues;
 		  }
 		return materialValues;
@@ -40,44 +40,44 @@ public class LookupServiceData {
 	public  List<String> getColorValues(){
 		 
 		  if(colorValues == null){
-			  colorValues = lookupRestService.getColorData();
+			  colorValues = lookupRestServiceV5.getColorData();
 			  return colorValues;
 		  }
 		return colorValues;
 	}
 	public List<String> getShapeValues(){
 		if(shapes == null){
-			shapes = lookupRestService.getShapesData();
+			shapes = lookupRestServiceV5.getShapesData();
 		}
 		return shapes;
 	}
 	public List<String> getOrigins(){
 		if(listOfOrigins == null){
-			listOfOrigins = lookupRestService.getOrigins();
+			listOfOrigins = lookupRestServiceV5.getOrigins();
 		}
 		return listOfOrigins;
 	}
 	public List<String> getFobPoints(String authToken,String environemtType){
 		if(listOfFobPoints == null){
-			listOfFobPoints = lookupRestService.getFobPoints(authToken,environemtType);
+			listOfFobPoints = lookupRestServiceV5.getFobPoints(authToken,environemtType);
 		}
 		return listOfFobPoints;
 	}
 	public List<String> getLineNames(String authToken,String environemtType){
 		if(lineNames == null){
-			lineNames = lookupRestService.getLineNames(authToken,environemtType);
+			lineNames = lookupRestServiceV5.getLineNames(authToken,environemtType);
 		}
 		return lineNames;
 	}
 	public List<String> getCategories(){
 		if(categories == null){
-			categories = lookupRestService.getCategories();
+			categories = lookupRestServiceV5.getCategories();
 		}
 		return categories;
 	}
 	public List<String> getTradeNames(String tradeName){
 		if(tradeNames == null){
-			tradeNames = lookupRestService.getTradeNames(tradeName);
+			tradeNames = lookupRestServiceV5.getTradeNames(tradeName);
 		}
 		return tradeNames;
 	}
@@ -136,14 +136,14 @@ public class LookupServiceData {
      
      public List<Catalog> getCatalog(String authToken,String environemtType){
     	 if(catalogs == null){
-    		 catalogs = lookupRestService.getCatalogs(authToken,environemtType);
+    		 catalogs = lookupRestServiceV5.getCatalogs(authToken,environemtType);
     	 }
     	 return catalogs;
      }
      
      public List<String> getTheme(String authToken){
     	 if(themes == null){
-    		 themes = lookupRestService.getTheme();
+    		 themes = lookupRestServiceV5.getTheme();
     	 }
     	 return themes;
      }
@@ -167,17 +167,17 @@ public class LookupServiceData {
     }
      public List<String> getPackageValues(){
     	 if(packages == null){
-    		 packages = lookupRestService.getPackages();
+    		 packages = lookupRestServiceV5.getPackages();
     	 }
     	 return packages;
      }
+	public LookupRestService getLookupRestServiceV5() {
+		return lookupRestServiceV5;
+	}
+	public void setLookupRestServiceV5(LookupRestService lookupRestServiceV5) {
+		this.lookupRestServiceV5 = lookupRestServiceV5;
+	}
  	
-	public LookupRestService getLookupRestService() {
-		return lookupRestService;
-	}
-	public void setLookupRestService(LookupRestService lookupRestService) {
-		this.lookupRestService = lookupRestService;
-	}
 	
 	
 }

@@ -52,6 +52,12 @@ public class FileUpload {
 	private ExcelFactory          excelFactory;
 	private LookupData            lookupData;
 	private PostServiceImpl postServiceImpl;
+	
+	private com.a4tech.v5.core.excelMapping.ExcelFactory          excelFactoryV5;
+	private com.a4tech.v5.util.LookupData            lookupDataV5;
+	private com.a4tech.v5.product.service.postImpl.PostServiceImpl postServiceV5;
+	@Autowired
+	private ILoginService          loginServiceImplV5;
 
 	private static Logger _LOGGER = Logger.getLogger(Class.class);
 	
@@ -81,8 +87,19 @@ public class FileUpload {
 		}
 		try  {
 			//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
-			accessToken = loginService.doLogin(fileBean.getAsiNumber().trim(),
-					fileBean.getUserName().trim(), fileBean.getPassword().trim(), "Sand");//here change environment type
+			String check_version=fileBean.getAsiNumber().trim();
+			String str[]=check_version.split("_");
+			String vrsn=str[1];
+			
+			if(vrsn.equals("v4")){
+				accessToken = loginService.doLogin(str[0],
+						fileBean.getUserName().trim(), fileBean.getPassword().trim(), "Sand");//here change environment type
+					
+			}else{
+				accessToken = loginServiceImplV5.doLogin(str[0],
+						fileBean.getUserName().trim(), fileBean.getPassword().trim(), "Sand");//here change environment type
+				
+			}
 			if (accessToken != null) {
 				if (ApplicationConstants.CONST_STRING_UN_AUTHORIZED.equals(accessToken)) {
 					accessToken = null;
@@ -109,7 +126,15 @@ public class FileUpload {
 			
 			request.getSession().setAttribute("batchId",
 					String.valueOf(batchId));
-			IExcelParser parserObject = excelFactory.getExcelParserObject(asiNumber);
+			IExcelParser parserObject = null;
+			com.a4tech.v5.excel.service.IExcelParser parserObjectV5 = null;
+			//excelFactoryV5
+			if(vrsn.equals("v4")){
+			 parserObject = excelFactory.getExcelParserObject(asiNumber);
+			}else{
+				parserObjectV5 = excelFactoryV5.getExcelParserObject(asiNumber);
+			}
+			if(vrsn.equals("v4")){
 			if(parserObject != null){ // new implemention
 				//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
 				finalResult = parserObject.readExcel(accessToken, workbook, 
@@ -118,6 +143,17 @@ public class FileUpload {
 					parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
 				}
 		    	return ApplicationConstants.CONST_REDIRECT_URL;
+			}
+			}else{
+			if(parserObjectV5 != null){ // new implemention
+				//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
+				finalResult = parserObjectV5.readExcel(accessToken, workbook, 
+                        Integer.valueOf(asiNumber), batchId,"Prod");//here change environment type
+		    	if (finalResult != null) {
+					parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
+				}
+		    	return ApplicationConstants.CONST_REDIRECT_URL;
+			}
 			}
 		 } catch (Exception e) {
 			_LOGGER.error("Error In FileUpload: " + e.getMessage());
@@ -280,6 +316,33 @@ public class FileUpload {
 
 	public void setPostServiceImpl(PostServiceImpl postServiceImpl) {
 		this.postServiceImpl = postServiceImpl;
+	}
+
+
+	public com.a4tech.v5.product.service.postImpl.PostServiceImpl getPostServiceV5() {
+		return postServiceV5;
+	}
+
+	public void setPostServiceV5(
+			com.a4tech.v5.product.service.postImpl.PostServiceImpl postServiceV5) {
+		this.postServiceV5 = postServiceV5;
+	}
+
+	public com.a4tech.v5.core.excelMapping.ExcelFactory getExcelFactoryV5() {
+		return excelFactoryV5;
+	}
+
+	public void setExcelFactoryV5(
+			com.a4tech.v5.core.excelMapping.ExcelFactory excelFactoryV5) {
+		this.excelFactoryV5 = excelFactoryV5;
+	}
+
+	public com.a4tech.v5.util.LookupData getLookupDataV5() {
+		return lookupDataV5;
+	}
+
+	public void setLookupDataV5(com.a4tech.v5.util.LookupData lookupDataV5) {
+		this.lookupDataV5 = lookupDataV5;
 	}
 
 

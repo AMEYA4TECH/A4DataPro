@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import com.a4tech.lookup.service.LookupServiceData;
-import com.a4tech.lookup.service.restService.LookupRestService;
-import com.a4tech.product.model.BlendMaterial;
-import com.a4tech.product.model.Combo;
-import com.a4tech.product.model.Material;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.lookup.service.LookupServiceData;
+import com.a4tech.v5.lookup.service.restService.LookupRestService;
+import com.a4tech.v5.product.model.BlendMaterial;
+import com.a4tech.v5.product.model.Combo;
+import com.a4tech.v5.product.model.Material;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 
 public class BroberryProductMaterialParser {
 	private static final Logger _LOGGER = Logger.getLogger(BroberryProductMaterialParser.class);

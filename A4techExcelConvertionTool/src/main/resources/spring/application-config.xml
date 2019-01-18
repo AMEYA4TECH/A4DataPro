@@ -27,8 +27,7 @@
 	 <!-- <import resource="ftpSchedular.xml"/> -->
 	<context:property-placeholder
 	location="classpath:application.properties,classpath:sandbox-database.properties
-	                                       ,classpath:sandbox-externalApiEndPoints.properties,classpath:externalApiEndPointsFtp.properties
-	                                       ,classpath:sandboxV5-externalApiEndPoints.properties,classpath:prodV5-externalApiEndPoints.properties" />
+	                                       ,classpath:sandbox-externalApiEndPoints.properties,classpath:externalApiEndPointsFtp.properties" />
 	<bean id="productService" class="com.a4tech.product.service.imple.ProductServiceImpl" />
 	<bean id="postServiceImplV2" name="postServiceImplV2"
 		class="com.a4tech.v2.service.postImpl.PostServiceImpl">
@@ -94,6 +93,9 @@
 		<property name="excelFactory" ref="excelFactoryId"/>
 		<property name="lookupData" ref="lookupDataId"/>
 		<property name="postServiceImpl" ref="postService" />
+		<property name="excelFactoryV5" ref="excelFactoryIdV5"/>
+		<property name="lookupDataV5" ref="lookupDataIdV5"/>
+		<property name="postServiceV5" ref="postServiceIdV5" />
 	</bean>
 	<bean id="usbExcelMapping"
 		class="com.a4tech.usbProducts.excelMapping.UsbProductsExcelMapping">

@@ -13,7 +13,7 @@ import com.a4tech.v5.product.model.PriceUnit;
 import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.LookupData;
 
-public class ZenithPriceGridParser {
+public class ZenithPriceGridParser {/*
 
 	private Logger              _LOGGER              = Logger.getLogger(getClass());
 	public List<PriceGrid> getPriceGrids(String listOfPrices,
@@ -31,7 +31,7 @@ public class ZenithPriceGridParser {
 		String[] quantity = listOfQuan
 				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
 		
-		priceGrid.setCurrency(currency);
+		//priceGrid.setCurrency(currency);
 		priceGrid.setDescription(priceName);
 		priceGrid.setPriceIncludes(priceInclude);
 		priceGrid
@@ -40,7 +40,7 @@ public class ZenithPriceGridParser {
 		priceGrid.setIsBasePrice(isBasePrice);
 		priceGrid.setSequence(sequence);
 		List<Price> listOfPrice = null;
-		if (!priceGrid.getIsQUR()) {
+		//if (!priceGrid.getIsQUR()) {
 			listOfPrice = getPrices(prices, quantity, discountCodes);
 		} else {
 			listOfPrice = new ArrayList<Price>();
@@ -62,7 +62,7 @@ public class ZenithPriceGridParser {
 
 		List<Price> listOfPrices = new ArrayList<Price>();
 		for (int PriceNumber = 0, sequenceNum = 1; PriceNumber < prices.length && PriceNumber < quantity.length
-				      /*&& PriceNumber < discount.length()*/; PriceNumber++, sequenceNum++) {
+				      && PriceNumber < discount.length(); PriceNumber++, sequenceNum++) {
 
 			Price price = new Price();
 			PriceUnit priceUnit = new PriceUnit();
@@ -178,4 +178,4 @@ public class ZenithPriceGridParser {
 
 
 
-}
+*/}

@@ -839,20 +839,63 @@ public class SageProductsExcelMapping implements IExcelParser{
 			 // end inner while loop
 			productExcelObj.setPriceType("L");
 			if( listOfPrices != null && !listOfPrices.toString().isEmpty()){
-				priceGrids = priceGridParser.getPriceGrids(listOfPrices.toString(), 
-						         listOfQuantity.toString(), priceCode, "USD",
-						         priceIncludes.toString(), true, quoteUponRequest, productName,"",priceGrids);	
+				/*(String listOfPrices,
+					    String listOfQuan, String discountCodes,
+						String currency, String priceInclude, boolean isBasePrice,
+						String qurFlag, String priceName, String criterias,
+						List<PriceGrid> existingPriceGrid)*/
+				priceGrids = priceGridParser.getPriceGrids(true,productName,priceIncludes.toString(),new Integer(1),
+						listOfPrices.toString(),  listOfQuantity.toString(), priceCode, "USD",quoteUponRequest,
+						"","","","","",priceGrids);
+				/*listOfPrices.toString(), 
+		         listOfQuantity.toString(), priceCode, "USD",
+		         priceIncludes.toString(), true, quoteUponRequest, productName,"",priceGrids);	*/
+						
+						
 			}
-			
-		
+			/*( boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+					String listOfPrices, String listOfQuan, String discountCodes,
+					String currency ,String isQUR,
+					String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+					List<PriceGrid> existingPriceGrid)
+		*/
 			if( decorationMethod != null && !decorationMethod.toString().isEmpty())
 			{
+				
+				/*(String quantity, String prices,
+						String discounts, String upChargeCriterias, String qurFlag,
+						String currency, String upChargeName, String upChargeType,
+						String upchargeUsageType, Integer upChargeSequence,
+						List<PriceGrid> existingPriceGrid)*/
 			
-			priceGrids = priceGridParser.getUpchargePriceGrid("1", ListPrice, Discountcode, "Imprint Method", 
+			/*priceGrids = priceGridParser.getUpchargePriceGrid("1", ListPrice, Discountcode, "Imprint Method", 
 							"false", "USD", decorationMethod, "Imprint Method Charge", "Other", new Integer(1), priceGrids);
+			*/
+			
+				priceGrids = priceGridParser.getPriceGrids(false,decorationMethod,"",new Integer(1),
+						ListPrice,  "1", Discountcode, 
+						"USD","false",
+						"Imprint Method","Required", "Imprint Method Charge","Other","",priceGrids);
+				
+				
+				/* boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+					String listOfPrices, String listOfQuan, String discountCodes,
+					String currency ,String isQUR,
+					String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+					List<PriceGrid> existingPriceGrid*/
 			}
 				
 				
+			
+			
+			/*( boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+			String listOfPrices, String listOfQuan, String discountCodes,
+			String currency ,String isQUR,
+			String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+			List<PriceGrid> existingPriceGrid)
+*/
+			
+			
 				upChargeQur = null;
 				priceQurFlag = null;
 				listOfPrices = new StringBuilder();

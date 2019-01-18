@@ -27,7 +27,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PostServiceImpl implements PostService {
+public class PostServiceImpl  {//implements PostService
 
 	private Logger _LOGGER = Logger.getLogger(getClass());
 	
@@ -39,7 +39,7 @@ public class PostServiceImpl implements PostService {
 	ObjectMapper mapperObj;
 	/*@Autowired
 	private Environment environment;*/
-	@Override
+	//@Override
 	public int postProduct(String authTokens, Product product,int asiNumber ,int batchId, String environmentType) throws IOException {
         String sheetName = "";
         String xid = product.getExternalProductId();
@@ -156,7 +156,7 @@ public class PostServiceImpl implements PostService {
 		}
 
 	}
-	@Override
+	//@Override
 	public Product getProduct(String authToken,String productId, String environmentType){
 	try{
 		if(environmentType.equals("Sand")){

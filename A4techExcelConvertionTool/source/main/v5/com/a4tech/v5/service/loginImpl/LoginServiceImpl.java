@@ -47,9 +47,9 @@ public class LoginServiceImpl implements ILoginService {
         AccessBean accessBean = null;
         try {
         	if(environmentType.equals("Sand")){
-        		loginApiURL = "https://sandbox-productservice.asicentral.com/api/v4/Login";
+        		loginApiURL = "https://sandbox-productservice.asicentral.com/api/v5/Login";
         	} else{
-        		loginApiURL = "https://productservice.asicentral.com/api/v4/Login";
+        		loginApiURL = "https://productservice.asicentral.com/api/v5/Login";
         	}
         	//loginApiURL = environment.getProperty(environmentType+".login.endpoint.URL");
         	HttpHeaders header = new HttpHeaders();

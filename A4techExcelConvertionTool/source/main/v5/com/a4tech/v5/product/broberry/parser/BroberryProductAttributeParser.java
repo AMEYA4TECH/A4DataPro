@@ -426,7 +426,7 @@ public  List<Option> getOptions(ArrayList<String> optionValues,Product productEx
 			if(!CollectionUtils.isEmpty(lineNames)){
 				newProduct.setLineNames(lineNames);
 			}
-			List<Catalog> catalogs=existingProduct.getCatalogs();
+			List<com.a4tech.v5.product.model.Catalog> catalogs=existingProduct.getCatalogs();
 			if(!CollectionUtils.isEmpty(catalogs)){
 				newProduct.setCatalogs(catalogs);
 			}

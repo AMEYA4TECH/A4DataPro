@@ -307,9 +307,10 @@ public class BestDealProductsExcelMapping implements IExcelParser{
 				productExcelObj.setPriceType("L");
 				String qurFlag = "n"; // by default for testing purpose
 				if( listOfPrices != null && !listOfPrices.toString().isEmpty()){
-					priceGrids = priceGridParser.getPriceGrids(listOfPrices.toString(), 
+					//commentend for v5 pricing
+					/*priceGrids = priceGridParser.getPriceGrids(listOfPrices.toString(), 
 							listOfQuantity.toString(), listOfDiscount.toString(), "USD",
-							         priceInclude, true, qurFlag, basePriceName,"",priceGrids);	
+							         priceInclude, true, qurFlag, basePriceName,"",priceGrids);	*/
 				}
 				listOfPrices = new StringJoiner(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
 			    listOfQuantity = new StringJoiner(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);

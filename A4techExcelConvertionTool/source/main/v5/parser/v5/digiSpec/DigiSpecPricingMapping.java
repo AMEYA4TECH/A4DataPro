@@ -15,8 +15,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.util.StringUtils;
 
 import parser.digiSpec.DigiSpecPriceGridParser;
-import parser.digiSpec.DigiSpecPricingMapping;
-
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.PriceGrid;
 import com.a4tech.product.model.Product;

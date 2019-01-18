@@ -18,7 +18,7 @@ import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.CommonUtility;
 import com.a4tech.v5.util.LookupData;
 
-public class ApparelPriceGridParser {
+public class ApparelPriceGridParser {/*
 
 	private Logger              _LOGGER              = Logger.getLogger(getClass());
 	public List<PriceGrid> getPriceGrids(String listOfNetCost,
@@ -35,10 +35,10 @@ public class ApparelPriceGridParser {
 				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
 		String[] listOfQuans = listOfQuan
 				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
-		/*String[] discountCode = discountCodes
-				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);*/
+		String[] discountCode = discountCodes
+				.split(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
 		
-		priceGrid.setCurrency(currency);
+		//priceGrid.setCurrency(currency);
 		priceGrid.setDescription(priceName);
 		priceGrid.setPriceIncludes(priceInclude);
 		priceGrid
@@ -46,7 +46,7 @@ public class ApparelPriceGridParser {
 						: ApplicationConstants.CONST_BOOLEAN_TRUE);
 		if(!CommonUtility.isdescending(pricesForNetCost))
 		{
-			priceGrid.setIsQUR(ApplicationConstants.CONST_BOOLEAN_TRUE);
+			//priceGrid.setIsQUR(ApplicationConstants.CONST_BOOLEAN_TRUE);
 		
 		}
 		priceGrid.setIsBasePrice(isBasePrice);
@@ -284,4 +284,4 @@ public class ApparelPriceGridParser {
 		return true;
 	}
 
-}
+*/}

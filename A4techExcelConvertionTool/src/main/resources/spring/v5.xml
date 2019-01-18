@@ -15,49 +15,157 @@
 	<context:component-scan base-package="com.a4tech.v5.*" />
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<context:annotation-config />
-	
+	<context:property-placeholder
+	location="classpath:sandboxV5-externalApiEndPoints.properties,classpath:prodV5-externalApiEndPoints.properties" />
+	<!-- <bean id="productServiceV5" class="com.a4tech.v5.product.service.imple.ProductServiceImpl" />
 	<bean id="productServiceV5" class="com.a4tech.v5.product.service.imple.ProductServiceImpl" />
-	
+	   <bean id="lookupServiceDataIdV5" class="com.a4tech.v5.lookup.service.LookupServiceData">
+   		<property name="lookupRestServiceV5" ref="lookupRestServiceIdV5"/>
+   </bean> -->
 	<bean id="productV5" class="com.a4tech.v5.product.model.Product" />
-	
+	 <bean id="lookupRestServiceIdV5" class="com.a4tech.v5.lookup.service.LookupServiceData">
+   		<property name="lookupRestServiceV5" ref="lookupRestServiceIdV5"/>
+   </bean>
     <bean id="lookupDataIdV5" class="com.a4tech.v5.util.LookupData">
-    	<property name="lookupServiceData" ref="lookupServiceData"/>
+    	<property name="lookupServiceDataV5" ref="lookupServiceDataV5"/>
     </bean>
-	<bean id="postServiceV5" class="com.a4tech.v5.product.service.postImpl.PostServiceImpl">
+	<bean id="postServiceIdV5" class="com.a4tech.v5.product.service.postImpl.PostServiceImpl">
 		<property name="restTemplate" ref="restTemplate"></property>
 		<property name="productDao" ref="productDao"></property>
-		<property name="postApiURL" value="${product.post.URL}"/>
-		<property name="getProductUrl" value="${product.get.URL}"/>
+		<property name="postApiURL" value="${product.v5.post.URL}"/>
+		<property name="getProductUrl" value="${product.v5.get.URL}"/>
 	</bean>
-
-   <bean id="lookupRestService" class="com.a4tech.lookup.service.restService.LookupRestService">
-   		<property name="restTemplate"        ref="restTemplate"/>
-   		<property name="imprintMethodUrl"    value="${imprintMethod.lookup.url}"/>
-   		<property name="materialLookupUrl"   value="${materials.lookup.url}"/>
-   		<property name="shapesLookupUrl"     value="${shapes.lookup.url}"/>
-   		<property name="originLookupUrl"     value="${origin.lookup.url}"/>
-   		<property name="fobPointLookupUrl"   value="${fobPoint.lookup.url}"/>
-   		<property name="lineNamesLookupUrl"  value="${lineName.lookup.url}"/>
-   		<property name="tradeNameLookupUrl"  value="${tradeName.lookup.url}"/>
-   		<property name="categoriesLookupUrl" value="${categories.lookup.url}"/>
-   		<property name="catalogLookupUrl"    value="${catalog.lookup.url}"/>
-   	    <property name="themeLookupUrl"      value="${themes.lookup.url}"/>
-   	    <property name="packagesLookupUrl"   value="${packages.lookup.url}"/>
-   </bean>
-   <bean id="lookupServiceData" class="com.a4tech.lookup.service.LookupServiceData">
-   		<property name="lookupRestService" ref="lookupRestService"/>
-   </bean>
-	<bean id="objectMapper" name="objectMapper"
-		class="com.fasterxml.jackson.databind.ObjectMapper" />
-	<bean id="loginServiceImpl" class="com.a4tech.service.loginImpl.LoginServiceImpl"
+<bean id="loginServiceImplV5" class="com.a4tech.v5.service.loginImpl.LoginServiceImpl"
 		autowire="byName">
 		<property name="restTemplate" ref="restTemplate" />
-		<property name="loginApiURL" value="${login.endpoint.URL}" />
+		<property name="loginApiURL" value="${login.v5.endpoint.URL}" />
 	</bean>
-	<bean id="multipartResolver"
+   <bean id="lookupRestServiceV5" class="com.a4tech.v5.lookup.service.restService.LookupRestService">
+   		<property name="restTemplate"        ref="restTemplate"/>
+   		<property name="imprintMethodUrl"    value="${imprintMethod.v5.lookup.url}"/>
+   		<property name="materialLookupUrl"   value="${materials.v5.lookup.url}"/>
+   		<property name="shapesLookupUrl"     value="${shapes.v5.lookup.url}"/>
+   		<property name="originLookupUrl"     value="${origin.v5.lookup.url}"/>
+   		<property name="fobPointLookupUrl"   value="${fobPoint.v5.lookup.url}"/>
+   		<property name="lineNamesLookupUrl"  value="${lineName.v5.lookup.url}"/>
+   		<property name="tradeNameLookupUrl"  value="${tradeName.v5.lookup.url}"/>
+   		<property name="categoriesLookupUrl" value="${categories.v5.lookup.url}"/>
+   		<property name="catalogLookupUrl"    value="${catalog.v5.lookup.url}"/>
+   	    <property name="themeLookupUrl"      value="${themes.v5.lookup.url}"/>
+   	    <property name="packagesLookupUrl"   value="${packages.v5.lookup.url}"/>
+   </bean>
+
+	<bean id="objectMapperV5" name="objectMapper"
+		class="com.fasterxml.jackson.databind.ObjectMapper" />
+	<!-- <bean id="loginServiceImplV5" class="com.a4tech.v5.service.loginImpl.LoginServiceImpl"
+		autowire="byName">
+		<property name="restTemplate" ref="restTemplate" />
+		<property name="loginApiURL" value="${login.v5.endpoint.URL}" />
+	</bean> -->
+	<!-- <bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<!-- one of the properties available; the maximum file size in bytes -->
-		<!-- <property name="maxUploadSize" value="100000"/> -->
-	</bean>
+		one of the properties available; the maximum file size in bytes
+		<property name="maxUploadSize" value="100000"/>
+	</bean> -->
+	<bean id="abstractBasePriceClass" abstract="true" class="com.a4tech.v5.excel.PriceServicee">
+  
+</bean>
+
+<bean id="pricegridParserV5" class="com.a4tech.v5.product.criteria.parser.PriceGridParser" parent="abstractBasePriceClass">     
+  <!--Override the value of the abstract based class if necessary-->
+
+</bean>
 	
+	<bean id="excelFactoryIdV5" class="com.a4tech.v5.core.excelMapping.ExcelFactory">
+     	<!-- <property name="adspecMapping" ref="adspecProductsExcelMappingId"/>
+     	<property name="klMapping" ref="klMappingId"/> -->
+     	<property name="sageExcelMappingV5" ref="sageMappingIdV5" />
+     	<!-- <property name="dcProductExcelMapping" ref="dCProductsExcelMappingId" />
+		<property name="kukuProductsExcelMapping" ref="kukuProductsExcelMappingId" />
+		<property name="rfgLineProductExcelMapping" ref="rfgLineProductExcelMappingId" />
+		<property name="bbiProductsExcelMapping" ref="bbiProductsExcelMappingId"/>
+		<property name="newProductsExcelMapping" ref="newProductsExcelMappingId"/>
+		<property name="apparealExcelMapping" ref="apparelMappingId"/>
+		<property name="espTemplateMapping" ref="espTemplateMappingId"/>
+		<property name="broberryExcelMapping" ref="broberryExcelMappingId"/>
+		<property name="bdProdcutsMapping" ref="bestDealMappingId"/>
+		<property name="riversEndExcelMapping" ref="riversEndExcelMappingId"/>
+		<property name="bamExcelMapping" ref="bambamProductExcelMappingId"/>
+		<property name="cbExeMapping" ref="cbExcelMappingId"/>
+		<property name="cdExcelMapping" ref="cdExcelMappingId"/>
+		<property name="goldcanadaExcelMapping" ref="goldcanadaExcelMappingId"/>
+ 		<property name="hcLineExcelMapping" ref="highCaliberLineExcelMappingId"/>
+		<property name="wholeSaleExcelMapping" ref="wholeSaleExcelMappingId"/>
+		<property name="goldBandExcelMapping" ref="goldBondExcelMappingId"/>
+		<property name="primeLineExcelMapping" ref="primeLineExcelMappingId"/>
+		<property name="proGolfMapping" ref="proGolfMappingId"></property>
+		<property name="milestoneExcelMapping" ref="milestoneExcelMappingId"/>	
+		<property name="pslMapping" ref="pslMappingId"/>
+		<property name="dacassoMapping" ref="dacassoMappingId"/>	
+		<property name="tomaxUsaMapping" ref="TomaxUsaMappingId"/>
+		<property name="pslcadMapping" ref="pslcadMappingId"/>
+		<property name="brandwearExcelMapping" ref="brandwearExcelMappingId"/>
+		<property name="sage80289Mapping" ref="sageRMKWorldWideMapping"/>
+		<property name="twintechMapping" ref="twintechMappingId"/>
+		<property name="ballProMapping" ref="ballProMappingId"/>
+		<property name="alfaMapping" ref="alfaMappingId"></property>
+		<property name="bellaCanvasMapping" ref="bellaCanvasMappingId"/>
+		<property name="harvestMapping" ref="harvestMappingId"/>
+		<property name="towelSpecialties" ref="towelSpecId"/>
+		<property name="bagMakersMapping" ref="bagMakersMappingId"/>
+		<property name="gillStudiosMapping" ref="gillStudiosMappingId"/>
+		<property name="blueGenerationMapping" ref="blueGenerId"/>
+		<property name="fitsAccessoriesMapping" ref="FITSAccessoriId"/>
+		<property name="baysStateMapping" ref="bayStateMappingId"/>
+		<property name="maxplusmapping" ref="maxplusmappingId"></property>
+		<property name="gempiresMapping" ref="gempiresMappingId"/>
+		<property name="edwardsGarmentMapping" ref="edwardsGarmentMappingId"/>
+		<property name="tekweldMapping" ref="tekweldMappingId"/>
+		<property name="merchMapping" ref="merchMappingId"/>
+		<property name="headWearMapping" ref="headWearMappingId"/>
+		<property name="sportMapping" ref="sportMappingId"/>
+		<property name="sunScopeMapping" ref="sunScopeMappingId"/>
+		<property name="sunGraphixMapping" ref="sunGraphixMappingId"/>
+		<property name="pelicanGraphicMapping" ref="pelicanGraphicMappingId"/>
+		<property name="simplifiedMapping" ref="simplifiedMappingId"/>
+		<property name="sportsManBagMapping" ref="sportsManBagMappingId"/>
+		<property name="solidDimensionMapping" ref="solidDimensionMappingId"/>
+		<property name="eveanManufactureMapping" ref="eveanManufactureMappingId"/>
+		<property name="sportUSAMapping" ref="sportUSAMappingId"/>
+		<property name="sportAzxCandMapping" ref="sportAzxCandMappingId"/>
+		<property name="digiSpecMapping" ref="digiSpecMappingId"/>
+		<property name="douglasBridgeMapper" ref="douglasMappingId"/>
+		<property name="radiMapping" ref="radiMappingId"/>
+		<property name="wbtIndustriesMapper" ref="wbtIndustriesMappingId"/>
+		<property name="zenithMapping" ref="zenithMappingId"/>
+		<property name="bloominPromotion" ref="bloominPromotionsMappingId"/>
+		<property name="pioneerLLCMapping" ref="pioneerLLCMappingId"/>
+		<property name="teamWorkAthleticMapper" ref="teamWorkMappingId"/>
+		<property name="accessLineMapping" ref="accessLineMappingId"/> -->
+     </bean>
+	
+	
+	<bean id="sageMappingIdV5" class="com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping">
+     	<property name="postServiceImpl" ref="postServiceIdV5"></property>
+     	<property name="catalogParser" ref="catalogParserId"/>
+     	<property name="priceGridParser" ref="pricegridParserV5"/>
+     	<property name="imprintMethodParser" ref="imprintMethodId"/>
+     	<property name="originParser" ref="originParserId"/>
+     	<property name="rushTimeParser" ref="rushTimeId"/>
+     	<property name="packagingParser" ref="packageId"/>
+     	<property name="shippingEstimateParser" ref="shippingEstimateId"/>
+     	<property name="dimParserObj" ref="dimensionParserId"/>
+     	<property name="colorParserObj" ref="colorParserId"/>
+     	<property name="productDaoObj"  ref="productDao"/>
+     </bean>
+         
+     <bean id="catalogParserId" class="com.a4tech.v5.sage.product.parser.CatalogParser"/>
+     <!-- <bean id="priceGridParserId" class="com.a4tech.sage.product.parser.PriceGridParser"/> -->
+     <bean id="imprintMethodId"  class="com.a4tech.v5.sage.product.parser.ImprintMethodParser"/>
+     <bean id="originParserId" class="com.a4tech.v5.sage.product.parser.OriginParser"/>
+     <bean id="rushTimeId" class="com.a4tech.v5.sage.product.parser.RushTimeParser"/>
+     <bean id="packageId" class="com.a4tech.v5.sage.product.parser.PackagingParser"/>
+     <bean id="shippingEstimateId" class="com.a4tech.v5.sage.product.parser.ShippingEstimateParser"/>
+     <bean id="dimensionParserId" class="com.a4tech.v5.sage.product.parser.DimensionParser"/>
+     <bean id="colorParserId" class="com.a4tech.v5.sage.product.parser.ColorParser"/> 
 	</beans>

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.a4tech.lookup.service.LookupServiceData;
+import com.a4tech.v5.lookup.service.LookupServiceData;
 
 public class LookupData {
 	
@@ -16,7 +16,7 @@ public class LookupData {
 	public static final Map<String,List<String>> listOfLineNames = new HashMap<>();
 	private static final Map<String, List<String>> listOfFobPoints = new HashMap<>();
 	private static final Map<String, String> sizeMap = new HashMap<>();
-	private LookupServiceData lookupServiceData = null;
+	private LookupServiceData lookupServiceDataV5 = null;
 	static{
 		
 		repeateIndex.add("1");
@@ -194,7 +194,7 @@ public class LookupData {
 	public void loadLineNames(String supplierNo,String authToken,String environment){
 		List<String> SupplierLineNames = listOfLineNames.get(supplierNo);
 		if(SupplierLineNames == null){
-			SupplierLineNames = lookupServiceData.getLineNames(authToken,environment);
+			SupplierLineNames = lookupServiceDataV5.getLineNames(authToken,environment);
 			listOfLineNames.put(supplierNo, SupplierLineNames);
 		}
 		
@@ -205,7 +205,7 @@ public class LookupData {
 	public void loadFobPoints(String supplierNo,String authToken,String environment){
 		List<String> SupplierLineNames = listOfFobPoints.get(supplierNo);
 		if(SupplierLineNames == null){
-			SupplierLineNames = lookupServiceData.getFobPoints(authToken,environment);
+			SupplierLineNames = lookupServiceDataV5.getFobPoints(authToken,environment);
 			listOfFobPoints.put(supplierNo, SupplierLineNames);
 		}
 		
@@ -214,11 +214,11 @@ public class LookupData {
 	     return	listOfFobPoints.get(supplierNo);
 	}
 	public LookupServiceData getLookupServiceData() {
-		return lookupServiceData;
+		return lookupServiceDataV5;
 	}
 
 	public void setLookupServiceData(LookupServiceData lookupServiceData) {
-		this.lookupServiceData = lookupServiceData;
+		this.lookupServiceDataV5 = lookupServiceData;
 	}
 	public static String getSizeUnit(String value){
 	     return	sizeMap.get(value);

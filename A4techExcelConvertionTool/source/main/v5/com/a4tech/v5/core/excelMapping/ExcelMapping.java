@@ -67,7 +67,7 @@ import com.a4tech.v5.service.loginImpl.LoginServiceImpl;
 import com.a4tech.v5.util.ApplicationConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ExcelMapping {
+public class ExcelMapping {/*
 	
 	private static final Logger _LOGGER = Logger.getLogger(ExcelMapping.class);
 	PostServiceImpl postServiceImpl ;
@@ -1127,4 +1127,4 @@ public class ExcelMapping {
 
 	
 	
-}
+*/}

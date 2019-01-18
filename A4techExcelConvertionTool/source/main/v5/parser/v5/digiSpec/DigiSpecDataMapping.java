@@ -16,8 +16,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import parser.digiSpec.DigiSpecAttributeParser;
-import parser.digiSpec.DigiSpecDataMapping;
-
 import com.a4tech.product.dao.service.ProductDao;
 import com.a4tech.product.model.Artwork;
 import com.a4tech.product.model.Catalog;

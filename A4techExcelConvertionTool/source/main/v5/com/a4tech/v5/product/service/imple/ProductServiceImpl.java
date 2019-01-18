@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 
 
-import com.a4tech.product.service.IProductService;
+import com.a4tech.v5.product.service.IProductService;
 import com.a4tech.v2.core.excelMapping.V2ExcelMapping;
 
 public class ProductServiceImpl implements IProductService{

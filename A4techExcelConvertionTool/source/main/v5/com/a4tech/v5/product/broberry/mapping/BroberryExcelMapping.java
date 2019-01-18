@@ -194,6 +194,7 @@ public class BroberryExcelMapping implements IExcelParser{
 								  }else{
 									  MaterialValue1=MaterialValue1.concat("%%%%").concat(MaterialValue2); 
 								  }
+								  //commented for v5
 								  listOfMaterial = broberryMaterialParserObj.getMaterialList(MaterialValue1);
 								  //listOfMaterial = broberryMaterialParserObj.getMaterialList(MaterialValue2,listOfMaterial);
 								  productConfigObj.setMaterials(listOfMaterial);
@@ -696,10 +697,10 @@ public class BroberryExcelMapping implements IExcelParser{
 			Integer sequence = 1;
 			List<PriceConfiguration> configuration = null;
 			PriceGrid priceGrid = new PriceGrid();
-			priceGrid.setCurrency(ApplicationConstants.CONST_STRING_CURRENCY_USD);
+			//priceGrid.setCurrency(ApplicationConstants.CONST_STRING_CURRENCY_USD);
 			priceGrid.setDescription(basePriceName);
 			priceGrid.setPriceIncludes(ApplicationConstants.CONST_STRING_EMPTY);
-			priceGrid.setIsQUR(ApplicationConstants.CONST_BOOLEAN_TRUE);
+			//priceGrid.setIsQUR(ApplicationConstants.CONST_BOOLEAN_TRUE);
 			priceGrid.setIsBasePrice(true);
 			priceGrid.setSequence(sequence);
 			List<Price>	listOfPrice = new ArrayList<Price>();

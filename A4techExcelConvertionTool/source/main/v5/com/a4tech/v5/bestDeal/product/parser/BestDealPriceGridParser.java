@@ -15,7 +15,7 @@ import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.CommonUtility;
 import com.a4tech.v5.util.LookupData;
 
-public class BestDealPriceGridParser {
+public class BestDealPriceGridParser {/*
 
 	private Logger              _LOGGER              = Logger.getLogger(getClass());
 	public List<PriceGrid> getPriceGrids(String listOfNetCost,
@@ -198,4 +198,4 @@ public class BestDealPriceGridParser {
 		return "";
 	}
 
-}
+*/}

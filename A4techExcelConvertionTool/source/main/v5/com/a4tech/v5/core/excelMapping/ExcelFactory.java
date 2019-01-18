@@ -2,15 +2,6 @@ package com.a4tech.v5.core.excelMapping;
 
 
 
-import com.a4tech.ESPTemplate.product.mapping.ESPTemplateMapping;
-import com.a4tech.adspec.product.mapping.AdspecProductsExcelMapping;
-import com.a4tech.bambam.product.mapping.BambamProductExcelMapping;
-import com.a4tech.dc.product.mapping.DCProductsExcelMapping;
-import com.a4tech.kl.product.mapping.KlProductsExcelMapping;
-import com.a4tech.product.bbi.mapping.BBIProductsExcelMapping;
-import com.a4tech.product.kuku.mapping.KukuProductsExcelMapping;
-import com.a4tech.product.newproducts.mapping.NewProductsExcelMapping;
-import com.a4tech.product.riversend.mapping.RiversEndExcelMapping;
 import com.a4tech.v5.RFGLine.product.mapping.RFGLineProductExcelMapping;
 import com.a4tech.v5.apparel.product.mapping.ApparelProductsExcelMapping;
 import com.a4tech.v5.bestDeal.product.mapping.BestDealProductsExcelMapping;
@@ -71,10 +62,10 @@ import com.a4tech.v5.supplier.mapper.WholeSaleExcelMapping;
 import com.a4tech.v5.supplier.mapper.ZenithExport;
 
 public class ExcelFactory {
-	private AdspecProductsExcelMapping 		adspecMapping;
-	private KlProductsExcelMapping 			klMapping;
-	private SageProductsExcelMapping 		sageExcelMapping;
-	private DCProductsExcelMapping 			dcProductExcelMapping;
+	//private AdspecProductsExcelMapping 		adspecMapping;
+	//private KlProductsExcelMapping 			klMapping;
+	private SageProductsExcelMapping 		sageExcelMappingV5;
+	/*private DCProductsExcelMapping 			dcProductExcelMapping;
 	private KukuProductsExcelMapping 		kukuProductsExcelMapping;
 	private RFGLineProductExcelMapping 		rfgLineProductExcelMapping;
 	private BBIProductsExcelMapping 		bbiProductsExcelMapping;
@@ -138,20 +129,21 @@ public class ExcelFactory {
     private BloominPromotionsMapper         bloominPromotion;
      private PioneerLLCMapping 				pioneerLLCMapping;
      private TeamworkAthleticMapping        teamWorkAthleticMapper;
-	  private AccessLineMapping				accessLineMapping;
+	  private AccessLineMapping				accessLineMapping;*/
      
     
 	public  IExcelParser getExcelParserObject(String name){
 
-		   if(name.equalsIgnoreCase("Apparel") || name.equals("44620")){
+		  /* if(name.equalsIgnoreCase("Apparel") || name.equals("44620")){
 			   return apparealExcelMapping;
 		   }else if(name.equalsIgnoreCase("kl") || name.equals("64905")){
 			   return klMapping;
 		   }else if(name.equalsIgnoreCase("Adspec") || name.equals("32125")){
 			   return adspecMapping;
-		   }else if(name.equalsIgnoreCase("sage") || name.equals("55204")){
-			   return sageExcelMapping;
-		   }else if(name.equalsIgnoreCase("dc") || name.equals("55205")){
+		   }else*/ if(name.equalsIgnoreCase("sage") || name.equals("55204")){
+			   return sageExcelMappingV5;
+		   }
+		  /* else if(name.equalsIgnoreCase("dc") || name.equals("55205")){
 			   return dcProductExcelMapping;
 		   }else if(name.equalsIgnoreCase("kuku") || name.equals("65851")){
 			   return kukuProductsExcelMapping;
@@ -168,7 +160,7 @@ public class ExcelFactory {
 		   }else if(name.equalsIgnoreCase("riversend") || name.equals("82588")){
 			   return riversEndExcelMapping;
 		   }else if(name.equalsIgnoreCase("cbExcel") || name.equals("47965")){
-			   return cbExeMapping/*cbExcelMapping*/;//old file
+			   return cbExeMappingcbExcelMapping;//old file
 		   }
 		   else if(name.equalsIgnoreCase("cdExcel") || name.equals("47759")){
 			   return cdExcelMapping;
@@ -210,7 +202,7 @@ public class ExcelFactory {
 	      else if(name.equalsIgnoreCase("pslcad") || name.equals("90345")){
 		      return pslcadMapping;
 	      }
-	      else if(name.equalsIgnoreCase("twintech") || name.equals("83140")){///*"92357"*/
+	      else if(name.equalsIgnoreCase("twintech") || name.equals("83140")){
 		      return twintechMapping;
 	      } else if(name.equalsIgnoreCase("alfa") || name.equals("34042")){
 	    	  return alfaMapping;
@@ -281,11 +273,19 @@ public class ExcelFactory {
 			  return teamWorkAthleticMapper;
 		  } else if(name.equals("30458")){
 			  return accessLineMapping;
-		  }
+		  }*/
 		return null;
 	}
 	
-	public void setBloominPromotion(BloominPromotionsMapper bloominPromotion) {
+	public SageProductsExcelMapping getSageExcelMappingV5() {
+		return sageExcelMappingV5;
+	}
+
+	public void setSageExcelMappingV5(SageProductsExcelMapping sageExcelMappingV5) {
+		this.sageExcelMappingV5 = sageExcelMappingV5;
+	}
+
+	/*public void setBloominPromotion(BloominPromotionsMapper bloominPromotion) {
 			this.bloominPromotion = bloominPromotion;
 		}
 
@@ -316,16 +316,16 @@ public class ExcelFactory {
 	}
 	public void setKlMapping(KlProductsExcelMapping klMapping) {
 		this.klMapping = klMapping;
-	}
+	}*/
 	public SageProductsExcelMapping getSageExcelMapping() {
-		return sageExcelMapping;
+		return sageExcelMappingV5;
 	}
 
 	public void setSageExcelMapping(SageProductsExcelMapping sageExcelMapping) {
-		this.sageExcelMapping = sageExcelMapping;
+		this.sageExcelMappingV5 = sageExcelMapping;
 	}
 
-	public DCProductsExcelMapping getDcProductExcelMapping() {
+	/*public DCProductsExcelMapping getDcProductExcelMapping() {
 		return dcProductExcelMapping;
 	}
 
@@ -410,13 +410,13 @@ public class ExcelFactory {
 		this.bamExcelMapping = bamExcelMapping;
 	}
 
-/*	public CutterBuckExcelMapping getCbExcelMapping() {
+	public CutterBuckExcelMapping getCbExcelMapping() {
 		return cbExcelMapping;
 	}
 
 	public void setCbExcelMapping(CutterBuckExcelMapping cbExcelMapping) {
 		this.cbExcelMapping = cbExcelMapping;
-	}*/
+	}
 	
 	public CrystalDExcelMapping getCdExcelMapping() {
 		return cdExcelMapping;
@@ -780,6 +780,6 @@ public class ExcelFactory {
 
 		public void setAccessLineMapping(AccessLineMapping accessLineMapping) {
 			this.accessLineMapping = accessLineMapping;
-		}
+		}*/
 
 }

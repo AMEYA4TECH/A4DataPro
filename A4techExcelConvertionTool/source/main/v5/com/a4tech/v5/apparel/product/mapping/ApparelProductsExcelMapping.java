@@ -137,7 +137,8 @@ public class ApparelProductsExcelMapping implements IExcelParser{
 							 List<Color> listOfColor = appaAttributeParser.getProductColors(listOfColors,colorIdMap);
 							 List<Personalization> listOfPersonalization  = appaAttributeParser.
 									                 getPersonalizationList(productConfigObj.getPersonalization());
-							 priceGrids = apparelPgParser.sizePrices(sizeBasePrice, priceGrids);
+							 //commentend for v5 pricing
+							 //priceGrids = apparelPgParser.sizePrices(sizeBasePrice, priceGrids);
 							 productConfigObj.setPersonalization(listOfPersonalization);
 							    productConfigObj.setColors(listOfColor);
 							 	productExcelObj.setPriceGrids(priceGrids);
@@ -450,7 +451,8 @@ public class ApparelProductsExcelMapping implements IExcelParser{
 		List<Color> listOfColor = appaAttributeParser.getProductColors(listOfColors,colorIdMap);
 		List<Personalization> listOfPersonalization  = appaAttributeParser.
                 getPersonalizationList(productConfigObj.getPersonalization());
-		 priceGrids = apparelPgParser.sizePrices(sizeBasePrice, priceGrids);
+		//commentend for v5 pricing 
+		//priceGrids = apparelPgParser.sizePrices(sizeBasePrice, priceGrids);
          productConfigObj.setPersonalization(listOfPersonalization);
          productConfigObj.setColors(listOfColor);
          productExcelObj.setPriceGrids(priceGrids);
