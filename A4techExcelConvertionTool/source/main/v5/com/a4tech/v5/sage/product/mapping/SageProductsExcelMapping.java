@@ -34,7 +34,7 @@ import com.a4tech.v5.product.model.Theme;
 import com.a4tech.v5.product.model.Value;
 import com.a4tech.v5.product.model.Values;
 import com.a4tech.v5.product.service.postImpl.PostServiceImpl;
-import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.CommonUtility;
 import com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping;
 import com.a4tech.v5.sage.product.parser.CatalogParser;
@@ -52,7 +52,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 	
 	private static final Logger _LOGGER = Logger.getLogger(SageProductsExcelMapping.class);
 	
-	private PostServiceImpl postServiceImpl;
+	private PostServiceImpl postServiceImplV5;
 	private CatalogParser   catalogParser;
 	private PriceGridParser priceGridParser;
 	private ImprintMethodParser imprintMethodParser;
@@ -63,7 +63,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 	Size size=new Size();
 	DimensionParser dimParserObj;
 	ColorParser colorParserObj ;
-	ProductDao productDaoObj;
+	private com.a4tech.v5.product.dao.service.ProductDao productDaoObjV5;
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId, String environmentType){
 		
 		List<String> numOfProductsSuccess = new ArrayList<String>();
@@ -171,7 +171,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 							 System.out.println("Java object converted to JSON String, written to file");
 							 	productExcelObj.setPriceGrids(priceGrids);
 							 	productExcelObj.setProductConfigurations(productConfigObj);
-							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber ,batchId, environmentType);
+							 	int num = postServiceImplV5.postProduct(accessToken, productExcelObj,asiNumber ,batchId, environmentType);
 							 	if(num ==1){
 							 		numOfProductsSuccess.add("1");
 							 	}else if(num == 0){
@@ -916,7 +916,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 		 	productExcelObj.setPriceGrids(priceGrids);
 		 	productExcelObj.setProductConfigurations(productConfigObj);
 	
-		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId, environmentType);
+		 	int num = postServiceImplV5.postProduct(accessToken, productExcelObj,asiNumber,batchId, environmentType);
 		 	if(num ==1){
 		 		numOfProductsSuccess.add("1");
 		 	}else if(num == 0){
@@ -927,7 +927,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 		 	_LOGGER.info("list size>>>>>>"+numOfProductsSuccess.size());
 		 	_LOGGER.info("Failure list size>>>>>>"+numOfProductsFailure.size());
 	       finalResult = numOfProductsSuccess.size() + "," + numOfProductsFailure.size();
-	       productDaoObj.saveErrorLog(asiNumber,batchId);
+	       productDaoObjV5.saveErrorLog(asiNumber,batchId);
 	       return finalResult;
 		}catch(Exception e){
 			_LOGGER.error("Error while Processing excel sheet "+e.getMessage());
@@ -945,13 +945,17 @@ public class SageProductsExcelMapping implements IExcelParser{
 		
 	}
 	
-	public PostServiceImpl getPostServiceImpl() {
-		return postServiceImpl;
+	
+	public PostServiceImpl getPostServiceImplV5() {
+		return postServiceImplV5;
 	}
 
-	public void setPostServiceImpl(PostServiceImpl postServiceImpl) {
-		this.postServiceImpl = postServiceImpl;
+
+	public void setPostServiceImplV5(PostServiceImpl postServiceImplV5) {
+		this.postServiceImplV5 = postServiceImplV5;
 	}
+
+
 	public CatalogParser getCatalogParser() {
 		return catalogParser;
 	}
@@ -1019,11 +1023,16 @@ public class SageProductsExcelMapping implements IExcelParser{
 	public void setColorParserObj(ColorParser colorParserObj) {
 		this.colorParserObj = colorParserObj;
 	}
-	public ProductDao getProductDaoObj() {
-		return productDaoObj;
+
+
+	public com.a4tech.v5.product.dao.service.ProductDao getProductDaoObjV5() {
+		return productDaoObjV5;
 	}
 
-	public void setProductDaoObj(ProductDao productDaoObj) {
-		this.productDaoObj = productDaoObj;
+
+	public void setProductDaoObjV5(
+			com.a4tech.v5.product.dao.service.ProductDao productDaoObjV5) {
+		this.productDaoObjV5 = productDaoObjV5;
 	}
+
 }

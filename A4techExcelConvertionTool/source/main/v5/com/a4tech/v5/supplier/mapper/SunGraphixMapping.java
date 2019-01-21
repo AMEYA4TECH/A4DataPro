@@ -59,8 +59,7 @@ public class SunGraphixMapping implements IExcelParser{
 	private ProductDao productDaoObj;
 	private SunGraphixAttributeParser sunGraphixAttributeParser;
 	private SunGraphixPriceGridParser sunGraphixPriceGridParser;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId, String environmentType){
 		HashMap<String, String>  productNumberMap=new HashMap<String, String>();
 		StringBuilder FinalKeyword = new StringBuilder();
@@ -1533,13 +1532,6 @@ public class SunGraphixMapping implements IExcelParser{
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
-	
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
 
 
 

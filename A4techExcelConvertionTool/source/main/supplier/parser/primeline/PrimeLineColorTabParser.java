@@ -39,8 +39,7 @@ public class PrimeLineColorTabParser {
 	private static final Logger _LOGGER = Logger.getLogger(PrimeLineColorTabParser.class);
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	private LookupServiceData lookupServiceDataObj;
 	public HashMap<String, Product> readColorTab(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId,
 			HashMap<String, Product> sheetMap){
@@ -103,7 +102,7 @@ public class PrimeLineColorTabParser {
 							 }
 							 
 							 productExcelObj.setProductConfigurations(productConfigObj);
-							 _LOGGER.info("Product Data from sheet 2 color tab: "+ mapperObj.writeValueAsString(productExcelObj));
+							// _LOGGER.info("Product Data from sheet 2 color tab: "+ mapperObj.writeValueAsString(productExcelObj));
 							 sheetMapReturn.put(productId, productExcelObj);
 								//productConfigObj = new ProductConfigurations();
 								repeatRows.clear();
@@ -185,8 +184,8 @@ public class PrimeLineColorTabParser {
 			 productConfigObj.setColors(colorList);	 
 		 }
 		 productExcelObj.setProductConfigurations(productConfigObj);
-		 _LOGGER.info("Product Data from sheet 2 color tab: "
-					+ mapperObj.writeValueAsString(productExcelObj));
+		/* _LOGGER.info("Product Data from sheet 2 color tab: "
+					+ mapperObj.writeValueAsString(productExcelObj));*/
 		sheetMapReturn.put(productId, productExcelObj);
 	    productDaoObj.saveErrorLog(asiNumber,batchId);
 		repeatRows.clear();
@@ -300,14 +299,14 @@ public class PrimeLineColorTabParser {
 	}
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
-	
+	/*
 	public ObjectMapper getMapperObj() {
 		return mapperObj;
 	}
 	
 	public void setMapperObj(ObjectMapper mapperObj) {
 		this.mapperObj = mapperObj;
-	}
+	}*/
 	
 	public LookupServiceData getLookupServiceDataObj() {
 		return lookupServiceDataObj;

@@ -42,8 +42,7 @@ public class TomaxProductTabParser {
 	
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	TomaxUsaAttributeParser  tomaxUsaAttributeParser;
 	TomaxPriceGridParser tomaxPriceGridParser;
 	TomaxSizeParser tomaxUsaSizeParser;
@@ -434,8 +433,7 @@ public class TomaxProductTabParser {
 			 	productExcelObj.setPriceType("L");
 			 	productExcelObj.setPriceGrids(priceGrids);
 			 	productExcelObj.setProductConfigurations(productConfigObj);
-		 	_LOGGER.info("Product Data : "
-					+ mapperObj.writeValueAsString(productExcelObj));
+		 	
 		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId, environmentType);
 		 	if(num ==1){
 		 		numOfProductsSuccess.add("1");
@@ -564,13 +562,6 @@ public class TomaxProductTabParser {
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
-	
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
 	
 	public TomaxUsaAttributeParser getTomaxUsaAttributeParser() {
 		return tomaxUsaAttributeParser;

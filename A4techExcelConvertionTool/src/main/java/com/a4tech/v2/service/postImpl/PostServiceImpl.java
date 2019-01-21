@@ -19,7 +19,7 @@ import com.a4tech.product.service.PostService;
 import com.a4tech.v2.core.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl {/*implements PostService
 		  
 	    private Logger              _LOGGER              = Logger.getLogger(getClass());
 	   
@@ -119,4 +119,4 @@ public class PostServiceImpl implements PostService{
 			return null;
 		}
 
-	}
+	*/}

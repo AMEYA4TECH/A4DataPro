@@ -59,8 +59,7 @@ public class EdwardsGarmentMapping implements IExcelParser{
 	
 	private EdwardsGarmentAttributeParser edwardsGarmentAttributeParser;
 	private EdwardGarmentPriceGridParser edwardGarmentPriceGridparser;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	
 	@SuppressWarnings("unused")
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId, String environmentType){

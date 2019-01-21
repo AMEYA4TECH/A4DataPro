@@ -47,8 +47,7 @@ public class BroberryExcelMapping implements IExcelParser{
 	
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	private BroberryProductAttributeParser broberryProductAttributeParser;
 	private BroberryProductMaterialParser broberryMaterialParserObj;
 
@@ -780,16 +779,6 @@ public class BroberryExcelMapping implements IExcelParser{
 	}
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
-	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
-
-
-
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
 
 
 

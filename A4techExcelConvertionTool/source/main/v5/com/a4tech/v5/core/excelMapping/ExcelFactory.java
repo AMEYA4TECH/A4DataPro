@@ -2,64 +2,9 @@ package com.a4tech.v5.core.excelMapping;
 
 
 
-import com.a4tech.v5.RFGLine.product.mapping.RFGLineProductExcelMapping;
-import com.a4tech.v5.apparel.product.mapping.ApparelProductsExcelMapping;
-import com.a4tech.v5.bestDeal.product.mapping.BestDealProductsExcelMapping;
 import com.a4tech.v5.excel.service.IExcelParser;
-import com.a4tech.v5.product.broberry.mapping.BroberryExcelMapping;
 import com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping;
-import com.a4tech.v5.supplier.mapper.AccessLineMapping;
-import com.a4tech.v5.supplier.mapper.AlfaMapping;
-import com.a4tech.v5.supplier.mapper.BagMakersMapping;
-import com.a4tech.v5.supplier.mapper.BallProMapping;
-import com.a4tech.v5.supplier.mapper.BayStateMapping;
-import com.a4tech.v5.supplier.mapper.BellaCanvas;
-import com.a4tech.v5.supplier.mapper.BloominPromotionsMapper;
-import com.a4tech.v5.supplier.mapper.BlueGenerationMapping;
-import com.a4tech.v5.supplier.mapper.BrandwearExcelMapping;
-import com.a4tech.v5.supplier.mapper.CbMapping;
-import com.a4tech.v5.supplier.mapper.CrystalDExcelMapping;
 //import com.a4tech.v5.supplier.mapper.CutterBuckExcelMapping;
-import com.a4tech.v5.supplier.mapper.DacassoMapping;
-import com.a4tech.v5.supplier.mapper.DigiSpecMapping;
-import com.a4tech.v5.supplier.mapper.DouglasBridgeMapper;
-import com.a4tech.v5.supplier.mapper.EdwardsGarmentMapping;
-import com.a4tech.v5.supplier.mapper.EveanManufacturingCanadaMapping;
-import com.a4tech.v5.supplier.mapper.FITSAccessoriesMapping;
-import com.a4tech.v5.supplier.mapper.GempirepromotionsMapping;
-import com.a4tech.v5.supplier.mapper.GillStudiosMapping;
-import com.a4tech.v5.supplier.mapper.GoldBondExcelMapping;
-import com.a4tech.v5.supplier.mapper.GoldstarCanadaExcelMapping;
-import com.a4tech.v5.supplier.mapper.HarvestIndustrialExcelMapping;
-import com.a4tech.v5.supplier.mapper.HeadWearMapping;
-import com.a4tech.v5.supplier.mapper.HighCaliberLineMappingRevised;
-import com.a4tech.v5.supplier.mapper.InternationlMerchMapping;
-import com.a4tech.v5.supplier.mapper.MaxplusMapping;
-import com.a4tech.v5.supplier.mapper.MilestoneExcelMapping;
-import com.a4tech.v5.supplier.mapper.PSLMapping;
-import com.a4tech.v5.supplier.mapper.PSLcadMapping;
-import com.a4tech.v5.supplier.mapper.PelicanGraphicMapping;
-import com.a4tech.v5.supplier.mapper.PioneerLLCMapping;
-import com.a4tech.v5.supplier.mapper.PrimeLineExcelMapping;
-import com.a4tech.v5.supplier.mapper.ProGolfMapping;
-import com.a4tech.v5.supplier.mapper.RadiousMapping;
-import com.a4tech.v5.supplier.mapper.SageRMKWorldWideMapping;
-import com.a4tech.v5.supplier.mapper.SimplifiedsourcingMapping;
-import com.a4tech.v5.supplier.mapper.SolidDimensionMapping;
-import com.a4tech.v5.supplier.mapper.SportAzxCandMapping;
-import com.a4tech.v5.supplier.mapper.SportCanadaExcelMapping;
-import com.a4tech.v5.supplier.mapper.SportUSAMapping;
-import com.a4tech.v5.supplier.mapper.SportsManBagMapping;
-import com.a4tech.v5.supplier.mapper.SunGraphixRevisedMapping;
-import com.a4tech.v5.supplier.mapper.SunScopeMapping;
-import com.a4tech.v5.supplier.mapper.TeamworkAthleticMapping;
-import com.a4tech.v5.supplier.mapper.TekweldMapping;
-import com.a4tech.v5.supplier.mapper.TomaxUsaMapping;
-import com.a4tech.v5.supplier.mapper.TowelSpecialtiesMapping;
-import com.a4tech.v5.supplier.mapper.TwintechMapping;
-import com.a4tech.v5.supplier.mapper.WBTIndustriesMapper;
-import com.a4tech.v5.supplier.mapper.WholeSaleExcelMapping;
-import com.a4tech.v5.supplier.mapper.ZenithExport;
 
 public class ExcelFactory {
 	//private AdspecProductsExcelMapping 		adspecMapping;
@@ -276,14 +221,17 @@ public class ExcelFactory {
 		  }*/
 		return null;
 	}
-	
+
+
 	public SageProductsExcelMapping getSageExcelMappingV5() {
 		return sageExcelMappingV5;
 	}
 
+
 	public void setSageExcelMappingV5(SageProductsExcelMapping sageExcelMappingV5) {
 		this.sageExcelMappingV5 = sageExcelMappingV5;
 	}
+
 
 	/*public void setBloominPromotion(BloominPromotionsMapper bloominPromotion) {
 			this.bloominPromotion = bloominPromotion;
@@ -317,13 +265,7 @@ public class ExcelFactory {
 	public void setKlMapping(KlProductsExcelMapping klMapping) {
 		this.klMapping = klMapping;
 	}*/
-	public SageProductsExcelMapping getSageExcelMapping() {
-		return sageExcelMappingV5;
-	}
-
-	public void setSageExcelMapping(SageProductsExcelMapping sageExcelMapping) {
-		this.sageExcelMappingV5 = sageExcelMapping;
-	}
+	
 
 	/*public DCProductsExcelMapping getDcProductExcelMapping() {
 		return dcProductExcelMapping;

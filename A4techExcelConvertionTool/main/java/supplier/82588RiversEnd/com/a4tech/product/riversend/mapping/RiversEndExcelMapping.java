@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -58,9 +59,9 @@ public class RiversEndExcelMapping  implements IExcelParser{
 	private ProductDao productDaoObj;
 	private RiverEndAttributeParser riverEndAttributeParser;
 	private RiverEndPriceGridParser riverEndPriceGridParser;
-	@Autowired
-	ObjectMapper mapperObj;
-	
+	//@Autowired
+	//@Qualifier("objectMapper")
+	ObjectMapper objectMapper;
 
 	public static List<String> XIDS = new ArrayList<String>();
 	static {
@@ -553,11 +554,11 @@ public class RiversEndExcelMapping  implements IExcelParser{
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
 	public ObjectMapper getMapperObj() {
-		return mapperObj;
+		return objectMapper;
 	}
 	
 	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
+		this.objectMapper = mapperObj;
 	}
 
 
@@ -584,6 +585,18 @@ public class RiversEndExcelMapping  implements IExcelParser{
 	public void setRiverEndPriceGridParser(
 			RiverEndPriceGridParser riverEndPriceGridParser) {
 		this.riverEndPriceGridParser = riverEndPriceGridParser;
+	}
+
+
+
+	public ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
+
+
+
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
 	}
 	
 	

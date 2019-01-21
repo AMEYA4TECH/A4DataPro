@@ -40,8 +40,6 @@ public class PrimeLineImprintTabParser {
 	private ProductDao productDaoObj;
 	private PrimeLineAttributeParser primeLineAttriObj;
 	private PrimeLinePriceGridParser primeLinePriceGridParser;
-	@Autowired
-	ObjectMapper mapperObj;
 	
 	public HashMap<String, Product> readImprintTab(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId,
 			HashMap<String, Product> sheetMap){
@@ -157,7 +155,7 @@ public class PrimeLineImprintTabParser {
 						    //else here gie quote upon request
 						   
 						    productExcelObj.setProductConfigurations(productConfigObj);
-							 _LOGGER.info("Product Data from sheet 4 ItemImprint tab: "+ mapperObj.writeValueAsString(productExcelObj));
+							// _LOGGER.info("Product Data from sheet 4 ItemImprint tab: "+ mapperObj.writeValueAsString(productExcelObj));
 							 sheetMapReturn.put(productId, productExcelObj);
 							 //}
 								//productConfigObj = new ProductConfigurations();
@@ -354,7 +352,7 @@ public class PrimeLineImprintTabParser {
 	    //else here gie quote upon request
 	   
 	    productExcelObj.setProductConfigurations(productConfigObj);
-		 _LOGGER.info("Product Data from sheet 4 ItemImprint tab: "+ mapperObj.writeValueAsString(productExcelObj));
+		// _LOGGER.info("Product Data from sheet 4 ItemImprint tab: "+ mapperObj.writeValueAsString(productExcelObj));
 		 sheetMapReturn.put(productId, productExcelObj);
 		 //}
 			//productConfigObj = new ProductConfigurations();
@@ -412,14 +410,6 @@ public class PrimeLineImprintTabParser {
 	}
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
-	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
-	
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
 	
 	public PrimeLineAttributeParser getPrimeLineAttriObj() {
 		return primeLineAttriObj;

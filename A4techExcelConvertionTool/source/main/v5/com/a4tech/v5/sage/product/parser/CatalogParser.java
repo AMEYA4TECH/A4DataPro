@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.a4tech.product.model.Catalog;
+import com.a4tech.v5.product.model.Catalog;
 
 
 

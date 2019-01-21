@@ -42,8 +42,6 @@ public class HighCaliberLineExcelMapping implements IExcelParser{
 	PostServiceImpl postServiceImpl;
 	ProductDao productDaoObj;
 	HighCaliberAttributeParser highCaliberAttributeParser;
-	@Autowired
-	ObjectMapper mapperObj;
 	HighCaliberPriceGridParser highCalPriceGridParser;
 	
 	public static List<String> xidList = new ArrayList<String>();

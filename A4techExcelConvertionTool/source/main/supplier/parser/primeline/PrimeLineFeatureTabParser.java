@@ -30,8 +30,8 @@ public class PrimeLineFeatureTabParser {
 	private static final Logger _LOGGER = Logger.getLogger(PrimeLineFeatureTabParser.class);
 	private ProductDao productDaoObj;
 	private PrimeLineAttributeParser primeLineAttriObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	/*@Autowired
+	ObjectMapper mapperObj;*/
 	
 	public HashMap<String, Product> readFeatureTab(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId,
 			HashMap<String, Product> sheetMap){
@@ -85,7 +85,7 @@ public class PrimeLineFeatureTabParser {
 							 //for the primeline attribute parser processing  based on the detailvalue type
 							 //if(!StringUtils.isEmpty(detailTypeValue) && !StringUtils.isEmpty(detailValue)){
 							 //productExcelObj=primeLineAttriObj.featureCritriaparser(productExcelObj,productConfigObj,detailTypeValue,detailValue);
-							 _LOGGER.info("Product Data from sheet 3 feature tab: "+ mapperObj.writeValueAsString(productExcelObj));
+							 //_LOGGER.info("Product Data from sheet 3 feature tab: "+ mapperObj.writeValueAsString(productExcelObj));
 							 sheetMapReturn.put(productId, productExcelObj);
 							 //}
 								//productConfigObj = new ProductConfigurations();
@@ -152,7 +152,7 @@ public class PrimeLineFeatureTabParser {
 		// productConfigObj.setColors(colorList);
 		//if(!StringUtils.isEmpty(detailTypeValue) && !StringUtils.isEmpty(detailValue)){
 			 //productExcelObj=primeLineAttriObj.featureCritriaparser(productExcelObj,productConfigObj,detailTypeValue,detailValue);
-			 _LOGGER.info("Product Data from sheet 3 feature tab: "+ mapperObj.writeValueAsString(productExcelObj));
+			// _LOGGER.info("Product Data from sheet 3 feature tab: "+ mapperObj.writeValueAsString(productExcelObj));
 			 sheetMapReturn.put(productId, productExcelObj);
 			 //}
 				//productConfigObj = new ProductConfigurations();
@@ -205,13 +205,13 @@ public class PrimeLineFeatureTabParser {
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
+	/*public ObjectMapper getMapperObj() {
 		return mapperObj;
 	}
 	
 	public void setMapperObj(ObjectMapper mapperObj) {
 		this.mapperObj = mapperObj;
-	}
+	}*/
 	
 	public PrimeLineAttributeParser getPrimeLineAttriObj() {
 		return primeLineAttriObj;

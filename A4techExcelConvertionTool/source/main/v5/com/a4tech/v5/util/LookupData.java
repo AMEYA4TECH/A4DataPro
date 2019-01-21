@@ -213,13 +213,16 @@ public class LookupData {
 	public List<String> getFobPoints(String supplierNo){
 	     return	listOfFobPoints.get(supplierNo);
 	}
-	public LookupServiceData getLookupServiceData() {
+	
+	
+	public LookupServiceData getLookupServiceDataV5() {
 		return lookupServiceDataV5;
 	}
 
-	public void setLookupServiceData(LookupServiceData lookupServiceData) {
-		this.lookupServiceDataV5 = lookupServiceData;
+	public void setLookupServiceDataV5(LookupServiceData lookupServiceDataV5) {
+		this.lookupServiceDataV5 = lookupServiceDataV5;
 	}
+
 	public static String getSizeUnit(String value){
 	     return	sizeMap.get(value);
 	}

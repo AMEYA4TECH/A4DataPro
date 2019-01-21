@@ -74,7 +74,7 @@ import com.a4tech.supplier.mapper.ZenithExport;
 public class ExcelFactory {
 	private AdspecProductsExcelMapping 		adspecMapping;
 	private KlProductsExcelMapping 			klMapping;
-	private SageProductsExcelMapping 		sageExcelMapping;
+	//private SageProductsExcelMapping 		sageExcelMapping;
 	private DCProductsExcelMapping 			dcProductExcelMapping;
 	private KukuProductsExcelMapping 		kukuProductsExcelMapping;
 	private RFGLineProductExcelMapping 		rfgLineProductExcelMapping;
@@ -150,9 +150,9 @@ public class ExcelFactory {
 			   return klMapping;
 		   }else if(name.equalsIgnoreCase("Adspec") || name.equals("32125")){
 			   return adspecMapping;
-		   }else if(name.equalsIgnoreCase("sage") || name.equals("55204")){
+		   }/*else if(name.equalsIgnoreCase("sage") || name.equals("55204")){
 			   return sageExcelMapping;
-		   }else if(name.equalsIgnoreCase("dc") || name.equals("55205")){
+		   }*/else if(name.equalsIgnoreCase("dc") || name.equals("55205")){
 			   return dcProductExcelMapping;
 		   }else if(name.equalsIgnoreCase("kuku") || name.equals("65851")){
 			   return kukuProductsExcelMapping;
@@ -318,13 +318,13 @@ public class ExcelFactory {
 	public void setKlMapping(KlProductsExcelMapping klMapping) {
 		this.klMapping = klMapping;
 	}
-	public SageProductsExcelMapping getSageExcelMapping() {
+	/*public SageProductsExcelMapping getSageExcelMapping() {
 		return sageExcelMapping;
 	}
 
 	public void setSageExcelMapping(SageProductsExcelMapping sageExcelMapping) {
 		this.sageExcelMapping = sageExcelMapping;
-	}
+	}*/
 
 	public DCProductsExcelMapping getDcProductExcelMapping() {
 		return dcProductExcelMapping;

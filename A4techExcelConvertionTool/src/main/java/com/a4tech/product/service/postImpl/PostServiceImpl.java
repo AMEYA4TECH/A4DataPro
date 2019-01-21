@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,8 +36,9 @@ public class PostServiceImpl implements PostService {
 	private RestTemplate restTemplate;
 	private String postApiURL ;
 	private String getProductUrl;
-	@Autowired
-	ObjectMapper mapperObj;
+	//@Autowired
+	//@Qualifier("objectMapper")
+	ObjectMapper objectMapper;
 	/*@Autowired
 	private Environment environment;*/
 	@Override
@@ -45,7 +47,7 @@ public class PostServiceImpl implements PostService {
         String xid = product.getExternalProductId();
 		try {
 			_LOGGER.info("Product Data : "
-					+ mapperObj.writeValueAsString(product));
+					+ objectMapper.writeValueAsString(product));
 			if(environmentType.contains(":")){
 				String[] sheetNameAndEnvType = CommonUtility.getValuesOfArray(environmentType, ":");
 				environmentType = sheetNameAndEnvType[0];
@@ -61,8 +63,8 @@ public class PostServiceImpl implements PostService {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("AuthToken", authTokens);
 			headers.add("Content-Type", "application/json ; charset=utf-8");
-			/*_LOGGER.info("Product Data : "
-					+ mapperObj.writeValueAsString(product));*/
+			_LOGGER.info("Product Data : "
+					+ objectMapper.writeValueAsString(product));
 			HttpEntity<Product> requestEntity = new HttpEntity<Product>(
 					product, headers);
 			ResponseEntity<ExternalAPIResponse> response = restTemplate
@@ -74,7 +76,7 @@ public class PostServiceImpl implements PostService {
 			String response = hce.getResponseBodyAsString();
 			try {
 				_LOGGER.info("ASI Error Response Msg :" + response);
-				ErrorMessageList apiResponse = mapperObj.readValue(response,
+				ErrorMessageList apiResponse = objectMapper.readValue(response,
 						ErrorMessageList.class);
 				
 				productDao.save(apiResponse.getErrors(),xid, asiNumber, batchId);
@@ -115,7 +117,7 @@ public class PostServiceImpl implements PostService {
 			
 			try {
 				if(!flag){
-				apiResponse = mapperObj.readValue(serverResponse,
+				apiResponse = objectMapper.readValue(serverResponse,
 						ErrorMessageList.class);
 				}
 				
@@ -173,7 +175,7 @@ public class PostServiceImpl implements PostService {
 	    		                                                                            Product.class ,productId);
 	     Product product = getResponse.getBody();
 	    _LOGGER.info("Product from API::"
-				+ mapperObj.writeValueAsString(product));
+				+ objectMapper.writeValueAsString(product));
 	    return product;  
 	  }catch(HttpClientErrorException hce){
 		_LOGGER.error("HttpClientError ::"+hce.getMessage());
@@ -202,13 +204,13 @@ public class PostServiceImpl implements PostService {
 		    		 ErrorMessageList.class);
 				_LOGGER.info("Result : " + getResponse);
 		    _LOGGER.info("Delete Response from ASI::"
-					+ mapperObj.writeValueAsString(getResponse));
+					+ objectMapper.writeValueAsString(getResponse));
 		     return 1; 
 		  } catch (HttpClientErrorException hce) {
 			String response = hce.getResponseBodyAsString();
 			try {
 				_LOGGER.info("ASI Error Response Msg :" + response);
-				ErrorMessageList apiResponse = mapperObj.readValue(response,
+				ErrorMessageList apiResponse = objectMapper.readValue(response,
 						ErrorMessageList.class);
 				productDao.save(apiResponse.getErrors(),
 						productId, asiNumber, batchId);
@@ -225,7 +227,7 @@ public class PostServiceImpl implements PostService {
 
 			ErrorMessageList apiResponse;
 			try {
-				apiResponse = mapperObj.readValue(serverResponse,
+				apiResponse = objectMapper.readValue(serverResponse,
 						ErrorMessageList.class);
 				productDao.save(apiResponse.getErrors(),
 						productId, asiNumber, batchId);
@@ -309,4 +311,11 @@ public class PostServiceImpl implements PostService {
 	public void setGetProductUrl(String getProductUrl) {
 		this.getProductUrl = getProductUrl;
 	}
+	public ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
+	
 }

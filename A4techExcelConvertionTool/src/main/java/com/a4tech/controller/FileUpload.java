@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -46,6 +47,7 @@ public class FileUpload {
 	private IMailService                  mailService;
 	private String                accessToken = null;
 	@Autowired
+	@Qualifier("loginService")
 	private ILoginService         loginService;
 	private ProductDao            productDao;
 	private ConvertCsvToExcel     convertCsvToExcel;
@@ -57,7 +59,8 @@ public class FileUpload {
 	private com.a4tech.v5.util.LookupData            lookupDataV5;
 	private com.a4tech.v5.product.service.postImpl.PostServiceImpl postServiceV5;
 	@Autowired
-	private ILoginService          loginServiceImplV5;
+	@Qualifier("loginServiceImplV5")
+	private com.a4tech.v5.product.service.ILoginService          loginServiceImplV5;
 
 	private static Logger _LOGGER = Logger.getLogger(Class.class);
 	
@@ -138,7 +141,7 @@ public class FileUpload {
 			if(parserObject != null){ // new implemention
 				//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
 				finalResult = parserObject.readExcel(accessToken, workbook, 
-                        Integer.valueOf(asiNumber), batchId,"Prod");//here change environment type
+                        Integer.valueOf(asiNumber), batchId,"Sand");//here change environment type
 		    	if (finalResult != null) {
 					parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
 				}
@@ -148,7 +151,7 @@ public class FileUpload {
 			if(parserObjectV5 != null){ // new implemention
 				//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
 				finalResult = parserObjectV5.readExcel(accessToken, workbook, 
-                        Integer.valueOf(asiNumber), batchId,"Prod");//here change environment type
+                        Integer.valueOf(asiNumber), batchId,"Sand");//here change environment type
 		    	if (finalResult != null) {
 					parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
 				}
@@ -343,6 +346,31 @@ public class FileUpload {
 
 	public void setLookupDataV5(com.a4tech.v5.util.LookupData lookupDataV5) {
 		this.lookupDataV5 = lookupDataV5;
+	}
+
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
+	}
+
+	public com.a4tech.v5.product.service.ILoginService getLoginServiceImplV5() {
+		return loginServiceImplV5;
+	}
+
+	public void setLoginServiceImplV5(
+			com.a4tech.v5.product.service.ILoginService loginServiceImplV5) {
+		this.loginServiceImplV5 = loginServiceImplV5;
 	}
 
 

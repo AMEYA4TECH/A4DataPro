@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -47,8 +48,12 @@ public class BroberryExcelMapping implements IExcelParser{
 	
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
+	//@Autowired
+	//ObjectMapper mapperObj;
 	@Autowired
-	ObjectMapper mapperObj;
+	@Qualifier("objectMapper")
+	ObjectMapper objectMapper;
+	
 	private BroberryProductAttributeParser broberryProductAttributeParser;
 	private BroberryProductMaterialParser broberryMaterialParserObj;
 
@@ -781,13 +786,13 @@ public class BroberryExcelMapping implements IExcelParser{
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
 	public ObjectMapper getMapperObj() {
-		return mapperObj;
+		return objectMapper;
 	}
 
 
 
 	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
+		this.objectMapper = mapperObj;
 	}
 
 
@@ -811,4 +816,18 @@ public class BroberryExcelMapping implements IExcelParser{
 			BroberryProductMaterialParser broberryMaterialParserObj) {
 		this.broberryMaterialParserObj = broberryMaterialParserObj;
 	}
+
+
+
+	public ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
+
+
+
+	public void setObjectMapper(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
+	
+	
 }

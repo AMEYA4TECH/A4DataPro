@@ -35,8 +35,8 @@ import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.CommonUtility;
 import com.opencsv.CSVReader;
 
-@RestController
-public class FtpController {
+//@RestController
+public class FtpController {/*
 	@Autowired
 	private ILoginService loginService;
 	@Autowired
@@ -123,10 +123,10 @@ public class FtpController {
 	   }
 		return new ModelAndView("fileUpload", "ftpFileUploadBean", new FtpFileUploadBean());	
 	}
-	/*
+	
 	 * @author: Venkat
 	 * @description : this method used for count number of columns in current supplier file
-	 */
+	 
  private int getSupplierFileColumnsCount(Workbook workbBook){
 	Sheet sheet = workbBook.getSheetAt(0);
 	Row headerRow = sheet.getRow(0);
@@ -194,4 +194,4 @@ public class FtpController {
 			}
 			return null;
      }
-}
+*/}

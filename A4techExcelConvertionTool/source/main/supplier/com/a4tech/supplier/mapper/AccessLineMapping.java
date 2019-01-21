@@ -52,8 +52,6 @@ private static final Logger _LOGGER = Logger.getLogger(AccessLineMapping.class);
 	
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
 	
 	AccessLineAttributeParser  accessLineAttributeParser;
 	AccessLinePriceGridParserr accessLinePriceGridParserr;
@@ -1030,13 +1028,7 @@ private static final Logger _LOGGER = Logger.getLogger(AccessLineMapping.class);
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
 	
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
 
 
 

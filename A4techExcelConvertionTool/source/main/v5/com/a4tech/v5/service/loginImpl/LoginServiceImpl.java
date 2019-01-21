@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,9 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.a4tech.core.model.AccessBean;
-import com.a4tech.product.service.ILoginService;
-import com.a4tech.util.ApplicationConstants;
+import com.a4tech.v5.core.model.AccessBean;
+import com.a4tech.v5.product.service.ILoginService;
+import com.a4tech.v5.util.ApplicationConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -34,7 +35,8 @@ public class LoginServiceImpl implements ILoginService {
 	AccessBean accessBean = null;
 	private RestTemplate restTemplate ;
 	@Autowired
-	ObjectMapper mapper;
+	@Qualifier("objectMapperV5")
+	ObjectMapper objectMapperV5;
 	private String loginApiURL ;
 	/*@Autowired
 	private Environment environment;*/

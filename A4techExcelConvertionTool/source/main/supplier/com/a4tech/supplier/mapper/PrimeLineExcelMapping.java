@@ -49,8 +49,7 @@ public class PrimeLineExcelMapping  implements IExcelParser{
 	private static final Logger _LOGGER = Logger.getLogger(PrimeLineExcelMapping.class);
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	private LookupServiceData lookupServiceDataObj;
 	PrimeLineColorTabParser primeLineColorTabParser;
 	PrimeLineAttributeParser primeLineAttributeParser;
@@ -230,8 +229,8 @@ public class PrimeLineExcelMapping  implements IExcelParser{
 							productExcelObj.setPriceGrids(priceGrids);
 							productExcelObj.setProductConfigurations(productConfigObj);
 							
-							_LOGGER.info("Product Data from sheet 1: "
-									+ mapperObj.writeValueAsString(productExcelObj));
+							/*_LOGGER.info("Product Data from sheet 1: "
+									+ mapperObj.writeValueAsString(productExcelObj));*/
 							sheetMap.put(productId,productExcelObj);
 							/*
 							_LOGGER.info("Product Data from sheet 1: "
@@ -652,8 +651,8 @@ public class PrimeLineExcelMapping  implements IExcelParser{
 		productExcelObj.setPriceGrids(priceGrids);
 		productExcelObj.setProductConfigurations(productConfigObj);
 		
-		_LOGGER.info("Product Data from sheet 1: "
-				+ mapperObj.writeValueAsString(productExcelObj));
+		/*_LOGGER.info("Product Data from sheet 1: "
+				+ mapperObj.writeValueAsString(productExcelObj));*/
 		sheetMap.put(productId,productExcelObj);
 		/*
 		_LOGGER.info("Product Data from sheet 1: "
@@ -800,13 +799,13 @@ public class PrimeLineExcelMapping  implements IExcelParser{
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
+	/*public ObjectMapper getMapperObj() {
 		return mapperObj;
 	}
 	
 	public void setMapperObj(ObjectMapper mapperObj) {
 		this.mapperObj = mapperObj;
-	}
+	}*/
 	
 	public LookupServiceData getLookupServiceDataObj() {
 		return lookupServiceDataObj;

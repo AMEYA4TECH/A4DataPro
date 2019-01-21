@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.a4tech.v5.controller.DownloadFileController;
 import com.a4tech.v5.util.ApplicationConstants;
 
-@Controller
-@RequestMapping("/downloadFile")
-public class DownloadFileController {
+//@Controller
+//@RequestMapping("/downloadFile")
+public class DownloadFileController {/*
 	
 	private static Logger _LOGGER = Logger.getLogger(DownloadFileController.class);
 	
@@ -47,4 +47,4 @@ public class DownloadFileController {
 			}
 			
 	}
-}
+*/}

@@ -46,8 +46,6 @@ public class PioneerLLCMapping implements IExcelParser{
 	ProductDao productDaoObj;
 	PioneerPriceGridParserr pioneerPriceGridParserr;
 	PioneerLLCAttributeParser  pioneerLLCAttributeParser;
-	@Autowired
-	ObjectMapper mapperObj;
 	
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber,int batchId, String environmentType){
 		int columnIndex = 0;

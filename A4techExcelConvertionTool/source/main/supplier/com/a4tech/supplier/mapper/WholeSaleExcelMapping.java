@@ -41,8 +41,7 @@ public class WholeSaleExcelMapping  implements IExcelParser{
 	private static final Logger _LOGGER = Logger.getLogger(WholeSaleExcelMapping.class);
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	WholeSaleAttributeParser wholeSaleAttributeParser;
 	WholeSalePriceGridParser wholeSalePriceGridParser;
 	private LookupServiceData lookupServiceDataObj;
@@ -581,14 +580,7 @@ public class WholeSaleExcelMapping  implements IExcelParser{
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
 	
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
-
 
 
 	public WholeSaleAttributeParser getWholeSaleAttributeParser() {

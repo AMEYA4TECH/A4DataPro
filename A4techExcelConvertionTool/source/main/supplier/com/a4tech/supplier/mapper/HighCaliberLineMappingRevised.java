@@ -48,8 +48,7 @@ public class HighCaliberLineMappingRevised implements IExcelParser{
 	PostServiceImpl postServiceImpl;
 	ProductDao productDaoObj;
 	HighCaliberAttributeParser highCaliberAttributeParser;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	HighCaliberPriceGridParser highCalPriceGridParser;
 	
 	@SuppressWarnings("finally")

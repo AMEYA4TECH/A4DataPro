@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 		
-     <bean id="sageMappingId" class="com.a4tech.sage.product.mapping.SageProductsExcelMapping">
+   <!--   <bean id="sageMappingId" class="com.a4tech.sage.product.mapping.SageProductsExcelMapping">
      	<property name="postServiceImpl" ref="postService"></property>
      	<property name="catalogParser" ref="catalogParserId"/>
      	<property name="priceGridParser" ref="priceGridParserId"/>
@@ -36,5 +36,5 @@
      <bean id="packageId" class="com.a4tech.sage.product.parser.PackagingParser"/>
      <bean id="shippingEstimateId" class="com.a4tech.sage.product.parser.ShippingEstimateParser"/>
      <bean id="dimensionParserId" class="com.a4tech.sage.product.parser.DimensionParser"/>
-     <bean id="colorParserId" class="com.a4tech.sage.product.parser.ColorParser"/> 
+     <bean id="colorParserId" class="com.a4tech.sage.product.parser.ColorParser"/>  -->
 </beans>

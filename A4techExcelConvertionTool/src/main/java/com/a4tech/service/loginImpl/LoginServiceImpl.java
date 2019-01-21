@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +35,8 @@ public class LoginServiceImpl implements ILoginService {
 	AccessBean accessBean = null;
 	private RestTemplate restTemplate ;
 	@Autowired
-	ObjectMapper mapper;
+	@Qualifier("objectMapper")
+	ObjectMapper objectMapper;
 	private String loginApiURL ;
 	/*@Autowired
 	private Environment environment;*/

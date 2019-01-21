@@ -66,7 +66,7 @@ import com.a4tech.v2.criteria.parser.ShippingEstimationParser;
 import com.a4tech.v2.service.postImpl.PostServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class V2ExcelMapping {
+public class V2ExcelMapping {/*
 	
 	private static final Logger _LOGGER = Logger.getLogger(V2ExcelMapping.class);
 	@Autowired
@@ -269,25 +269,25 @@ public class V2ExcelMapping {
 						
 					}
 					productExcelObj.setExternalProductId(productId);
-					 /*externalProductId = cell.getStringCellValue();
-					productExcelObj.setExternalProductId(externalProductId);*/
+					 externalProductId = cell.getStringCellValue();
+					productExcelObj.setExternalProductId(externalProductId);
 					break;
 					
 				case 2:
-					/*String name = cell.getStringCellValue();
+					String name = cell.getStringCellValue();
 					
 					if(!StringUtils.isEmpty(name)){
 					productExcelObj.setName(cell.getStringCellValue());
 					}else{
 						productExcelObj.setName(ApplicationConstants.CONST_STRING_EMPTY);
-					}*/
+					}
 					 productName = cell.getStringCellValue();
 						productExcelObj.setName(productName);
 					break;
 		
 				case 3:
 					// data is not avaiable
-					/*int asiProdNo = 0;
+					int asiProdNo = 0;
 					if(cell.getCellType() == Cell.CELL_TYPE_STRING){
 						try{
 							asiProdNo = Integer.parseInt(cell.getStringCellValue());
@@ -298,7 +298,7 @@ public class V2ExcelMapping {
 					  }else if(cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
 						  asiProdNo = (int) cell.getNumericCellValue();
 						  productExcelObj.setAsiProdNo(Integer.toString(asiProdNo));
-					  }*/ 
+					  } 
 					break;
 			
 				case 4:
@@ -588,59 +588,59 @@ public class V2ExcelMapping {
 					break;
 				
 				case 43:
-					/*String sameDayService=cell.getStringCellValue();
+					String sameDayService=cell.getStringCellValue();
 					if(!StringUtils.isEmpty(sameDayService)){
 						sameDayObj=sameDayParser.getSameDayRush(sameDayService);
 						if(sameDayObj!=null){
 						productConfigObj.setSameDayRush(sameDayObj);
-						}}*/
+						}}
 					break;
 					
 				case 44:
-					/*String packagingValue=cell.getStringCellValue();
+					String packagingValue=cell.getStringCellValue();
 					if(!StringUtils.isEmpty(packagingValue)){
 						  packaging=packagingParser.getPackagingCriteria(packagingValue);
 						  if(packaging!=null){
 							 productConfigObj.setPackaging(packaging);
 					     }
-					}*/
+					}
 					break;
 				case 45:
-					/*shippingitemValue = cell.getStringCellValue();*/
+					shippingitemValue = cell.getStringCellValue();
 					break;
 					
 				case 46:
-					/*shippingdimensionValue = cell.getStringCellValue();*/
+					shippingdimensionValue = cell.getStringCellValue();
                 	break;
 					
 				case 47:
-					/*String shippingWeightValue = cell.getStringCellValue();
+					String shippingWeightValue = cell.getStringCellValue();
 					ShipingItem = shipinestmt.getShippingEstimates(shippingitemValue, shippingdimensionValue,shippingWeightValue);
 					if(ShipingItem.getDimensions()!=null || ShipingItem.getNumberOfItems()!=null || ShipingItem.getWeight()!=null ){
 					productConfigObj.setShippingEstimates(ShipingItem);
-					}*/
+					}
 					break;
 					
 				case 48:
-					/*String shipperBillsBy = cell.getStringCellValue();
+					String shipperBillsBy = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(shipperBillsBy.trim())){
 					productExcelObj.setShipperBillsBy(cell.getStringCellValue());
 					}else{
 						productExcelObj.setShipperBillsBy(ApplicationConstants.CONST_STRING_EMPTY);
-					}*/
+					}
 					break;
 					
 				case 49:
-					/*String additionalShippingInfo = cell.getStringCellValue();
+					String additionalShippingInfo = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(additionalShippingInfo)){
 					productExcelObj.setAdditionalShippingInfo(additionalShippingInfo);
 					}else{
 						productExcelObj.setAdditionalShippingInfo(ApplicationConstants.CONST_STRING_EMPTY);	
-					}*/
+					}
 					break;
 					
 				case 50:
-					/*String canShipInPlainBox = cell.getStringCellValue();
+					String canShipInPlainBox = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(canShipInPlainBox)){
 					if (canShipInPlainBox.trim().equalsIgnoreCase(ApplicationConstants.CONST_CHAR_Y)) {
 						productExcelObj.setCanShipInPlainBox(true);
@@ -648,86 +648,86 @@ public class V2ExcelMapping {
 						productExcelObj.setCanShipInPlainBox(false);
 					}
 					}else{ productExcelObj.setCanShipInPlainBox(false);
-					}*/
+					}
 					break;
 					
 				case 51:
-					/*String complianceCert = cell.getStringCellValue();
+					String complianceCert = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(complianceCert)){
 					String complianceCertArr[] = complianceCert.split(ApplicationConstants.CONST_STRING_COMMA_SEP);
 					for (String string : complianceCertArr) {
 						complianceCerts.add(string);
 					} 
 					productExcelObj.setComplianceCerts(complianceCerts);
-					}*/
+					}
 					break;
 					
 				case 52:
-					/*String productDataSheet = cell.getStringCellValue();
+					String productDataSheet = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(productDataSheet)){
 					productExcelObj.setProductDataSheet(productDataSheet);
 					}else{
 						productExcelObj.setProductDataSheet(ApplicationConstants.CONST_STRING_EMPTY);
-					}*/
+					}
 					break;
 					
 				case 53:
-					/*String safetyWarning = cell.getStringCellValue();
+					String safetyWarning = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(safetyWarning)){
 					String safetyWarningsArr[] = safetyWarning.split(ApplicationConstants.CONST_STRING_COMMA_SEP);
 					for (String string : safetyWarningsArr) {
 						safetyWarnings.add(string.trim());
 					} 
 					productExcelObj.setSafetyWarnings(safetyWarnings);
-					}*/
+					}
 					break;
 
 				case 54:
-					/*String additionalProductInfo = cell.getStringCellValue();
+					String additionalProductInfo = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(additionalProductInfo)){
 					productExcelObj.setAdditionalProductInfo(additionalProductInfo);
 					}else{
 						productExcelObj.setAdditionalProductInfo(ApplicationConstants.CONST_STRING_EMPTY);
-					}*/
+					}
 					break;
 
 				case 55:
-					/*String distributorOnlyComments = cell.getStringCellValue();
+					String distributorOnlyComments = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(distributorOnlyComments)){
 					productExcelObj.setDistributorOnlyComments(distributorOnlyComments);
 					}
 					else{
 						productExcelObj.setDistributorOnlyComments(ApplicationConstants.CONST_STRING_EMPTY);
-					}*/
+					}
 					break;
 
 				case 56:
-					/*String productDisclaimer = cell.getStringCellValue();
+					String productDisclaimer = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(productDisclaimer)){
 					productExcelObj.setProductDisclaimer(productDisclaimer);
 					}
 					else{
 						productExcelObj.setProductDisclaimer(ApplicationConstants.CONST_STRING_EMPTY);
-					} */
+					} 
 					break;
 					
 				case 57:
-					/*basePriceName = cell.getStringCellValue();*/
+					basePriceName = cell.getStringCellValue();
 					basePriceName = productName;
 					break;
 					
 				case 58:
-					/*String criteria1 = cell.getStringCellValue();
+					String criteria1 = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(criteria1)){
 						basePriceCriteria.append(criteria1).append(ApplicationConstants.PRICE_SPLITTER_BASE_PRICEGRID);
-					}*/
+					}
 					break;
 			
 				case 59:
-					/*String criteria2 = cell.getStringCellValue();
+					String criteria2 = cell.getStringCellValue();
 					if(!StringUtils.isEmpty(criteria2)){
 						basePriceCriteria.append(criteria2);
-					}*/
+					}
 					break;
 				case 60:
 				case 61:
@@ -941,14 +941,14 @@ public class V2ExcelMapping {
 					break;// QUR Flag
 				case 134:
 					// data is not available
-					/*String priceConfirmedThru = cell.getStringCellValue();
+					String priceConfirmedThru = cell.getStringCellValue();
 					//mmddyy in excel  //yymmdd in api
 					String strArr[]=priceConfirmedThru.split("/");
 					priceConfirmedThru=strArr[2]+"/"+strArr[0]+"/"+strArr[1];
 					priceConfirmedThru=priceConfirmedThru.replaceAll("/", "-");
 					 
 					priceConfirmedThru=priceConfirmedThru+"T00:00:00";
-					 	productExcelObj.setPriceConfirmedThru(priceConfirmedThru);*/
+					 	productExcelObj.setPriceConfirmedThru(priceConfirmedThru);
 					break;
 					
 				case 136:
@@ -1135,4 +1135,4 @@ public class V2ExcelMapping {
 	
 	
 
-}
+*/}

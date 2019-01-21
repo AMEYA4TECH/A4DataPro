@@ -69,8 +69,7 @@ public class GillStudiosMapping implements IExcelParser{
 	private GillStudiosAttributeParser gillStudiosAttributeParser;
 	private GillStudiosPriceGridParser gillStudiosPriceGridParser;
 	private GillStudiosImprintMethodParser gillStudiosImprintMethodParser;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	
 	@SuppressWarnings("unused")
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId, String environmentType){
@@ -318,8 +317,8 @@ while (iterator.hasNext()) {
 							    
 							 	productExcelObj.setProductConfigurations(productConfigObj);
 							 //	if(Prod_Status = false){
-							 	_LOGGER.info("Product Data : "
-										+ mapperObj.writeValueAsString(productExcelObj));
+							 	/*_LOGGER.info("Product Data : "
+										+ mapperObj.writeValueAsString(productExcelObj));*/
 							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber ,batchId, environmentType);
 							 	if(num ==1){
 							 		numOfProductsSuccess.add("1");
@@ -1498,8 +1497,8 @@ while (iterator.hasNext()) {
 	    ////
 		productExcelObj.setProductConfigurations(productConfigObj);
 	
-		 	_LOGGER.info("Product Data : "
-					+ mapperObj.writeValueAsString(productExcelObj));
+		 	/*_LOGGER.info("Product Data : "
+					+ mapperObj.writeValueAsString(productExcelObj));*/
 		 	//if(Prod_Status = false){
 		 	productExcelObj.setPriceType("L");
 		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId, environmentType);

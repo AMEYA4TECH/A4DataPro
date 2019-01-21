@@ -52,8 +52,7 @@ public class BagMakersMapping implements IExcelParser{
 	ProductDao productDaoObj;
 	BagMakerAttributeParser bagMakerAttributeParser;
 	BagMakersPriceGridParser bagMakersPriceGridParser;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber,int batchId, String environmentType){
 		int columnIndex = 0;

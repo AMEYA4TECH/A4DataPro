@@ -34,8 +34,7 @@ public class TomaxUsaMapping implements IExcelParser{
 	
 	private PostServiceImpl postServiceImpl;
 	private ProductDao productDaoObj;
-	@Autowired
-	ObjectMapper mapperObj;
+	
 	
 	TomaxUsaAttributeParser tomaxUsaAttributeParser;
 	TomaxProductTabParser tomaxProductTabParser;
@@ -233,13 +232,7 @@ public class TomaxUsaMapping implements IExcelParser{
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
-	public ObjectMapper getMapperObj() {
-		return mapperObj;
-	}
 	
-	public void setMapperObj(ObjectMapper mapperObj) {
-		this.mapperObj = mapperObj;
-	}
 
 
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,25 +18,26 @@ import org.springframework.web.client.RestTemplate;
 import com.a4tech.v5.core.errors.ErrorMessage;
 import com.a4tech.v5.core.errors.ErrorMessageList;
 import com.a4tech.v5.core.model.ExternalAPIResponse;
-import com.a4tech.v5.product.dao.entity.ErrorEntity;
 import com.a4tech.v5.product.dao.service.ProductDao;
 import com.a4tech.v5.product.model.Product;
-import com.a4tech.v5.product.service.PostService;
 import com.a4tech.v5.util.CommonUtility;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.a4tech.v5.product.dao.service.ProductDao;
+
 
 public class PostServiceImpl  {//implements PostService
 
 	private Logger _LOGGER = Logger.getLogger(getClass());
 	
-    private ProductDao productDao;
+    private com.a4tech.v5.product.dao.service.ProductDao productDaoObjV5;
 	private RestTemplate restTemplate;
 	private String postApiURL ;
 	private String getProductUrl;
 	@Autowired
-	ObjectMapper mapperObj;
+	@Qualifier("objectMapperV5")
+	ObjectMapper objectMapperV5;
 	/*@Autowired
 	private Environment environment;*/
 	//@Override
@@ -45,7 +46,7 @@ public class PostServiceImpl  {//implements PostService
         String xid = product.getExternalProductId();
 		try {
 			_LOGGER.info("Product Data : "
-					+ mapperObj.writeValueAsString(product));
+					+ objectMapperV5.writeValueAsString(product));
 			if(environmentType.contains(":")){
 				String[] sheetNameAndEnvType = CommonUtility.getValuesOfArray(environmentType, ":");
 				environmentType = sheetNameAndEnvType[0];
@@ -53,9 +54,9 @@ public class PostServiceImpl  {//implements PostService
 				xid = xid+":"+sheetName;
 			}
 			if(environmentType.equals("Sand")){
-				postApiURL = "https://sandbox-productservice.asicentral.com/api/v4/product/";
+				postApiURL = "https://sandbox-productservice.asicentral.com/api/v5/product/";
 			} else{
-				postApiURL = "https://productservice.asicentral.com/api/v4/product/";
+				postApiURL = "https://productservice.asicentral.com/api/v5/product/";
 			}
 			//postApiURL = environment.getProperty(environmentType+".product.post.URL");
 			HttpHeaders headers = new HttpHeaders();
@@ -63,6 +64,10 @@ public class PostServiceImpl  {//implements PostService
 			headers.add("Content-Type", "application/json ; charset=utf-8");
 			/*_LOGGER.info("Product Data : "
 					+ mapperObj.writeValueAsString(product));*/
+			
+			_LOGGER.info("Product Data : "
+			+ objectMapperV5.writeValueAsString(product));
+			
 			HttpEntity<Product> requestEntity = new HttpEntity<Product>(
 					product, headers);
 			ResponseEntity<ExternalAPIResponse> response = restTemplate
@@ -74,10 +79,10 @@ public class PostServiceImpl  {//implements PostService
 			String response = hce.getResponseBodyAsString();
 			try {
 				_LOGGER.info("ASI Error Response Msg :" + response);
-				ErrorMessageList apiResponse = mapperObj.readValue(response,
+				ErrorMessageList apiResponse = objectMapperV5.readValue(response,
 						ErrorMessageList.class);
 				
-				productDao.save(apiResponse.getErrors(),xid, asiNumber, batchId);
+				productDaoObjV5.save(apiResponse.getErrors(),xid, asiNumber, batchId);
 				boolean isFailProduct = isFailProduct(apiResponse.getErrors());
 				if(isFailProduct){
 					return 5;
@@ -115,11 +120,11 @@ public class PostServiceImpl  {//implements PostService
 			
 			try {
 				if(!flag){
-				apiResponse = mapperObj.readValue(serverResponse,
+				apiResponse = objectMapperV5.readValue(serverResponse,
 						ErrorMessageList.class);
 				}
 				
-				productDao.save(apiResponse.getErrors(),xid, asiNumber, batchId);
+				productDaoObjV5.save(apiResponse.getErrors(),xid, asiNumber, batchId);
 				_LOGGER.info("Error JSON:" + apiResponse);
 
 			} catch (JsonParseException | JsonMappingException e) {
@@ -137,7 +142,7 @@ public class PostServiceImpl  {//implements PostService
 				_LOGGER.info("internal server msg received from ExternalAPI ");
 				ErrorMessageList errorMsgList = CommonUtility
 						.responseconvertErrorMessageList(serverErrorMsg);
-				productDao.save(errorMsgList.getErrors(),xid, asiNumber, batchId);
+				productDaoObjV5.save(errorMsgList.getErrors(),xid, asiNumber, batchId);
 				return 0;
 			} else if (hce.getCause() != null) {
 				String errorMsg = hce.getCause().toString();
@@ -146,7 +151,7 @@ public class PostServiceImpl  {//implements PostService
 						|| errorMsg.contains("java.net.SocketTimeoutException")) {
 					ErrorMessageList errorMsgList = CommonUtility
 							.responseconvertErrorMessageList(errorMsg);
-					productDao.save(errorMsgList.getErrors(),xid, asiNumber, batchId);
+					productDaoObjV5.save(errorMsgList.getErrors(),xid, asiNumber, batchId);
 					return 0;
 				}
 			} else {
@@ -160,9 +165,9 @@ public class PostServiceImpl  {//implements PostService
 	public Product getProduct(String authToken,String productId, String environmentType){
 	try{
 		if(environmentType.equals("Sand")){
-			getProductUrl = "https://sandbox-productservice.asicentral.com/api/v4/product/{xid}";
+			getProductUrl = "https://sandbox-productservice.asicentral.com/api/v5/product/{xid}";
 		} else{
-			getProductUrl = "https://productservice.asicentral.com/api/v4/product/{xid}";
+			getProductUrl = "https://productservice.asicentral.com/api/v5/product/{xid}";
 		}
 		//postApiURL = environment.getProperty(environmentType+".product.get.URL");
 		 HttpHeaders headers = new HttpHeaders();
@@ -173,7 +178,7 @@ public class PostServiceImpl  {//implements PostService
 	    		                                                                            Product.class ,productId);
 	     Product product = getResponse.getBody();
 	    _LOGGER.info("Product from API::"
-				+ mapperObj.writeValueAsString(product));
+				+ objectMapperV5.writeValueAsString(product));
 	    return product;  
 	  }catch(HttpClientErrorException hce){
 		_LOGGER.error("HttpClientError ::"+hce.getMessage());
@@ -186,10 +191,10 @@ public class PostServiceImpl  {//implements PostService
 	public int deleteProduct(String authTokens, String productId,int asiNumber ,int batchId,String environmentType) throws IOException {
 
 		try {
-			String deleteProductUrl="https://sandbox-productservice.asicentral.com/api/v4/product/";
+			String deleteProductUrl="https://sandbox-productservice.asicentral.com/api/v5/product/";
 			
 			if(environmentType.equals("Prod")){
-				deleteProductUrl="https://productservice.asicentral.com/api/v4/product/";
+				deleteProductUrl="https://productservice.asicentral.com/api/v5/product/";
 			}
 			//productId="3558-55093AWDD";
 			 HttpHeaders headers = new HttpHeaders();
@@ -202,15 +207,15 @@ public class PostServiceImpl  {//implements PostService
 		    		 ErrorMessageList.class);
 				_LOGGER.info("Result : " + getResponse);
 		    _LOGGER.info("Delete Response from ASI::"
-					+ mapperObj.writeValueAsString(getResponse));
+					+ objectMapperV5.writeValueAsString(getResponse));
 		     return 1; 
 		  } catch (HttpClientErrorException hce) {
 			String response = hce.getResponseBodyAsString();
 			try {
 				_LOGGER.info("ASI Error Response Msg :" + response);
-				ErrorMessageList apiResponse = mapperObj.readValue(response,
+				ErrorMessageList apiResponse = objectMapperV5.readValue(response,
 						ErrorMessageList.class);
-				productDao.save(apiResponse.getErrors(),
+				productDaoObjV5.save(apiResponse.getErrors(),
 						productId, asiNumber, batchId);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -225,9 +230,9 @@ public class PostServiceImpl  {//implements PostService
 
 			ErrorMessageList apiResponse;
 			try {
-				apiResponse = mapperObj.readValue(serverResponse,
+				apiResponse = objectMapperV5.readValue(serverResponse,
 						ErrorMessageList.class);
-				productDao.save(apiResponse.getErrors(),
+				productDaoObjV5.save(apiResponse.getErrors(),
 						productId, asiNumber, batchId);
 				_LOGGER.info("Error JSON:" + apiResponse);
 
@@ -246,7 +251,7 @@ public class PostServiceImpl  {//implements PostService
 				_LOGGER.info("internal server msg received from ExternalAPI ");
 				ErrorMessageList errorMsgList = CommonUtility
 						.responseconvertErrorMessageList(serverErrorMsg);
-				productDao.save(errorMsgList.getErrors(),
+				productDaoObjV5.save(errorMsgList.getErrors(),
 						productId, asiNumber, batchId);
 				return 0;
 			} else if (hce.getCause() != null) {
@@ -256,7 +261,7 @@ public class PostServiceImpl  {//implements PostService
 						|| errorMsg.contains("java.net.SocketTimeoutException")) {
 					ErrorMessageList errorMsgList = CommonUtility
 							.responseconvertErrorMessageList(errorMsg);
-					productDao.save(errorMsgList.getErrors(),
+					productDaoObjV5.save(errorMsgList.getErrors(),
 							productId, asiNumber, batchId);
 					return 0;
 				}
@@ -280,6 +285,16 @@ public class PostServiceImpl  {//implements PostService
 		}
 	 return false;
  }
+ 
+ 
+	
+	public com.a4tech.v5.product.dao.service.ProductDao getProductDaoObjV5() {
+	return productDaoObjV5;
+}
+public void setProductDaoObjV5(
+		com.a4tech.v5.product.dao.service.ProductDao productDaoObjV5) {
+	this.productDaoObjV5 = productDaoObjV5;
+}
 	public RestTemplate getRestTemplate() {
 		return restTemplate;
 	}
@@ -295,13 +310,7 @@ public class PostServiceImpl  {//implements PostService
 	public void setPostApiURL(String postApiURL) {
 		this.postApiURL = postApiURL;
 	}
-	public ProductDao getProductDao() {
-		return productDao;
-	}
-
-	public void setProductDao(ProductDao productDao) {
-		this.productDao = productDao;
-	}
+	
 	public String getGetProductUrl() {
 		return getProductUrl;
 	}
@@ -309,4 +318,12 @@ public class PostServiceImpl  {//implements PostService
 	public void setGetProductUrl(String getProductUrl) {
 		this.getProductUrl = getProductUrl;
 	}
+	public ObjectMapper getObjectMapperV5() {
+		return objectMapperV5;
+	}
+	public void setObjectMapperV5(ObjectMapper objectMapperV5) {
+		this.objectMapperV5 = objectMapperV5;
+	}
+	
+	
 }

@@ -36,9 +36,9 @@ import com.a4tech.v5.util.LookupData;
 import com.a4tech.v5.core.excelMapping.ExcelFactory;
 import com.a4tech.v5.core.model.FileBean;
 
-@Controller
-@RequestMapping({ "/", "/uploadFile.htm" })
-public class FileUpload {
+//@Controller
+//@RequestMapping({ "/", "/uploadFile.htm" })
+public class FileUpload {/*
 
 	@Autowired
 	private IProductService               productService;
@@ -60,9 +60,9 @@ public class FileUpload {
 		FileBean fileBean = new FileBean();
 		model.put("filebean", fileBean);
 		return ApplicationConstants.CONST_STRING_HOME;
-		/*FtpLoginBean ftpLogin = new FtpLoginBean(); //uncommented code while using ftp
+		FtpLoginBean ftpLogin = new FtpLoginBean(); //uncommented code while using ftp
 		model.put("ftpLoginBean", ftpLogin);
-		return "ftpLogin";*/
+		return "ftpLogin";
 		}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -100,12 +100,12 @@ public class FileUpload {
 			int batchId = productDao.createBatchId(Integer.parseInt(asiNumber));
 			
 			// this code used to delete all products 
-			/*List<String> xidsList = getAllXids(workbook);
+			List<String> xidsList = getAllXids(workbook);
 			finalResult = deleteProducts(xidsList, accessToken, "Sand", Integer.valueOf(asiNumber), batchId);
 			if (finalResult != null) {
 				parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
 			}
-	    	return ApplicationConstants.CONST_REDIRECT_URL;*/
+	    	return ApplicationConstants.CONST_REDIRECT_URL;
 			
 			request.getSession().setAttribute("batchId",
 					String.valueOf(batchId));
@@ -140,12 +140,12 @@ public class FileUpload {
 		return ApplicationConstants.CONST_STRING_SUCCESS;
 	}
 	
-	/*@Author Venkat
+	@Author Venkat
 	 *@Param String,String,String,RedirectAttributes
 	 *@Description this method parse data(success and failed)after receiving final result from  
 	 *              excel parser and  send out mail if any products are Failure         
 	 * @Retrun Void
-	 */
+	 
 	public void parseFinalData(String result,String asiNumber ,int batchId,
 			                                     RedirectAttributes redirectAttributes){
 		String[] splitFinalResult = result
@@ -156,7 +156,7 @@ public class FileUpload {
 																				noOfProductsSuccess);
 		redirectAttributes.addFlashAttribute(ApplicationConstants.FAILURE_PRODUCTS_COUNT , 
 																				noOfProductsFailure);
-		/*if (!noOfProductsFailure.equals(ApplicationConstants.CONST_STRING_ZERO)) {
+		if (!noOfProductsFailure.equals(ApplicationConstants.CONST_STRING_ZERO)) {
 			
 			boolean isMailSendSuccess = mailService.sendMail(asiNumber, batchId);
 			if(isMailSendSuccess){
@@ -164,7 +164,7 @@ public class FileUpload {
 				                                             ApplicationConstants.MAIL_SEND_SUCCESS_MESSAGE);
 			} 
 			
-		}*/
+		}
 	}
 	public List<String> getAllXids(Workbook workbook){
 		  List<String> xidsList = new ArrayList<>();
@@ -283,4 +283,4 @@ public class FileUpload {
 	}
 
 
-}
+*/}
