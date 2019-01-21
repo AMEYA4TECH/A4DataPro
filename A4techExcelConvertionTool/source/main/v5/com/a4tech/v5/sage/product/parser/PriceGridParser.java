@@ -14,7 +14,7 @@ import com.a4tech.v5.util.ApplicationConstants;
 import com.a4tech.v5.util.LookupData;
 import com.a4tech.v5.excel.PriceServicee;
 
-public class PriceGridParser extends PriceServicee{/*
+public class PriceGridParser {/* extends PriceServicee
 
 	private Logger              _LOGGER              = Logger.getLogger(getClass());
 	public List<PriceGrid> getPriceGrids(String listOfPrices,

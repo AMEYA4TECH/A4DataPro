@@ -43,7 +43,6 @@ import com.a4tech.v5.sage.product.parser.DimensionParser;
 import com.a4tech.v5.sage.product.parser.ImprintMethodParser;
 import com.a4tech.v5.sage.product.parser.OriginParser;
 import com.a4tech.v5.sage.product.parser.PackagingParser;
-import com.a4tech.v5.sage.product.parser.PriceGridParser;
 import com.a4tech.v5.sage.product.parser.RushTimeParser;
 import com.a4tech.v5.sage.product.parser.ShippingEstimateParser;
 
@@ -54,7 +53,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 	
 	private PostServiceImpl postServiceImplV5;
 	private CatalogParser   catalogParser;
-	private PriceGridParser priceGridParser;
+	private com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser;
 	private ImprintMethodParser imprintMethodParser;
 	private OriginParser       originParser;
 	private RushTimeParser    rushTimeParser;
@@ -964,13 +963,18 @@ public class SageProductsExcelMapping implements IExcelParser{
 		this.catalogParser = catalogParser;
 	}
 
-	public PriceGridParser getPriceGridParser() {
+	
+	public com.a4tech.v5.product.criteria.parser.PriceGridParser getPriceGridParser() {
 		return priceGridParser;
 	}
 
-	public void setPriceGridParser(PriceGridParser priceGridParser) {
+
+	public void setPriceGridParser(
+			com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser) {
 		this.priceGridParser = priceGridParser;
 	}
+
+
 	public ImprintMethodParser getImprintMethodParser() {
 		return imprintMethodParser;
 	}

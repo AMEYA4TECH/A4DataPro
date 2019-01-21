@@ -22,19 +22,19 @@
 	   <bean id="lookupServiceDataIdV5" class="com.a4tech.v5.lookup.service.LookupServiceData">
    		<property name="lookupRestServiceV5" ref="lookupRestServiceIdV5"/>
    </bean> -->
-   <bean id="productDaoV5" name="productDaoV5"
+   <bean id="productDaoV5" name="productDaoV5Obj"
 		class="com.a4tech.v5.product.dao.service.ProductDao">
 		<property name="sessionFactory" ref="hibernate3AnnotatedSessionFactory"></property>
 		<property name="errorFileLocPath" value="${error.logfile.location}"></property>
 	</bean>
 	<bean id="productV5" name="productV5Obj" class="com.a4tech.v5.product.model.Product" />
-	 <bean id="lookupRestServiceIdV5" class="com.a4tech.v5.lookup.service.LookupServiceData">
-   		<property name="lookupRestServiceV5" ref="lookupRestServiceIdV5"/>
+	 <bean id="lookupServiceDataIdV5" name="lookupServiceDataV5Obj" class="com.a4tech.v5.lookup.service.LookupServiceData">
+   		<property name="lookupRestServiceV5" ref="lookupRestServiceV5Obj"/>
    </bean>
-    <bean id="lookupDataIdV5" class="com.a4tech.v5.util.LookupData">
-    	<property name="lookupServiceDataV5" ref="lookupServiceDataV5"/>
+    <bean id="lookupDataIdV5" name="lookupDataV5Obj" class="com.a4tech.v5.util.LookupData">
+    	<property name="lookupServiceDataV5" ref="lookupServiceDataV5Obj"/>
     </bean>
-	<bean id="postServiceIdV5" class="com.a4tech.v5.product.service.postImpl.PostServiceImpl">
+	<bean id="postServiceIdV5" name="postServiceV5Obj" class="com.a4tech.v5.product.service.postImpl.PostServiceImpl">
 		<property name="restTemplate" ref="restTemplate"></property>
 		<property name="productDaoObjV5" ref="productDaoV5"></property>
 		<property name="postApiURL" value="${product.v5.post.URL}"/>
@@ -42,12 +42,12 @@
 	</bean>
 	<bean id="objectMapperV5" name="objectMapperV5"
 		class="com.fasterxml.jackson.databind.ObjectMapper" autowire="byName"/>
-<bean id="loginServiceImplV5" name="loginServiceImplV5" class="com.a4tech.v5.service.loginImpl.LoginServiceImpl"
+<bean id="loginServiceImplV5" name="loginServiceImplV5Obj" class="com.a4tech.v5.service.loginImpl.LoginServiceImpl"
 		autowire="byName">
 		<property name="restTemplate" ref="restTemplate" />
 		<property name="loginApiURL" value="${login.v5.endpoint.URL}" />
 	</bean>
-   <bean id="lookupRestServiceV5" class="com.a4tech.v5.lookup.service.restService.LookupRestService">
+   <bean id="lookupRestServiceV5Id" name="lookupRestServiceV5Obj" class="com.a4tech.v5.lookup.service.restService.LookupRestService">
    		<property name="restTemplate"        ref="restTemplate"/>
    		<property name="imprintMethodUrl"    value="${imprintMethod.v5.lookup.url}"/>
    		<property name="materialLookupUrl"   value="${materials.v5.lookup.url}"/>
@@ -77,7 +77,7 @@
   
 </bean>
 
-<bean id="pricegridParserV5" class="com.a4tech.v5.product.criteria.parser.PriceGridParser" parent="abstractBasePriceClass">     
+<bean id="pricegridParserV5" name="pricegridParserV5Obj" class="com.a4tech.v5.product.criteria.parser.PriceGridParser" parent="abstractBasePriceClass">     
   <!--Override the value of the abstract based class if necessary-->
 
 </bean>
@@ -88,7 +88,7 @@
 	
 	
 	<bean id="sageMappingIdV5" name="sageMappingV5Obj" class="com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping">
-     	<property name="postServiceImplV5" ref="postServiceIdV5"></property>
+     	<property name="postServiceImplV5" ref="postServiceV5Obj"></property>
      	<property name="catalogParser" ref="catalogParserId"/>
      	<property name="priceGridParser" ref="pricegridParserV5"/>
      	<property name="imprintMethodParser" ref="imprintMethodId"/>
@@ -98,7 +98,7 @@
      	<property name="shippingEstimateParser" ref="shippingEstimateId"/>
      	<property name="dimParserObj" ref="dimensionParserId"/>
      	<property name="colorParserObj" ref="colorParserId"/>
-     	<property name="productDaoObjV5"  ref="productDaoV5"/>
+     	<property name="productDaoObjV5"  ref="productDaoV5Obj"/>
      </bean>
          
      <bean id="catalogParserId" class="com.a4tech.v5.sage.product.parser.CatalogParser"/>

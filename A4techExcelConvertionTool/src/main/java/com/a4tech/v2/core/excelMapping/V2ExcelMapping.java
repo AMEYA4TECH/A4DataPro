@@ -66,7 +66,7 @@ import com.a4tech.v2.criteria.parser.ShippingEstimationParser;
 import com.a4tech.v2.service.postImpl.PostServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class V2ExcelMapping {/*
+public class V2ExcelMapping {
 	
 	private static final Logger _LOGGER = Logger.getLogger(V2ExcelMapping.class);
 	@Autowired
@@ -1135,4 +1135,4 @@ public class V2ExcelMapping {/*
 	
 	
 
-*/}
+}
