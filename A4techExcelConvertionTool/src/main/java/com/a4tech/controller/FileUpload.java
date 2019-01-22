@@ -80,7 +80,7 @@ public class FileUpload {
 			                                                             Model model, HttpServletRequest request) {
 		_LOGGER.info("Enter Controller Class");
 		String finalResult = null;
-		String asiNumber = fileBean.getAsiNumber();
+		//String asiNumber = fileBean.getAsiNumber();
 		String fileExtenion = CommonUtility.getFileExtension(fileBean.getFile()
 																.getOriginalFilename());
 		if (!CommonUtility.isValidFormat(fileExtenion)) {
@@ -90,17 +90,14 @@ public class FileUpload {
 		}
 		try  {
 			//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
-			String check_version=fileBean.getAsiNumber().trim();
-			String str[]=check_version.split("_");
-			String vrsn=str[1];
-			
+			String vrsn=fileBean.getVersion();
+			String asiNumberr = fileBean.getAsiNumber().trim();
 			if(vrsn.equals("v4")){
-				accessToken = loginService.doLogin(str[0],
-						fileBean.getUserName().trim(), fileBean.getPassword().trim(), "Sand");//here change environment type
+				accessToken = loginService.doLogin(asiNumberr.trim(),fileBean.getUserName(), fileBean.getPassword().trim(), "Sand");//here change environment type
+						//fileBean.getUserName().trim(), fileBean.getPassword().trim(), "Sand");//here change environment type
 					
 			}else{
-				accessToken = loginServiceImplV5.doLogin(str[0],
-						fileBean.getUserName().trim(), fileBean.getPassword().trim(), "Sand");//here change environment type
+				accessToken = loginServiceImplV5.doLogin(asiNumberr.trim(),fileBean.getUserName(), fileBean.getPassword().trim(), "Sand");//here change environment type
 				
 			}
 			if (accessToken != null) {
@@ -117,7 +114,7 @@ public class FileUpload {
 			if(workbook == null){
 				return ApplicationConstants.CONST_STRING_ERROR_PAGE;
 			}
-			int batchId = productDao.createBatchId(Integer.parseInt(asiNumber));
+			int batchId = productDao.createBatchId(Integer.parseInt(asiNumberr));
 			
 			// this code used to delete all products 
 			/*List<String> xidsList = getAllXids(workbook);
@@ -133,17 +130,17 @@ public class FileUpload {
 			com.a4tech.v5.excel.service.IExcelParser parserObjectV5 = null;
 			//excelFactoryV5
 			if(vrsn.equals("v4")){
-			 parserObject = excelFactory.getExcelParserObject(asiNumber);
+			 parserObject = excelFactory.getExcelParserObject(asiNumberr);
 			}else{
-				parserObjectV5 = excelFactoryV5.getExcelParserObject(asiNumber);
+				parserObjectV5 = excelFactoryV5.getExcelParserObject(asiNumberr);
 			}
 			if(vrsn.equals("v4")){
 			if(parserObject != null){ // new implemention
 				//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
 				finalResult = parserObject.readExcel(accessToken, workbook, 
-                        Integer.valueOf(asiNumber), batchId,"Sand");//here change environment type
+                        Integer.valueOf(asiNumberr), batchId,"Sand");//here change environment type
 		    	if (finalResult != null) {
-					parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
+					parseFinalData(finalResult, asiNumberr, batchId, redirectAttributes);
 				}
 		    	return ApplicationConstants.CONST_REDIRECT_URL;
 			}
@@ -151,9 +148,9 @@ public class FileUpload {
 			if(parserObjectV5 != null){ // new implemention
 				//if file upload for Production ,please change the environemnt Type "Sand" to "Prod"
 				finalResult = parserObjectV5.readExcel(accessToken, workbook, 
-                        Integer.valueOf(asiNumber), batchId,"Sand");//here change environment type
+                        Integer.valueOf(asiNumberr), batchId,"Sand");//here change environment type
 		    	if (finalResult != null) {
-					parseFinalData(finalResult, asiNumber, batchId, redirectAttributes);
+					parseFinalData(finalResult, asiNumberr, batchId, redirectAttributes);
 				}
 		    	return ApplicationConstants.CONST_REDIRECT_URL;
 			}

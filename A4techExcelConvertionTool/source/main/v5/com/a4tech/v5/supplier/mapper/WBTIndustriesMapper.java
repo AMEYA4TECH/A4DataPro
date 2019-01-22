@@ -20,41 +20,42 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.a4tech.excel.service.IExcelParser;
-import com.a4tech.product.dao.service.ProductDao;
-import com.a4tech.product.model.AdditionalColor;
-import com.a4tech.product.model.Color;
-import com.a4tech.product.model.FOBPoint;
-import com.a4tech.product.model.ImprintLocation;
-import com.a4tech.product.model.ImprintMethod;
-import com.a4tech.product.model.ImprintSize;
-import com.a4tech.product.model.Origin;
-import com.a4tech.product.model.Packaging;
-import com.a4tech.product.model.PriceGrid;
-import com.a4tech.product.model.Product;
-import com.a4tech.product.model.ProductConfigurations;
-import com.a4tech.product.model.ProductionTime;
-import com.a4tech.product.model.RushTime;
-import com.a4tech.product.model.ShippingEstimate;
-import com.a4tech.product.model.Size;
-import com.a4tech.product.model.Theme;
-import com.a4tech.product.service.postImpl.PostServiceImpl;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.excel.service.IExcelParser;
+import com.a4tech.v5.product.dao.service.ProductDao;
+import com.a4tech.v5.product.model.AdditionalColor;
+import com.a4tech.v5.product.model.Color;
+import com.a4tech.v5.product.model.FOBPoint;
+import com.a4tech.v5.product.model.ImprintLocation;
+import com.a4tech.v5.product.model.ImprintMethod;
+import com.a4tech.v5.product.model.ImprintSize;
+import com.a4tech.v5.product.model.Origin;
+import com.a4tech.v5.product.model.Packaging;
+import com.a4tech.v5.product.model.PriceGrid;
+import com.a4tech.v5.product.model.Product;
+import com.a4tech.v5.product.model.ProductConfigurations;
+import com.a4tech.v5.product.model.ProductionTime;
+import com.a4tech.v5.product.model.RushTime;
+import com.a4tech.v5.product.model.ShippingEstimate;
+import com.a4tech.v5.product.model.Size;
+import com.a4tech.v5.product.model.Theme;
+import com.a4tech.v5.product.service.postImpl.PostServiceImpl;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 
-import parser.WBTIndustries.WBTIndustriesAttributeParser;
-import parser.WBTIndustries.WBTIndustriesPriceGridParser;
-import parser.goldstarcanada.GoldstarCanadaLookupData;
+import parser.v5.WBTIndustries.WBTIndustriesAttributeParser;
+import parser.v5.WBTIndustries.WBTIndustriesPriceGridParser;
+import parser.v5.goldstarcanada.GoldstarCanadaLookupData;
 
 
 public class WBTIndustriesMapper implements IExcelParser{
 	
 	private static final Logger _LOGGER = Logger.getLogger(WBTIndustriesMapper.class);
 	
-	private PostServiceImpl 				postServiceImpl;
-	private ProductDao 						productDaoObj;
+	private PostServiceImpl 				postServiceImplV5;
+	private com.a4tech.v5.product.dao.service.ProductDao productDaoObjV5;
     private WBTIndustriesAttributeParser        wbtIndustriesAttributeParser;
-	private WBTIndustriesPriceGridParser        wbtIndustriesPriceGridParser;
+	//private WBTIndustriesPriceGridParser        wbtIndustriesPriceGridParser;
+    private com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -154,7 +155,7 @@ public class WBTIndustriesMapper implements IExcelParser{
 							   productConfigObj.setImprintMethods(listOfImprintMethods);
 								productExcelObj.setProductConfigurations(productConfigObj);
 								productExcelObj.setPriceGrids(priceGrids);
-							 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber ,batchId,environmentType);
+							 	int num = postServiceImplV5.postProduct(accessToken, productExcelObj,asiNumber ,batchId,environmentType);
 							 	//ProductProcessedList.add(productExcelObj.getExternalProductId());
 							 	if(num ==1){
 							 		numOfProductsSuccess.add("1");
@@ -191,7 +192,7 @@ public class WBTIndustriesMapper implements IExcelParser{
 						    if(!productXids.contains(xid)){
 						    	productXids.add(xid.trim());
 						    }
-						    existingApiProduct = postServiceImpl.getProduct(accessToken, xid,environmentType);
+						    existingApiProduct = postServiceImplV5.getProduct(accessToken, xid,environmentType);
 						     if(existingApiProduct == null){
 						    	 _LOGGER.info("Existing Xid is not available,product treated as new product");
 						    	 productExcelObj = new Product();
@@ -857,13 +858,41 @@ public class WBTIndustriesMapper implements IExcelParser{
 							.getShippingEstimateValues(shippingDimensions.toString(), weightPerCarton, unitsPerCarton);
 					productConfigObj.setShippingEstimates(shippingEstimation);
 			if(listOfPrices != null && !listOfPrices.toString().isEmpty()){
-				priceGrids = wbtIndustriesPriceGridParser.getBasePriceGrids(listOfPrices.toString(), 
+				
+				/*(String listOfPrices,
+					    String listOfQuan, String discountCodes,
+						String currency, String priceInclude, boolean isBasePrice,
+						String qurFlag, String priceName, String criterias,
+						List<PriceGrid> existingPriceGrid)*/
+				
+			/*	priceGrids = wbtIndustriesPriceGridParser.getBasePriceGrids(listOfPrices.toString(), 
 						         listOfQuantity.toString(), priceCode, "USD",
-						         priceIncludesValue, true, quoteUponRequest, productName,"",priceGrids);
+						         priceIncludesValue, true, quoteUponRequest, productName,"",priceGrids);*/
+				
+				priceGridParser.getPriceGrids(true,productName,priceIncludesValue,new Integer(1),
+						listOfPrices.toString(),listOfQuantity.toString(), priceCode,
+						"USD",quoteUponRequest,
+						"","","","","",priceGrids);
+						
+						
+						/*"1", Discountcode, 
+						"USD","false",
+						"Imprint Method","Required", "Imprint Method Charge","Other","",priceGrids);*/
+				/* boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+				String listOfPrices, String listOfQuan, String discountCodes,
+				String currency ,String isQUR,
+				String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+				List<PriceGrid> existingPriceGrid*/
+				
 			} else {
-				priceGrids = wbtIndustriesPriceGridParser.getBasePriceGrids(listOfPrices.toString(), 
+				/*priceGrids = wbtIndustriesPriceGridParser.getBasePriceGrids(listOfPrices.toString(), 
 				         listOfQuantity.toString(), priceCode, "USD",
-				         priceIncludesValue, true, "true", productName,"",priceGrids);
+				         priceIncludesValue, true, "true", productName,"",priceGrids);*/
+				
+				priceGridParser.getPriceGrids(true,productName,priceIncludesValue,new Integer(1),
+						listOfPrices.toString(),listOfQuantity.toString(), priceCode,
+						"USD","true",
+						"","","","","",priceGrids);
 			}
 			    if(!imprintMethodUpchargeMap.isEmpty()){
 			    	priceGrids = wbtIndustriesAttributeParser.getImprintMethodUpcharges(imprintMethodUpchargeMap,
@@ -896,7 +925,7 @@ public class WBTIndustriesMapper implements IExcelParser{
 		   productConfigObj.setImprintMethods(listOfImprintMethods);
 		 	productExcelObj.setProductConfigurations(productConfigObj);
 		 	productExcelObj.setPriceGrids(priceGrids);
-		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId,environmentType);
+		 	int num = postServiceImplV5.postProduct(accessToken, productExcelObj,asiNumber,batchId,environmentType);
 		 	if(num ==1){
 		 		numOfProductsSuccess.add("1");
 		 	}else if(num == 0){
@@ -907,7 +936,7 @@ public class WBTIndustriesMapper implements IExcelParser{
 		 	_LOGGER.info("list size>>>>>>"+numOfProductsSuccess.size());
 		 	_LOGGER.info("Failure list size>>>>>>"+numOfProductsFailure.size());
 	       finalResult = numOfProductsSuccess.size() + "," + numOfProductsFailure.size();
-	       productDaoObj.saveErrorLog(asiNumber,batchId);
+	       productDaoObjV5.saveErrorLog(asiNumber,batchId);
 	       return finalResult;
 		}catch(Exception e){
 			_LOGGER.error("Error while Processing excel sheet "+e.getMessage());
@@ -946,20 +975,26 @@ public class WBTIndustriesMapper implements IExcelParser{
 		}
 		return expireDate;
 	}
-	public PostServiceImpl getPostServiceImpl() {
-		return postServiceImpl;
+	
+
+	
+	public PostServiceImpl getPostServiceImplV5() {
+		return postServiceImplV5;
 	}
 
-	public void setPostServiceImpl(PostServiceImpl postServiceImpl) {
-		this.postServiceImpl = postServiceImpl;
+	public void setPostServiceImplV5(PostServiceImpl postServiceImplV5) {
+		this.postServiceImplV5 = postServiceImplV5;
 	}
 
-	public ProductDao getProductDaoObj() {
-		return productDaoObj;
+	public com.a4tech.v5.product.dao.service.ProductDao getProductDaoObjV5() {
+		return productDaoObjV5;
 	}
-	public void setProductDaoObj(ProductDao productDaoObj) {
-		this.productDaoObj = productDaoObj;
+
+	public void setProductDaoObjV5(
+			com.a4tech.v5.product.dao.service.ProductDao productDaoObjV5) {
+		this.productDaoObjV5 = productDaoObjV5;
 	}
+
 	public WBTIndustriesAttributeParser getWbtIndustriesAttributeParser() {
 		return wbtIndustriesAttributeParser;
 	}
@@ -968,13 +1003,23 @@ public class WBTIndustriesMapper implements IExcelParser{
 		this.wbtIndustriesAttributeParser = wbtIndustriesAttributeParser;
 	}
 
-	public WBTIndustriesPriceGridParser getWbtIndustriesPriceGridParser() {
+	public com.a4tech.v5.product.criteria.parser.PriceGridParser getPriceGridParser() {
+		return priceGridParser;
+	}
+
+	public void setPriceGridParser(
+			com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser) {
+		this.priceGridParser = priceGridParser;
+	}
+
+	/*public WBTIndustriesPriceGridParser getWbtIndustriesPriceGridParser() {
 		return wbtIndustriesPriceGridParser;
 	}
 
 	public void setWbtIndustriesPriceGridParser(WBTIndustriesPriceGridParser wbtIndustriesPriceGridParser) {
 		this.wbtIndustriesPriceGridParser = wbtIndustriesPriceGridParser;
-	}
+	}*/
 
+	
 	
 }

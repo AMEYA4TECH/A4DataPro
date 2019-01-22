@@ -4,12 +4,14 @@ package com.a4tech.v5.core.excelMapping;
 
 import com.a4tech.v5.excel.service.IExcelParser;
 import com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping;
+import com.a4tech.v5.supplier.mapper.WBTIndustriesMapper;
 //import com.a4tech.v5.supplier.mapper.CutterBuckExcelMapping;
 
 public class ExcelFactory {
 	//private AdspecProductsExcelMapping 		adspecMapping;
 	//private KlProductsExcelMapping 			klMapping;
 	private SageProductsExcelMapping 		sageExcelMappingV5;
+	 private WBTIndustriesMapper	            wbtIndustriesMapperV5;
 	/*private DCProductsExcelMapping 			dcProductExcelMapping;
 	private KukuProductsExcelMapping 		kukuProductsExcelMapping;
 	private RFGLineProductExcelMapping 		rfgLineProductExcelMapping;
@@ -78,16 +80,18 @@ public class ExcelFactory {
      
     
 	public  IExcelParser getExcelParserObject(String name){
-
+		if(name.equalsIgnoreCase("sage") || name.equals("55204") || name.equals("49916")){
+			   return sageExcelMappingV5;
+		   }else if(name.equals("96640")){
+				  return wbtIndustriesMapperV5;
+			  }
 		  /* if(name.equalsIgnoreCase("Apparel") || name.equals("44620")){
 			   return apparealExcelMapping;
 		   }else if(name.equalsIgnoreCase("kl") || name.equals("64905")){
 			   return klMapping;
 		   }else if(name.equalsIgnoreCase("Adspec") || name.equals("32125")){
 			   return adspecMapping;
-		   }else*/ if(name.equalsIgnoreCase("sage") || name.equals("55204")){
-			   return sageExcelMappingV5;
-		   }
+		   }else*/ 
 		  /* else if(name.equalsIgnoreCase("dc") || name.equals("55205")){
 			   return dcProductExcelMapping;
 		   }else if(name.equalsIgnoreCase("kuku") || name.equals("65851")){
@@ -232,6 +236,17 @@ public class ExcelFactory {
 		this.sageExcelMappingV5 = sageExcelMappingV5;
 	}
 
+
+	public WBTIndustriesMapper getWbtIndustriesMapperV5() {
+		return wbtIndustriesMapperV5;
+	}
+
+
+	public void setWbtIndustriesMapperV5(WBTIndustriesMapper wbtIndustriesMapperV5) {
+		this.wbtIndustriesMapperV5 = wbtIndustriesMapperV5;
+	}
+	
+	
 
 	/*public void setBloominPromotion(BloominPromotionsMapper bloominPromotion) {
 			this.bloominPromotion = bloominPromotion;

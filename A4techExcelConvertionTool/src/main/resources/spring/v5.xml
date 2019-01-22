@@ -84,9 +84,10 @@
 	
 	<bean id="excelFactoryIdV5" class="com.a4tech.v5.core.excelMapping.ExcelFactory">
      	<property name="sageExcelMappingV5" ref="sageMappingIdV5" />
+     	<property name="wbtIndustriesMapperV5" ref="wbtIndustriesMappingIdV5" />
      </bean>
 	
-	
+	<!-- sage start -->
 	<bean id="sageMappingIdV5" name="sageMappingV5Obj" class="com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping">
      	<property name="postServiceImplV5" ref="postServiceV5Obj"></property>
      	<property name="catalogParser" ref="catalogParserId"/>
@@ -110,4 +111,24 @@
      <bean id="shippingEstimateId" class="com.a4tech.v5.sage.product.parser.ShippingEstimateParser"/>
      <bean id="dimensionParserId" class="com.a4tech.v5.sage.product.parser.DimensionParser"/>
      <bean id="colorParserId" class="com.a4tech.v5.sage.product.parser.ColorParser"/> 
+     
+     <!-- sage end -->
+     
+     
+      <!-- WBT Industries configuration start-->
+     <bean id="wbtIndustriesMappingIdV5" name="wbtIndustriesMappingV5Obj" class="com.a4tech.v5.supplier.mapper.WBTIndustriesMapper">
+     	 <property name="postServiceImplV5" ref="postServiceV5Obj"></property>
+     	 <property name="productDaoObjV5"  ref="productDaoV5Obj"/>
+     	 <property name="wbtIndustriesAttributeParser" ref="wbtIndustriesAttributeParserIdV5"/>
+     	 <property name="priceGridParser" ref="pricegridParserV5"/>
+     	 <!-- <property name="wbtIndustriesPriceGridParser" ref="wbtIndustriespriceGridParserId"/> -->
+     </bean>
+     <bean id="wbtIndustriesAttributeParserIdV5" name="wbtIndustriesAttributeParserV5Obj" class="parser.v5.WBTIndustries.WBTIndustriesAttributeParser">
+     	<!-- <property name="wbtIndustriesPriceGridParser" ref="wbtIndustriespriceGridParserId"/> -->
+     	<property name="priceGridParser" ref="pricegridParserV5"/>
+     	<property name="lookupServiceDataObj" ref="lookupServiceDataV5Obj"/>
+     </bean>
+     
+     <!-- <bean id="wbtIndustriespriceGridParserId" class="parser.v5.WBTIndustries.WBTIndustriesPriceGridParser"/> -->
+      <!-- WBT Industries configuration end-->
 	</beans>

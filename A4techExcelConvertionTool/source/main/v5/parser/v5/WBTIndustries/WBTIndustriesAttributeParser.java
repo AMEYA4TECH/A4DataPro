@@ -10,39 +10,40 @@ import java.util.stream.Stream;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.a4tech.lookup.service.LookupServiceData;
-import com.a4tech.product.model.AdditionalColor;
-import com.a4tech.product.model.Color;
-import com.a4tech.product.model.Combo;
-import com.a4tech.product.model.Dimension;
-import com.a4tech.product.model.Dimensions;
-import com.a4tech.product.model.FOBPoint;
-import com.a4tech.product.model.ImprintMethod;
-import com.a4tech.product.model.ImprintSize;
-import com.a4tech.product.model.NumberOfItems;
-import com.a4tech.product.model.Option;
-import com.a4tech.product.model.OptionValue;
-import com.a4tech.product.model.Origin;
-import com.a4tech.product.model.Packaging;
-import com.a4tech.product.model.PriceGrid;
-import com.a4tech.product.model.Product;
-import com.a4tech.product.model.ProductConfigurations;
-import com.a4tech.product.model.ProductionTime;
-import com.a4tech.product.model.RushTime;
-import com.a4tech.product.model.RushTimeValue;
-import com.a4tech.product.model.ShippingEstimate;
-import com.a4tech.product.model.Size;
-import com.a4tech.product.model.Theme;
-import com.a4tech.product.model.Value;
-import com.a4tech.product.model.Values;
-import com.a4tech.product.model.Weight;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.lookup.service.LookupServiceData;
+import com.a4tech.v5.product.model.AdditionalColor;
+import com.a4tech.v5.product.model.Color;
+import com.a4tech.v5.product.model.Combo;
+import com.a4tech.v5.product.model.Dimension;
+import com.a4tech.v5.product.model.Dimensions;
+import com.a4tech.v5.product.model.FOBPoint;
+import com.a4tech.v5.product.model.ImprintMethod;
+import com.a4tech.v5.product.model.ImprintSize;
+import com.a4tech.v5.product.model.NumberOfItems;
+import com.a4tech.v5.product.model.Option;
+import com.a4tech.v5.product.model.OptionValue;
+import com.a4tech.v5.product.model.Origin;
+import com.a4tech.v5.product.model.Packaging;
+import com.a4tech.v5.product.model.PriceGrid;
+import com.a4tech.v5.product.model.Product;
+import com.a4tech.v5.product.model.ProductConfigurations;
+import com.a4tech.v5.product.model.ProductionTime;
+import com.a4tech.v5.product.model.RushTime;
+import com.a4tech.v5.product.model.RushTimeValue;
+import com.a4tech.v5.product.model.ShippingEstimate;
+import com.a4tech.v5.product.model.Size;
+import com.a4tech.v5.product.model.Theme;
+import com.a4tech.v5.product.model.Value;
+import com.a4tech.v5.product.model.Values;
+import com.a4tech.v5.product.model.Weight;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 import com.a4tech.v5.sage.product.util.LookupData;
 
 public class WBTIndustriesAttributeParser {
 	private LookupServiceData lookupServiceDataObj;
-	private WBTIndustriesPriceGridParser wbtIndustriesPriceGridParser;
+	//private WBTIndustriesPriceGridParser wbtIndustriesPriceGridParser;
+	private com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser;
 	private static List<String> lookupFobPoints = null;
 	public Product keepExistingProductData(Product existingProduct){
 		  Product newProduct = new Product();
@@ -322,15 +323,56 @@ public class WBTIndustriesAttributeParser {
 			 } else if(upchargeType.equalsIgnoreCase("repeateCharge")){
 				 
 			 }
-			existingPriceGrid = wbtIndustriesPriceGridParser.getUpchargePriceGrid("1", priceVal, disCount, "Imprint method", "n",
-					"USD", imprintMethods, upChargeTypeVal, upchargeUsageType, 1,priceInclude, existingPriceGrid);
+			 
+			 
+			/* (String quantity, String prices,
+						String discounts, String upChargeCriterias, String qurFlag,
+						String currency, String upChargeName, String upChargeType,
+						String upchargeUsageType, Integer upChargeSequence,String priceInclude,
+						List<PriceGrid> existingPriceGrid)*/
+						
+			/*existingPriceGrid = wbtIndustriesPriceGridParser.getUpchargePriceGrid("1", priceVal, disCount, "Imprint method", "n",
+					"USD", imprintMethods, upChargeTypeVal, upchargeUsageType, 1,priceInclude, existingPriceGrid);*/
+			
+			existingPriceGrid = priceGridParser.getPriceGrids(false,imprintMethods,priceInclude,new Integer(1),
+					priceVal,"1", disCount,
+					"USD","n",
+					"Imprint method","Required",upChargeTypeVal,upchargeUsageType,"",existingPriceGrid);
+			
+			/* boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+			String listOfPrices, String listOfQuan, String discountCodes,
+			String currency ,String isQUR,
+			String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+			List<PriceGrid> existingPriceGrid*/
+			
 		}
 		return existingPriceGrid;
 	}
 	public List<PriceGrid> getAdditionalColorUpcharge(String discountCode,String prices,List<PriceGrid> existingPriceGrid,String upchargeType){
 	   String disCountCode = getAdditionalColorDiscountCode(discountCode);
-	   existingPriceGrid = wbtIndustriesPriceGridParser.getUpchargePriceGrid("1", prices, disCountCode, "Additional Colors", "n",
-				"USD", "Additional Color",upchargeType, "Other", 1,"", existingPriceGrid);
+	  
+	   
+	   
+	   /* (String quantity, String prices,
+		String discounts, String upChargeCriterias, String qurFlag,
+		String currency, String upChargeName, String upChargeType,
+		String upchargeUsageType, Integer upChargeSequence,String priceInclude,
+		List<PriceGrid> existingPriceGrid)*/
+	   /*existingPriceGrid = wbtIndustriesPriceGridParser.getUpchargePriceGrid("1", prices, disCountCode, "Additional Colors", "n",
+				"USD", "Additional Color",upchargeType, "Other", 1,"", existingPriceGrid);*/
+
+	   existingPriceGrid = priceGridParser.getPriceGrids(false,"Additional Color","",new Integer(1),
+			   				prices,"1", disCountCode,
+			   				"USD","n",
+			   				"Additional Colors","Required",upchargeType,"Other","",existingPriceGrid);
+
+	   	/* boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+			String listOfPrices, String listOfQuan, String discountCodes,
+			String currency ,String isQUR,
+			String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+			List<PriceGrid> existingPriceGrid*/
+
+	   
 		return existingPriceGrid;
 	}
 	private String getAdditionalColorDiscountCode(String value){
@@ -386,12 +428,20 @@ public class WBTIndustriesAttributeParser {
 	public void setLookupServiceDataObj(LookupServiceData lookupServiceDataObj) {
 		this.lookupServiceDataObj = lookupServiceDataObj;
 	}
-	public WBTIndustriesPriceGridParser getWbtIndustriesPriceGridParser() {
+	/*public WBTIndustriesPriceGridParser getWbtIndustriesPriceGridParser() {
 		return wbtIndustriesPriceGridParser;
 	}
 	public void setWbtIndustriesPriceGridParser(WBTIndustriesPriceGridParser wbtIndustriesPriceGridParser) {
 		this.wbtIndustriesPriceGridParser = wbtIndustriesPriceGridParser;
+	}*/
+	public com.a4tech.v5.product.criteria.parser.PriceGridParser getPriceGridParser() {
+		return priceGridParser;
 	}
+	public void setPriceGridParser(
+			com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser) {
+		this.priceGridParser = priceGridParser;
+	}
+	
 	
 }
 

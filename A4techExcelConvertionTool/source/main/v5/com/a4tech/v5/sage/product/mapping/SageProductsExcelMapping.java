@@ -136,6 +136,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 		List<Theme> themeList = new ArrayList<Theme>();
 		List<Catalog> catalogList = new ArrayList<Catalog>();
 		while (iterator.hasNext()) {
+			int columnIndex=0;
 			
 			try{
 			Row nextRow = iterator.next();
@@ -151,7 +152,8 @@ public class SageProductsExcelMapping implements IExcelParser{
 			while (cellIterator.hasNext()) {
 				Cell cell = cellIterator.next();
 				String xid = null;
-				int columnIndex = cell.getColumnIndex();
+				//int
+				columnIndex = cell.getColumnIndex();
 				if(columnIndex + 1 == 1){
 					if(cell.getCellType() == Cell.CELL_TYPE_STRING){
 						xid = cell.getStringCellValue();
@@ -907,7 +909,7 @@ public class SageProductsExcelMapping implements IExcelParser{
 			    optionadditionalinfo=null;
 			
 			}catch(Exception e){
-			_LOGGER.error("Error while Processing ProductId and cause :"+productExcelObj.getExternalProductId() +" "+e.getMessage() );		 
+			_LOGGER.error("Error while Processing ProductId and cause :"+productExcelObj.getExternalProductId() +" "+e.getMessage() +"at column "+columnIndex+"+ 1");		 
 		}
 		}
 		workbook.close();

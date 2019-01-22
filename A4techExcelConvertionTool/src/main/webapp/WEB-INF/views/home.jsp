@@ -68,6 +68,9 @@
               <div class="form-group">
                 <label class="sr-only" for="form-password">Password</label>
                 <form:password path="password" id="password" placeholder="Password..." class="form-password form-control"/>
+                
+                <form:radiobutton path="version" id="version" value="v4" />V4 
+		        <form:radiobutton path="version" id="version1" value="v5" />V5
                 <p id="asipass" class="txt_red"></p>
                 <!-- <input type="password" name="password" placeholder="Password..." class="form-password form-control" id="form-password"> -->
               </div>
@@ -86,7 +89,7 @@
              <form:button value="submit" class="btn1 btn-primary btn-lg pull-right" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i>Uploading.." onclick="return validateForm()">Submit</form:button>
                
             </form:form>
-         
+         	
           </div>
         
         </div>
@@ -119,6 +122,7 @@ function validateForm(){
 	var userName = document.uploadBean.userName.value;
 	var password = document.uploadBean.password.value;
 	var file = document.uploadBean.file.value; 
+	var version = document.uploadBean.version.value; 
 	if (asiNumber==null || asiNumber==''){
 		  document.getElementById("asinum").innerHTML = "<i><b>!</b></i> &nbsp;Enter your ASI Number";
 		  document.uploadBean.asiNumber.focus();
@@ -158,6 +162,7 @@ $('.btn1').on('click', function() {
 	var userName = $('#userName').val();
 	var password = $('#password').val();
 	var file = document.uploadBean.file.value; 
+	var version = $('#version').val();
 
     if(file != '' && asiNumber != '' && userName != '' && password != ''){
     	

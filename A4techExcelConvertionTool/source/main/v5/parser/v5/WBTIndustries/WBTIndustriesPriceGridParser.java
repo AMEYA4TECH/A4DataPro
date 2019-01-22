@@ -6,15 +6,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.a4tech.product.model.Price;
-import com.a4tech.product.model.PriceConfiguration;
-import com.a4tech.product.model.PriceGrid;
-import com.a4tech.product.model.PriceUnit;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
-import com.a4tech.util.LookupData;
+import com.a4tech.v5.product.model.Price;
+import com.a4tech.v5.product.model.PriceConfiguration;
+import com.a4tech.v5.product.model.PriceGrid;
+import com.a4tech.v5.product.model.PriceUnit;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
+import com.a4tech.v5.util.LookupData;
 
-public class WBTIndustriesPriceGridParser {
+public class WBTIndustriesPriceGridParser {/*
 
 	private Logger              _LOGGER              = Logger.getLogger(getClass());
 	public List<PriceGrid> getBasePriceGrids(String listOfPrices,
@@ -186,4 +186,4 @@ public class WBTIndustriesPriceGridParser {
 		return existingPriceGrid;
 	}
 
-}
+*/}
