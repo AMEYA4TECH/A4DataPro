@@ -7,18 +7,18 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
-import com.a4tech.lookup.service.LookupServiceData;
-import com.a4tech.lookup.service.restService.LookupRestService;
-import com.a4tech.product.model.Dimension;
-import com.a4tech.product.model.Dimensions;
-import com.a4tech.product.model.ImprintMethod;
-import com.a4tech.product.model.Material;
-import com.a4tech.product.model.NumberOfItems;
-import com.a4tech.product.model.ShippingEstimate;
-import com.a4tech.product.model.Size;
-import com.a4tech.product.model.Value;
-import com.a4tech.product.model.Values;
-import com.a4tech.product.model.Weight;
+import com.a4tech.v5.lookup.service.LookupServiceData;
+import com.a4tech.v5.lookup.service.restService.LookupRestService;
+import com.a4tech.v5.product.model.Dimension;
+import com.a4tech.v5.product.model.Dimensions;
+import com.a4tech.v5.product.model.ImprintMethod;
+import com.a4tech.v5.product.model.Material;
+import com.a4tech.v5.product.model.NumberOfItems;
+import com.a4tech.v5.product.model.ShippingEstimate;
+import com.a4tech.v5.product.model.Size;
+import com.a4tech.v5.product.model.Value;
+import com.a4tech.v5.product.model.Values;
+import com.a4tech.v5.product.model.Weight;
 
 
 public class RadiousAttribute {

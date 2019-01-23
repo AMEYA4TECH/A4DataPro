@@ -48,8 +48,8 @@ public class Product {
         this.productBreakoutBy = productBreakoutBy;
     }
 
-    @JsonProperty("BreakoutByPrice")
-    private boolean               breakOutByPrice;
+   // @JsonProperty("BreakoutByPrice")
+   // private boolean               breakOutByPrice;
     @JsonProperty("CanShipInPlainBox")
     private boolean               canShipInPlainBox;
 
@@ -249,17 +249,17 @@ public class Product {
     /**
      * @return the breakOutByPrice
      */
-    public boolean isBreakOutByPrice() {
+    /*public boolean isBreakOutByPrice() {
         return breakOutByPrice;
     }
 
-    /**
+    *//**
      * @param breakOutByPrice
      *            the breakOutByPrice to set
-     */
+     *//*
     public void setBreakOutByPrice(boolean breakOutByPrice) {
         this.breakOutByPrice = breakOutByPrice;
-    }
+    }*/
 
     public List<String> getLineNames() {
         return lineNames;

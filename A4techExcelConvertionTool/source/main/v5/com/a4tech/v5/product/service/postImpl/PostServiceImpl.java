@@ -54,9 +54,9 @@ public class PostServiceImpl  {//implements PostService
 				xid = xid+":"+sheetName;
 			}
 			if(environmentType.equals("Sand")){
-				postApiURL = "https://sandbox-productservice.asicentral.com/api/v5/product/";
+				postApiURL = "https://sandbox-productservice.asicentral.com/api/v5/products/";
 			} else{
-				postApiURL = "https://productservice.asicentral.com/api/v5/product/";
+				postApiURL = "https://productservice.asicentral.com/api/v5/products/";
 			}
 			//postApiURL = environment.getProperty(environmentType+".product.post.URL");
 			HttpHeaders headers = new HttpHeaders();
@@ -165,9 +165,9 @@ public class PostServiceImpl  {//implements PostService
 	public Product getProduct(String authToken,String productId, String environmentType){
 	try{
 		if(environmentType.equals("Sand")){
-			getProductUrl = "https://sandbox-productservice.asicentral.com/api/v5/product/{xid}";
+			getProductUrl = "https://sandbox-productservice.asicentral.com/api/v5/products/{xid}";
 		} else{
-			getProductUrl = "https://productservice.asicentral.com/api/v5/product/{xid}";
+			getProductUrl = "https://productservice.asicentral.com/api/v5/products/{xid}";
 		}
 		//postApiURL = environment.getProperty(environmentType+".product.get.URL");
 		 HttpHeaders headers = new HttpHeaders();
@@ -191,10 +191,10 @@ public class PostServiceImpl  {//implements PostService
 	public int deleteProduct(String authTokens, String productId,int asiNumber ,int batchId,String environmentType) throws IOException {
 
 		try {
-			String deleteProductUrl="https://sandbox-productservice.asicentral.com/api/v5/product/";
+			String deleteProductUrl="https://sandbox-productservice.asicentral.com/api/v5/products/";
 			
 			if(environmentType.equals("Prod")){
-				deleteProductUrl="https://productservice.asicentral.com/api/v5/product/";
+				deleteProductUrl="https://productservice.asicentral.com/api/v5/products/";
 			}
 			//productId="3558-55093AWDD";
 			 HttpHeaders headers = new HttpHeaders();

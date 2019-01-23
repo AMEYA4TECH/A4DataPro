@@ -18,52 +18,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import parser.sunGraphix.SunGraphixAttributeParser;
-import parser.sunGraphix.SunGraphixConstants;
-import parser.sunGraphix.SunGraphixPriceGridParser;
+import parser.v5.sunGraphix.SunGraphixAttributeParser;
+import parser.v5.sunGraphix.SunGraphixConstants;
+import parser.v5.sunGraphix.SunGraphixPriceGridParser;
 
-import com.a4tech.core.errors.ErrorMessageList;
-import com.a4tech.excel.service.IExcelParser;
-import com.a4tech.product.dao.service.ProductDao;
-import com.a4tech.product.model.Color;
-import com.a4tech.product.model.Dimension;
-import com.a4tech.product.model.FOBPoint;
-import com.a4tech.product.model.Image;
-import com.a4tech.product.model.ImprintMethod;
-import com.a4tech.product.model.ImprintSize;
-import com.a4tech.product.model.Material;
-import com.a4tech.product.model.Option;
-import com.a4tech.product.model.OptionValue;
-import com.a4tech.product.model.Origin;
-import com.a4tech.product.model.Packaging;
-import com.a4tech.product.model.Personalization;
-import com.a4tech.product.model.Price;
-import com.a4tech.product.model.PriceConfiguration;
-import com.a4tech.product.model.PriceGrid;
-import com.a4tech.product.model.Product;
-import com.a4tech.product.model.ProductConfigurations;
-import com.a4tech.product.model.ProductNumber;
-import com.a4tech.product.model.ProductSkus;
-import com.a4tech.product.model.ProductionTime;
-import com.a4tech.product.model.ShippingEstimate;
-import com.a4tech.product.model.Size;
-import com.a4tech.product.model.TradeName;
-import com.a4tech.product.model.Values;
-import com.a4tech.product.model.Volume;
-import com.a4tech.product.service.postImpl.PostServiceImpl;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.core.errors.ErrorMessageList;
+import com.a4tech.v5.excel.service.IExcelParser;
+import com.a4tech.v5.product.dao.service.ProductDao;
+import com.a4tech.v5.product.model.Color;
+import com.a4tech.v5.product.model.Dimension;
+import com.a4tech.v5.product.model.FOBPoint;
+import com.a4tech.v5.product.model.Image;
+import com.a4tech.v5.product.model.ImprintMethod;
+import com.a4tech.v5.product.model.ImprintSize;
+import com.a4tech.v5.product.model.Material;
+import com.a4tech.v5.product.model.Option;
+import com.a4tech.v5.product.model.OptionValue;
+import com.a4tech.v5.product.model.Origin;
+import com.a4tech.v5.product.model.Packaging;
+import com.a4tech.v5.product.model.Personalization;
+import com.a4tech.v5.product.model.Price;
+import com.a4tech.v5.product.model.PriceConfiguration;
+import com.a4tech.v5.product.model.PriceGrid;
+import com.a4tech.v5.product.model.Product;
+import com.a4tech.v5.product.model.ProductConfigurations;
+import com.a4tech.v5.product.model.ProductNumber;
+import com.a4tech.v5.product.model.ProductSkus;
+import com.a4tech.v5.product.model.ProductionTime;
+import com.a4tech.v5.product.model.ShippingEstimate;
+import com.a4tech.v5.product.model.Size;
+import com.a4tech.v5.product.model.TradeName;
+import com.a4tech.v5.product.model.Values;
+import com.a4tech.v5.product.model.Volume;
+import com.a4tech.v5.product.service.postImpl.PostServiceImpl;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SunGraphixRevisedMapping implements IExcelParser{
 	private static final Logger _LOGGER = Logger.getLogger(SunGraphixRevisedMapping.class);
 	
-	private PostServiceImpl postServiceImpl;
-	private ProductDao productDaoObj;
+	private PostServiceImpl postServiceImplV5;
+	private ProductDao productDaoObjV5;
 	private SunGraphixAttributeParser sunGraphixAttributeParser;
-	private SunGraphixPriceGridParser sunGraphixPriceGridParser;
+	//private SunGraphixPriceGridParser sunGraphixPriceGridParser;
+	private com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser;
 	
 	public String readExcel(String accessToken,Workbook workbook ,Integer asiNumber ,int batchId, String environmentType){
+		return environmentType;
+		/*
 		HashMap<String, String>  productNumberMap=new HashMap<String, String>();
 		StringBuilder FinalKeyword = new StringBuilder();
 		StringBuilder AdditionalInfo = new StringBuilder();
@@ -148,10 +151,14 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 										productExcelObj.setProductNumbers(pnumberList);
 										  }
 										}
-							 priceGrids = sunGraphixPriceGridParser.getPriceGrids(listOfPrices.toString(),listOfQuantity.toString(), 
-									 listOfDiscCodes.toString(),ApplicationConstants.CONST_STRING_CURRENCY_USD,
+							 
+										priceGrids = sunGraphixPriceGridParser.getPriceGrids(listOfPrices.toString(),listOfQuantity.toString(), 
+									    listOfDiscCodes.toString(),ApplicationConstants.CONST_STRING_CURRENCY_USD,
 										"",ApplicationConstants.CONST_BOOLEAN_TRUE, ApplicationConstants.CONST_STRING_FALSE, 
 										"",null,1,null,null,null,productExcelObj.getPriceGrids());
+							 
+							 
+							 
 							     productExcelObj.setPriceGrids(priceGrids);
 								 productExcelObj.setProductConfigurations(productConfigObj);
 								 if(!StringUtils.isEmpty(priceType)){
@@ -172,12 +179,12 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 									listOfImprintMethod.add(imprintMethodObj);
 									productConfigObj.setImprintMethods(listOfImprintMethod);
 								}
-								 /*_LOGGER.info("Product Data : "
-											+ mapperObj.writeValueAsString(productExcelObj));*/
-								 	/*if(XIDS.contains(productExcelObj.getExternalProductId().trim())){
+								 _LOGGER.info("Product Data : "
+											+ mapperObj.writeValueAsString(productExcelObj));
+								 	if(XIDS.contains(productExcelObj.getExternalProductId().trim())){
 								 		productExcelObj.setAvailability(new ArrayList<Availability>());
-								 	}*/
-							 int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber ,batchId, environmentType);
+								 	}
+							 int num = postServiceImplV5.postProduct(accessToken, productExcelObj,asiNumber ,batchId, environmentType);
 							 	if(num ==1){
 							 		numOfProductsSuccess.add("1");
 							 	}else if(num == 0){
@@ -209,7 +216,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 						    	repeatRows.add(xid);
 						    }
 						    productExcelObj = new Product();
-						    existingApiProduct = postServiceImpl.getProduct(accessToken, xid, environmentType); 
+						    existingApiProduct = postServiceImplV5.getProduct(accessToken, xid, environmentType); 
 						     if(existingApiProduct == null){
 						    	 _LOGGER.info("Existing Xid is not available,product treated as new product");
 						    	 productExcelObj = new Product();
@@ -332,14 +339,14 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 							 sheetPages=CommonUtility.removeRestrictSymbols(sheetPages);
 							 productExcelObj.setDescription(sheetPages);
 						 }
-						 /*String nameTemp=productExcelObj.getName();
+						 String nameTemp=productExcelObj.getName();
 							 if(StringUtils.isEmpty(nameTemp)){
 								 productName=CommonUtility.getStringLimitedChars(descripton, 60);
 								 productExcelObj.setName(productName);
-							 }*/
-							}/*else{
+							 }
+							}else{
 								productExcelObj.setDescription(productName);
-							}*/
+							}
 					break;
 				case 12: //Ruled / Blank Pgs.
 					String ruledBlankPg=CommonUtility.getCellValueStrinOrInt(cell);
@@ -375,10 +382,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 					if(!StringUtils.isEmpty(colorValue)){
 						colorSet.add(colorValue);
 					}
-					 /*if(!StringUtils.isEmpty(colorValue)){
+					 if(!StringUtils.isEmpty(colorValue)){
 						 List<Color> colors =sunGraphixAttributeParser.getProductColors(colorValue,productExcelObj.getExternalProductId());
 						 productConfigObj.setColors(colors);
-					 }*/
+					 }
 					 if(!StringUtils.isEmpty(colorValue)&&!StringUtils.isEmpty(productNumber)){
 							productNumberMap.put(productNumber, colorValue);
 						}
@@ -494,10 +501,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 											priceGrids);
 							}
 							 productExcelObj.setPriceGrids(priceGrids);
-								/*String listOfPrices, String listOfQuan, String discountCodes,
+								String listOfPrices, String listOfQuan, String discountCodes,
 								String currency, String priceInclude, boolean isBasePrice,
 								String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-								List<PriceGrid> existingPriceGrid)*/					
+								List<PriceGrid> existingPriceGrid)					
 								
 							 
 						 }
@@ -543,10 +550,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 											priceGrids);
 							}
 							 productExcelObj.setPriceGrids(priceGrids);
-								/*String listOfPrices, String listOfQuan, String discountCodes,
+								String listOfPrices, String listOfQuan, String discountCodes,
 								String currency, String priceInclude, boolean isBasePrice,
 								String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-								List<PriceGrid> existingPriceGrid)*/					
+								List<PriceGrid> existingPriceGrid)					
 								
 							 
 						// }
@@ -592,10 +599,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 								"false","Pen Loop@@@@@Pen Loop Option","Product Option",new Integer(1),"Product Option Charge", "Per Quantity","Optional",
 								priceGrids);
 						productExcelObj.setPriceGrids(priceGrids);
-						/*String listOfPrices, String listOfQuan, String discountCodes,
+						String listOfPrices, String listOfQuan, String discountCodes,
 						String currency, String priceInclude, boolean isBasePrice,
 						String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-						List<PriceGrid> existingPriceGrid)*/					
+						List<PriceGrid> existingPriceGrid)					
 						
 						//}
 					 }
@@ -639,10 +646,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 								"false","Ruler@@@@@Ruler Option","Product Option",new Integer(1),"Product Option Charge", "Per Quantity","Optional",
 								priceGrids);
 						productExcelObj.setPriceGrids(priceGrids);
-						/*String listOfPrices, String listOfQuan, String discountCodes,
+						String listOfPrices, String listOfQuan, String discountCodes,
 						String currency, String priceInclude, boolean isBasePrice,
 						String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-						List<PriceGrid> existingPriceGrid)*/					
+						List<PriceGrid> existingPriceGrid)					
 						
 						//}
 					 }
@@ -687,10 +694,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 								"false","Dividers@@@@@Dividers Option","Product Option",new Integer(1),"Product Option Charge", "Per Quantity","Optional",
 								priceGrids);
 						productExcelObj.setPriceGrids(priceGrids);
-						/*String listOfPrices, String listOfQuan, String discountCodes,
+						String listOfPrices, String listOfQuan, String discountCodes,
 						String currency, String priceInclude, boolean isBasePrice,
 						String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-						List<PriceGrid> existingPriceGrid)*/					
+						List<PriceGrid> existingPriceGrid)					
 						
 						//}
 					 }
@@ -1035,10 +1042,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 											"false","GIFT BOXES","Packaging",new Integer(1),"Packaging Charge", "Per Quantity","Optional",
 											priceGrids);
 								 productExcelObj.setPriceGrids(priceGrids);
-								/*String listOfPrices, String listOfQuan, String discountCodes,
+								String listOfPrices, String listOfQuan, String discountCodes,
 								String currency, String priceInclude, boolean isBasePrice,
 								String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-								List<PriceGrid> existingPriceGrid)*/
+								List<PriceGrid> existingPriceGrid)
 					 }
 					}catch (Exception e) {
 						_LOGGER.info("Error in upcharge price prices field "+e.getMessage() +"case no:"+columnIndex+1);
@@ -1088,10 +1095,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 											"false","MAILER","Packaging",new Integer(1),"Packaging Charge", "Per Quantity","Optional",
 											priceGrids);
 								 productExcelObj.setPriceGrids(priceGrids);
-								/*String listOfPrices, String listOfQuan, String discountCodes,
+								String listOfPrices, String listOfQuan, String discountCodes,
 								String currency, String priceInclude, boolean isBasePrice,
 								String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-								List<PriceGrid> existingPriceGrid)*/
+								List<PriceGrid> existingPriceGrid)
 					 }
 					}catch (Exception e) {
 						_LOGGER.info("Error in upcharge price prices field "+e.getMessage() +"case no:"+columnIndex+1);
@@ -1141,10 +1148,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 											"false","Insert","Packaging",new Integer(1),"Packaging Charge", "Per Quantity","Optional",
 											priceGrids);
 								 productExcelObj.setPriceGrids(priceGrids);
-								/*String listOfPrices, String listOfQuan, String discountCodes,
+								String listOfPrices, String listOfQuan, String discountCodes,
 								String currency, String priceInclude, boolean isBasePrice,
 								String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-								List<PriceGrid> existingPriceGrid)*/
+								List<PriceGrid> existingPriceGrid)
 					 }
 					}catch (Exception e) {
 						_LOGGER.info("Error in upcharge price prices field "+e.getMessage() +"case no:"+columnIndex+1);
@@ -1170,10 +1177,10 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 								"false","Drop Shipments@@@@@Drop Shipping","Shipping Option",new Integer(1),"Shipping Charge", "Other","Optional",
 								priceGrids);
 						productExcelObj.setPriceGrids(priceGrids);
-						/*String listOfPrices, String listOfQuan, String discountCodes,
+						String listOfPrices, String listOfQuan, String discountCodes,
 						String currency, String priceInclude, boolean isBasePrice,
 						String qurFlag, String priceName, String criterias,Integer sequence,String upChargeType,String upchargeUsageType,String serviceCharge
-						List<PriceGrid> existingPriceGrid)*/					
+						List<PriceGrid> existingPriceGrid)					
 						
 						}
 					 }
@@ -1363,7 +1370,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 				_LOGGER.error("Error while Processing ProductId and cause :"+productExcelObj.getExternalProductId() +" "+e.getMessage()+"at column number(increament by 1):"+columnIndex);		 
 				ErrorMessageList apiResponse = CommonUtility.responseconvertErrorMessageList("Product Data issue in Supplier Sheet: "
 				+e.getMessage()+" at column number(increament by 1)"+columnIndex);
-				productDaoObj.save(apiResponse.getErrors(),
+				productDaoObjV5.save(apiResponse.getErrors(),
 						productExcelObj.getExternalProductId()+"-Failed", asiNumber, batchId);
 				}
 		}
@@ -1408,7 +1415,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 				productConfigObj.setImprintMethods(listOfImprintMethod);
 			}
 			 
-		 	int num = postServiceImpl.postProduct(accessToken, productExcelObj,asiNumber,batchId, environmentType);
+		 	int num = postServiceImplV5.postProduct(accessToken, productExcelObj,asiNumber,batchId, environmentType);
 		 	if(num ==1){
 		 		numOfProductsSuccess.add("1");
 		 	}else if(num == 0){
@@ -1417,7 +1424,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 		 	_LOGGER.info("list size>>>>>>"+numOfProductsSuccess.size());
 		 	_LOGGER.info("Failure list size>>>>>>"+numOfProductsFailure.size());
 	       finalResult = numOfProductsSuccess.size() + "," + numOfProductsFailure.size();
-	    productDaoObj.saveErrorLog(asiNumber,batchId);
+	       productDaoObjV5.saveErrorLog(asiNumber,batchId);
 		priceGrids = new ArrayList<PriceGrid>();
 		productConfigObj = new ProductConfigurations();
 		listOfColors = new HashSet<>();
@@ -1452,7 +1459,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 				_LOGGER.info("Total no of product:"+numOfProductsSuccess.size() );
 		}
 		
-	}
+	*/}
 
 	
 
@@ -1510,7 +1517,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 		return ApplicationConstants.CONST_BOOLEAN_FALSE;
 	}
 	
-	public static List<PriceGrid> getPriceGrids(String basePriceName) 
+	/*public static List<PriceGrid> getPriceGrids(String basePriceName) 
 	{
 		
 		List<PriceGrid> newPriceGrid=new ArrayList<PriceGrid>();
@@ -1532,26 +1539,50 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 		_LOGGER.error("Error while processing PriceGrid: "+e.getMessage());
 	}
 		return newPriceGrid;
-}
+}*/
 	
-	public PostServiceImpl getPostServiceImpl() {
-		return postServiceImpl;
-	}
-
-	public void setPostServiceImpl(PostServiceImpl postServiceImpl) {
-		this.postServiceImpl = postServiceImpl;
-	}
-	public ProductDao getProductDaoObj() {
-		return productDaoObj;
-	}
-
-	public void setProductDaoObj(ProductDao productDaoObj) {
-		this.productDaoObj = productDaoObj;
-	}
+	
 	
 	public static final String CONST_STRING_COMBO_TEXT = "Combo";
 	
 	
+	
+
+	public PostServiceImpl getPostServiceImplV5() {
+		return postServiceImplV5;
+	}
+
+
+
+	public void setPostServiceImplV5(PostServiceImpl postServiceImplV5) {
+		this.postServiceImplV5 = postServiceImplV5;
+	}
+
+
+
+	public ProductDao getProductDaoObjV5() {
+		return productDaoObjV5;
+	}
+
+
+
+	public void setProductDaoObjV5(ProductDao productDaoObjV5) {
+		this.productDaoObjV5 = productDaoObjV5;
+	}
+
+
+
+	public com.a4tech.v5.product.criteria.parser.PriceGridParser getPriceGridParser() {
+		return priceGridParser;
+	}
+
+
+
+	public void setPriceGridParser(
+			com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser) {
+		this.priceGridParser = priceGridParser;
+	}
+
 
 
 	public SunGraphixAttributeParser getSunGraphixAttributeParser() {
@@ -1567,7 +1598,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 
 
 
-	public SunGraphixPriceGridParser getSunGraphixPriceGridParser() {
+	/*public SunGraphixPriceGridParser getSunGraphixPriceGridParser() {
 		return sunGraphixPriceGridParser;
 	}
 
@@ -1576,7 +1607,7 @@ public class SunGraphixRevisedMapping implements IExcelParser{
 	public void setSunGraphixPriceGridParser(
 			SunGraphixPriceGridParser sunGraphixPriceGridParser) {
 		this.sunGraphixPriceGridParser = sunGraphixPriceGridParser;
-	}
+	}*/
 
 
 }

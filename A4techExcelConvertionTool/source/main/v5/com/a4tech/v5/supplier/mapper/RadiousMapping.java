@@ -14,39 +14,39 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.util.StringUtils;
 
-import parser.radious.RadiousAttribute;
-import parser.radious.RadiousColorParser;
-import parser.radious.RadiousPriceGridParser;
+import parser.v5.radious.RadiousAttribute;
+import parser.v5.radious.RadiousColorParser;
+import parser.v5.radious.RadiousPriceGridParser;
 
-import com.a4tech.excel.service.IExcelParser;
-import com.a4tech.lookup.service.LookupServiceData;
-import com.a4tech.product.dao.service.ProductDao;
-import com.a4tech.product.model.Color;
-import com.a4tech.product.model.Image;
-import com.a4tech.product.model.ImprintLocation;
-import com.a4tech.product.model.ImprintMethod;
-import com.a4tech.product.model.Material;
-import com.a4tech.product.model.PriceGrid;
-import com.a4tech.product.model.Product;
-import com.a4tech.product.model.ProductConfigurations;
-import com.a4tech.product.model.ProductionTime;
-import com.a4tech.product.model.RushTime;
-import com.a4tech.product.model.ShippingEstimate;
-import com.a4tech.product.model.Size;
-import com.a4tech.product.model.Theme;
-import com.a4tech.product.service.postImpl.PostServiceImpl;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.excel.service.IExcelParser;
+import com.a4tech.v5.lookup.service.LookupServiceData;
+import com.a4tech.v5.product.dao.service.ProductDao;
+import com.a4tech.v5.product.model.Color;
+import com.a4tech.v5.product.model.Image;
+import com.a4tech.v5.product.model.ImprintLocation;
+import com.a4tech.v5.product.model.ImprintMethod;
+import com.a4tech.v5.product.model.Material;
+import com.a4tech.v5.product.model.PriceGrid;
+import com.a4tech.v5.product.model.Product;
+import com.a4tech.v5.product.model.ProductConfigurations;
+import com.a4tech.v5.product.model.ProductionTime;
+import com.a4tech.v5.product.model.RushTime;
+import com.a4tech.v5.product.model.ShippingEstimate;
+import com.a4tech.v5.product.model.Size;
+import com.a4tech.v5.product.model.Theme;
+import com.a4tech.v5.product.service.postImpl.PostServiceImpl;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 
 public class RadiousMapping implements IExcelParser {
-private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMapping.class);
+private static final Logger _LOGGER = Logger.getLogger(RadiousMapping.class);
 	
-	private PostServiceImpl postServiceImpl;
-	private ProductDao productDaoObj;
+	private PostServiceImpl postServiceImplV5;
+	private ProductDao productDaoObjV5;
 	private LookupServiceData lookupServiceDataObj;
 	private RadiousColorParser radiousColorObj;
 	private RadiousAttribute radiousAttribute;
-	private RadiousPriceGridParser radiousPricegrid;
+	private com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser;
 
 	
 
@@ -159,7 +159,7 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 									productExcelObj
 											.setProductConfigurations(productConfigObj);
 
-									int num = postServiceImpl.postProduct(
+									int num = postServiceImplV5.postProduct(
 											accessToken, productExcelObj,
 											asiNumber, batchId, environmentType);
 									if (num == 1) {
@@ -192,7 +192,7 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 								if (!productXids.contains(xid)) {
 									productXids.add(xid.trim());
 								}
-								existingApiProduct = postServiceImpl
+								existingApiProduct = postServiceImplV5
 										.getProduct(accessToken,
 												xid = xid.replace("\t", ""), environmentType);
 								if (existingApiProduct == null) {
@@ -550,12 +550,12 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 					break;
 			
 				case 101: // expirationdate_1
-					String confirmDate=cell.getStringCellValue();
+					/*String confirmDate=cell.getStringCellValue();
 					if (!StringUtils.isEmpty(confirmDate)){
 						productExcelObj
 						.setPriceConfirmedThru(confirmDate);
 					}
-
+*/
 					break;
 			
 				case 141: // imprintmethod_1
@@ -768,25 +768,34 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 			
 					productExcelObj.setPriceType("L");
 					
+					/*
+					public List<PriceGrid> getPriceGrids(String listOfPrices,
+						    String listOfQuan, String discountCodes,
+							String currency, String priceInclude, boolean isBasePrice,
+							String qurFlag, String priceName, String criterias,
+							List<PriceGrid> existingPriceGrid) {*/
 	
-						priceGrids = radiousPricegrid.getPriceGrids(
+						/*priceGrids = radiousPricegrid.getPriceGrids(
 								listOfPrices.toString(),
 								listOfQuantity.toString(), "R", "USD",
 								"", true, "false",
-								productName, "", priceGrids);
-					
-
-					
-					
-			/*	priceGrids =  harvestPriceGridObj.getUpchargePriceGrid("1", Screencharge,
-							Screenchargecode,
-									"Imprint Method", "false", "USD",
-									decorationMethod,
-									"Screen Charge", "Other",
-									new Integer(1),"Required","", priceGrids);	//screen charge
-			
-					*/
-					
+								productName, "", priceGrids);*/
+						
+						
+					priceGrids = priceGridParser.getPriceGrids(true,productName,"",new Integer(1),
+								listOfPrices.toString(),listOfQuantity.toString(), "R",
+								"USD","false",
+								"","","","","",priceGrids);
+								
+								
+								/*"1", Discountcode, 
+								"USD","false",
+								"Imprint Method","Required", "Imprint Method Charge","Other","",priceGrids);*/
+						/* boolean isBasePrice,String priceName_Desc,String priceInclude,Integer sequence,
+						String listOfPrices, String listOfQuan, String discountCodes,
+						String currency ,String isQUR,
+						String criterias,String serviceCharge,String upChargeType,String upchargeUsageType,String optnype,
+						List<PriceGrid> existingPriceGrid*/
 					
 					 
 	
@@ -811,7 +820,7 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 			productExcelObj.setPriceGrids(priceGrids);
 			productExcelObj.setProductConfigurations(productConfigObj);
 
-			int num = postServiceImpl.postProduct(accessToken, productExcelObj,
+			int num = postServiceImplV5.postProduct(accessToken, productExcelObj,
 					asiNumber, batchId, environmentType);
 			if (num == 1) {
 				numOfProductsSuccess.add("1");
@@ -825,7 +834,7 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 					+ numOfProductsFailure.size());
 			finalResult = numOfProductsSuccess.size() + ","
 					+ numOfProductsFailure.size();
-			productDaoObj.saveErrorLog(asiNumber, batchId);
+			productDaoObjV5.saveErrorLog(asiNumber, batchId);
 			priceGrids = new ArrayList<PriceGrid>();
 			listImprintLocation = new ArrayList<ImprintLocation>();
 			listOfImprintMethods = new ArrayList<ImprintMethod>();
@@ -858,35 +867,48 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 
 	}
 
-	
-	public PostServiceImpl getPostServiceImpl() {
-		return postServiceImpl;
+
+
+	public PostServiceImpl getPostServiceImplV5() {
+		return postServiceImplV5;
 	}
 
-	public void setPostServiceImpl(PostServiceImpl postServiceImpl) {
-		this.postServiceImpl = postServiceImpl;
+
+
+	public void setPostServiceImplV5(PostServiceImpl postServiceImplV5) {
+		this.postServiceImplV5 = postServiceImplV5;
 	}
 
-	public ProductDao getProductDaoObj() {
-		return productDaoObj;
+
+
+	public ProductDao getProductDaoObjV5() {
+		return productDaoObjV5;
 	}
 
-	public void setProductDaoObj(ProductDao productDaoObj) {
-		this.productDaoObj = productDaoObj;
+
+
+	public void setProductDaoObjV5(ProductDao productDaoObjV5) {
+		this.productDaoObjV5 = productDaoObjV5;
 	}
+
+
 
 	public LookupServiceData getLookupServiceDataObj() {
 		return lookupServiceDataObj;
 	}
 
 
+
 	public void setLookupServiceDataObj(LookupServiceData lookupServiceDataObj) {
 		this.lookupServiceDataObj = lookupServiceDataObj;
 	}
 
+
+
 	public RadiousColorParser getRadiousColorObj() {
 		return radiousColorObj;
 	}
+
 
 
 	public void setRadiousColorObj(RadiousColorParser radiousColorObj) {
@@ -894,9 +916,11 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 	}
 
 
+
 	public RadiousAttribute getRadiousAttribute() {
 		return radiousAttribute;
 	}
+
 
 
 	public void setRadiousAttribute(RadiousAttribute radiousAttribute) {
@@ -904,15 +928,19 @@ private static final Logger _LOGGER = Logger.getLogger(HarvestIndustrialExcelMap
 	}
 
 
-	public RadiousPriceGridParser getRadiousPricegrid() {
-		return radiousPricegrid;
+
+	public com.a4tech.v5.product.criteria.parser.PriceGridParser getPriceGridParser() {
+		return priceGridParser;
 	}
 
 
-	public void setRadiousPricegrid(RadiousPriceGridParser radiousPricegrid) {
-		this.radiousPricegrid = radiousPricegrid;
+
+	public void setPriceGridParser(
+			com.a4tech.v5.product.criteria.parser.PriceGridParser priceGridParser) {
+		this.priceGridParser = priceGridParser;
 	}
 
+	
 
 	
 }

@@ -85,6 +85,7 @@
 	<bean id="excelFactoryIdV5" class="com.a4tech.v5.core.excelMapping.ExcelFactory">
      	<property name="sageExcelMappingV5" ref="sageMappingIdV5" />
      	<property name="wbtIndustriesMapperV5" ref="wbtIndustriesMappingIdV5" />
+     	<property name="radiMappingV5" ref="radiMappingIdV5"/>
      </bean>
 	
 	<!-- sage start -->
@@ -131,4 +132,23 @@
      
      <!-- <bean id="wbtIndustriespriceGridParserId" class="parser.v5.WBTIndustries.WBTIndustriesPriceGridParser"/> -->
       <!-- WBT Industries configuration end-->
+      
+        <!-- supplier Radious 49916 configuration start -->
+
+             
+      <bean id="radiMappingIdV5" name="radiMappingV5Obj" class="com.a4tech.v5.supplier.mapper.RadiousMapping">
+         	 <property name="postServiceImplV5" ref="postServiceV5Obj"/>
+     	 	 <property name="productDaoObjV5"  ref="productDaoV5Obj"/>
+     	 	 <property name="lookupServiceDataObj" ref="lookupServiceDataV5Obj"/>
+       	     <property name="radiousColorObj" ref="radiousColorIdV5"/>
+       	     <property name="radiousAttribute" ref="radiousAttributeIdV5"/>
+       	     <property name="priceGridParser" ref="pricegridParserV5"/>
+      </bean>
+          <bean id="radiousColorIdV5" name="radiousColorV5Obj" class="parser.v5.radious.RadiousColorParser"/>
+          <bean id="radiousAttributeIdV5" name="radiousAttributeV5Obj" class="parser.v5.radious.RadiousAttribute"/>
+           <!-- <bean id="radiousPricegridId" class="parser.radious.RadiousPriceGridParser"/> -->
+          
+    
+       <!-- supplier Radious 49916 configuration End -->
+      
 	</beans>

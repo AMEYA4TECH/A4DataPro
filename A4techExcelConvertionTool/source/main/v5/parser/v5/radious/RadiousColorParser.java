@@ -2,9 +2,9 @@ package parser.v5.radious;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.a4tech.product.model.Color;
-import com.a4tech.util.ApplicationConstants;
-import com.a4tech.util.CommonUtility;
+import com.a4tech.v5.product.model.Color;
+import com.a4tech.v5.util.ApplicationConstants;
+import com.a4tech.v5.util.CommonUtility;
 
 
 public class RadiousColorParser {

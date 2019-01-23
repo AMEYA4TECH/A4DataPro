@@ -4,6 +4,9 @@ package com.a4tech.v5.core.excelMapping;
 
 import com.a4tech.v5.excel.service.IExcelParser;
 import com.a4tech.v5.sage.product.mapping.SageProductsExcelMapping;
+import com.a4tech.v5.supplier.mapper.RadiousMapping;
+import com.a4tech.v5.supplier.mapper.SunGraphixMapping;
+import com.a4tech.v5.supplier.mapper.SunGraphixRevisedMapping;
 import com.a4tech.v5.supplier.mapper.WBTIndustriesMapper;
 //import com.a4tech.v5.supplier.mapper.CutterBuckExcelMapping;
 
@@ -12,6 +15,8 @@ public class ExcelFactory {
 	//private KlProductsExcelMapping 			klMapping;
 	private SageProductsExcelMapping 		sageExcelMappingV5;
 	 private WBTIndustriesMapper	            wbtIndustriesMapperV5;
+	 private RadiousMapping                  radiMappingV5;	
+	 private SunGraphixRevisedMapping 				sunGraphixMappingV5;
 	/*private DCProductsExcelMapping 			dcProductExcelMapping;
 	private KukuProductsExcelMapping 		kukuProductsExcelMapping;
 	private RFGLineProductExcelMapping 		rfgLineProductExcelMapping;
@@ -80,11 +85,15 @@ public class ExcelFactory {
      
     
 	public  IExcelParser getExcelParserObject(String name){
-		if(name.equalsIgnoreCase("sage") || name.equals("55204") || name.equals("49916")){
+		if(name.equalsIgnoreCase("sage") || name.equals("55204")){
 			   return sageExcelMappingV5;
 		   }else if(name.equals("96640")){
 				  return wbtIndustriesMapperV5;
-			  }
+			  } else if(name.equalsIgnoreCase("sunGraphixMapping") || name.equals("90125")){
+				  return sunGraphixMappingV5;
+			  } else if(name.equals("49916")){
+				  return radiMappingV5;
+			  } 
 		  /* if(name.equalsIgnoreCase("Apparel") || name.equals("44620")){
 			   return apparealExcelMapping;
 		   }else if(name.equalsIgnoreCase("kl") || name.equals("64905")){
@@ -244,6 +253,26 @@ public class ExcelFactory {
 
 	public void setWbtIndustriesMapperV5(WBTIndustriesMapper wbtIndustriesMapperV5) {
 		this.wbtIndustriesMapperV5 = wbtIndustriesMapperV5;
+	}
+
+
+	public RadiousMapping getRadiMappingV5() {
+		return radiMappingV5;
+	}
+
+
+	public void setRadiMappingV5(RadiousMapping radiMappingV5) {
+		this.radiMappingV5 = radiMappingV5;
+	}
+
+
+	public SunGraphixRevisedMapping getSunGraphixMappingV5() {
+		return sunGraphixMappingV5;
+	}
+
+
+	public void setSunGraphixMappingV5(SunGraphixRevisedMapping sunGraphixMappingV5) {
+		this.sunGraphixMappingV5 = sunGraphixMappingV5;
 	}
 	
 	
