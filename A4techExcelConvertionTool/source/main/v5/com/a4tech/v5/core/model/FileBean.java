@@ -8,7 +8,15 @@ public class FileBean {
 	private String asiNumber;
 	private String userName;
 	private String password;
-	
+	private String version;
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	public String getAsiNumber() {
 		return asiNumber;

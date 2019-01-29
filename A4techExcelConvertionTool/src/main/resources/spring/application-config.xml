@@ -199,14 +199,14 @@
 				<value>com.a4tech.product.dao.entity.BaseSupplierLoginDetails</value>
 				<value>com.a4tech.product.dao.entity.SupplierColumnsEntity</value>
 				
-				<value>com.a4tech.v5.product.dao.entity.ProductEntity</value>
+				<!-- <value>com.a4tech.v5.product.dao.entity.ProductEntity</value>
 				<value>com.a4tech.v5.product.dao.entity.ErrorEntity</value>
 				<value>com.a4tech.v5.product.dao.entity.BatchEntity</value>
 				<value>com.a4tech.v5.product.dao.entity.FtpServerFileEntity</value>
 				<value>com.a4tech.v5.product.dao.entity.SupplierLoginDetails</value>				
 				<value>com.a4tech.v5.product.dao.entity.ProductionSupplierLoginDetails</value>
 				<value>com.a4tech.v5.product.dao.entity.BaseSupplierLoginDetails</value>
-				<value>com.a4tech.v5.product.dao.entity.SupplierColumnsEntity</value>
+				<value>com.a4tech.v5.product.dao.entity.SupplierColumnsEntity</value> -->
 				<!-- <value>parser.highcaliberline.HighCalColorEntity</value> -->
 			</list>
 		</property>

@@ -10,6 +10,8 @@ public class FileBean {
 	private String password;
 	private String   version;
 
+	
+	
 	public String getVersion() {
 		return version;
 	}
